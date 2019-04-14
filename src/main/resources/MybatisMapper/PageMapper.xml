@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whale.dao.PageMapper">
+	<select id="queryPageAll" resultType="java.util.HashMap">
+		select * from (select row_.*, rownum rownum_ from ( select * from ${args1} ) row_ where rownum <![CDATA[<=]]> ${args2} ) where rownum_ <![CDATA[>=]]> ${args3}
+	</select>
+	
+	<select id="queryTotalNumAll" resultType="java.lang.Long">
+		select count(1) from ( select * from ${args1} )
+	</select>
+	
+	<select id="queryPage" resultType="java.util.HashMap">
+		select * from (select row_.*, rownum rownum_ from ( ${args1} ) row_ where rownum <![CDATA[<=]]> ${args2} ) where rownum_ <![CDATA[>=]]> ${args3}
+	</select>
+	
+	<select id="queryTotalNum" resultType="java.lang.Long">
+		select count(1) from ( ${args1} )
+	</select>
+	
+	<select id="queryPageById" resultType="java.util.HashMap">
+		select * from ${tableName} where ${pkName} = ${pkId}
+	</select>
+	
+	<select id="getPkNameByTableName" resultType="String">
+		select cu.column_name from user_cons_columns cu, user_constraints au where cu.constraint_name = au.constraint_name and au.constraint_type = 'P' and au.table_name = '${tableName}'
+	</select>
+	
+	<select id="queryPageByFkId" resultType="java.util.HashMap">
+		select * from ${tableName} where ${fkName} = ${fkId}
+	</select>
+</mapper>

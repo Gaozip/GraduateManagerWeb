@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whale.dao.GraduateInfoMapper">
+  <resultMap id="graduateInfoMapperMap" type="org.whale.pojo.GraduateInfo">
+   <id column="PK_GRAD_ID" jdbcType="DECIMAL" property="pkGradId" />
+    <id column="PK_GRAD_ID" jdbcType="DECIMAL" property="pkGradId" />
+    <result column="SNO" jdbcType="DECIMAL" property="sno" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="SEX" jdbcType="VARCHAR" property="sex" />
+    <result column="BIRTHDAY" jdbcType="TIMESTAMP" property="birthday" />
+    <result column="NATION" jdbcType="VARCHAR" property="nation" />
+    <result column="PROVINCE" jdbcType="VARCHAR" property="province" />
+    <result column="CITY" jdbcType="VARCHAR" property="city" />
+    <result column="POLITICAL_STATUS" jdbcType="VARCHAR" property="politicalStatus" />
+    <result column="TEL" jdbcType="DECIMAL" property="tel" />
+    <result column="QQ" jdbcType="DECIMAL" property="qq" />
+    <result column="WCHAT" jdbcType="VARCHAR" property="wchat" />
+    <result column="IN_DATE" jdbcType="TIMESTAMP" property="inDate" />
+    <result column="DEPT" jdbcType="VARCHAR" property="dept" />
+    <result column="SPECIALTY" jdbcType="VARCHAR" property="specialty" />
+    <result column="EDUCATION" jdbcType="VARCHAR" property="education" />
+    <result column="GRADUATE_COLLEGE" jdbcType="VARCHAR" property="graduateCollege" />
+    <result column="HAVE_JOB" jdbcType="DECIMAL" property="haveJob" />
+    <result column="COMPANY_NAME" jdbcType="VARCHAR" property="companyName" />
+    <result column="INDUSTRY" jdbcType="VARCHAR" property="industry" />
+    <result column="GET_JOB_TIME" jdbcType="TIMESTAMP" property="getJobTime" />
+    <result column="MONTH_SALARY" jdbcType="DECIMAL" property="monthSalary" />
+    <result column="POSITION" jdbcType="VARCHAR" property="position" />
+    <result column="WORK_YEAR" jdbcType="VARCHAR" property="workYear" />
+    <result column="EMAIL" jdbcType="VARCHAR" property="email" />
+    <result column="IS_VALID" jdbcType="DECIMAL" property="isValid" />
+    <result column="FK_USER_ID" jdbcType="DECIMAL" property="fkUserId" />
+  </resultMap>
+  
+  <update id="doUpdate" parameterType="org.whale.pojo.GraduateInfo">
+  	update SYS_GRADUATE_INFO
+    set
+      SNO = #{sno,jdbcType=DECIMAL},
+      NAME = #{name,jdbcType=VARCHAR},
+      SEX = #{sex,jdbcType=VARCHAR},
+      BIRTHDAY = #{birthday,jdbcType=TIMESTAMP},
+      NATION = #{nation,jdbcType=VARCHAR},
+      PROVINCE = #{province,jdbcType=VARCHAR},
+      CITY = #{city,jdbcType=VARCHAR},
+      POLITICAL_STATUS = #{politicalStatus,jdbcType=VARCHAR},
+      TEL = #{tel,jdbcType=DECIMAL},
+      QQ = #{qq,jdbcType=DECIMAL},
+      WCHAT = #{wchat,jdbcType=VARCHAR},
+      IN_DATE = #{inDate,jdbcType=TIMESTAMP},
+      DEPT = #{dept,jdbcType=VARCHAR},
+      SPECIALTY = #{specialty,jdbcType=VARCHAR},
+      EDUCATION = #{education,jdbcType=VARCHAR},
+      GRADUATE_COLLEGE = #{graduateCollege,jdbcType=VARCHAR},
+      HAVE_JOB = #{haveJob,jdbcType=DECIMAL},
+      COMPANY_NAME = #{companyName,jdbcType=VARCHAR},
+      INDUSTRY = #{industry,jdbcType=VARCHAR},
+      GET_JOB_TIME = #{getJobTime,jdbcType=TIMESTAMP},
+      MONTH_SALARY = #{monthSalary,jdbcType=DECIMAL},
+      POSITION = #{position,jdbcType=VARCHAR},
+      WORK_YEAR = #{workYear,jdbcType=VARCHAR},
+      EMAIL = #{email,jdbcType=VARCHAR},
+      IS_VALID = 1
+     where
+      FK_USER_ID = #{fkUserId,jdbcType=DECIMAL}
+  </update>
+  
+  <update id="doUpdateJobInfoByUserId" parameterType="org.whale.pojo.GraduateInfo">
+  	 update SYS_GRADUATE_INFO
+     set 
+      COMPANY_NAME = #{companyName,jdbcType=VARCHAR},
+      INDUSTRY = #{industry,jdbcType=VARCHAR},
+      GET_JOB_TIME = #{getJobTime,jdbcType=VARCHAR},
+      MONTH_SALARY = #{monthSalary,jdbcType=DECIMAL},
+      POSITION = #{position,jdbcType=VARCHAR},
+      WORK_YEAR = #{workYear,jdbcType=VARCHAR}
+     where
+      FK_USER_ID = #{fkUserId,jdbcType=DECIMAL}
+  </update>
+  
+  <insert id="addLine" parameterType="org.whale.pojo.GraduateInfo">
+  
+  	<selectKey keyProperty="pkGradId" resultType="long" order="BEFORE">
+		select SEQ_SYS_GRADUATE_INFO.nextval as pkGradId from dual
+	</selectKey>
+	
+  	insert into SYS_GRADUATE_INFO(PK_GRAD_ID,FK_USER_ID,EMAIL,IS_VALID)
+  	values(
+  		#{pkGradId,jdbcType=DECIMAL},
+  		#{fkUserId,jdbcType=DECIMAL},
+  		#{email,jdbcType=VARCHAR},
+  		0
+  	)
+  </insert>
+  
+  <select id="queryBasicInfoById" parameterType="java.lang.Long" resultMap="graduateInfoMapperMap">
+  	select * from sys_graduate_info where fk_user_id = #{fkUserId,jdbcType=DECIMAL}
+  </select>
+</mapper>

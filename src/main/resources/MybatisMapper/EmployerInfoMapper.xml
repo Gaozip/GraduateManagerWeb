@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whale.dao.EmployerInfoMapper">
+  <resultMap id="employerInfoMapperMap" type="org.whale.pojo.EmployerInfo">
+      <id column="PK_EMPLOYER_ID" jdbcType="DECIMAL" property="pkEmployerId" />
+    <result column="COMPANY_NAME" jdbcType="VARCHAR" property="companyName" />
+    <result column="ORGANIZATION_CODE" jdbcType="VARCHAR" property="organizationCode" />
+    <result column="REGISTER_DATE" jdbcType="TIMESTAMP" property="registerDate" />
+    <result column="REGISTER_CAPITAL" jdbcType="DECIMAL" property="registerCapital" />
+    <result column="COMPANY_TYPE" jdbcType="VARCHAR" property="companyType" />
+    <result column="INDUSTRY" jdbcType="VARCHAR" property="industry" />
+    <result column="EMPLOYER_NUM" jdbcType="DECIMAL" property="employerNum" />
+    <result column="HOT_LINE" jdbcType="DECIMAL" property="hotLine" />
+    <result column="PROVINCE" jdbcType="VARCHAR" property="province" />
+    <result column="CITY" jdbcType="VARCHAR" property="city" />
+    <result column="EMAIL" jdbcType="VARCHAR" property="email" />
+    <result column="COMPANY_ADDRESS" jdbcType="VARCHAR" property="companyAddress" />
+    <result column="COMPANY_PROFILE" jdbcType="VARCHAR" property="companyProfile" />
+    <result column="LEGAL_REPRESENTATIVE" jdbcType="VARCHAR" property="legalRepresentative" />
+    <result column="MANAGEMENT_FORMS" jdbcType="VARCHAR" property="managementForms" />
+    <result column="SCOPE_OF_BUSINESS" jdbcType="VARCHAR" property="scopeOfBusiness" />
+    <result column="IS_VALID" jdbcType="DECIMAL" property="isValid" />
+    <result column="FK_USER_ID" jdbcType="DECIMAL" property="fkUserId" />
+  </resultMap>
+  
+  <insert id="addLine" parameterType="org.whale.pojo.EmployerInfo">
+  
+  	<selectKey keyProperty="pkEmployerId" resultType="long" order="BEFORE">
+		select SEQ_SYS_EMPLOYER_INFO.nextval as pkEmployerId from dual
+	</selectKey>
+	
+	insert into SYS_EMPLOYER_INFO(PK_EMPLOYER_ID,FK_USER_ID,EMAIL,IS_VALID)
+	values(
+		#{pkEmployerId,jdbcType=DECIMAL},
+		#{fkUserId,jdbcType=DECIMAL},
+		#{email,jdbcType=VARCHAR},
+		0
+	)
+  </insert>
+  
+  <update id="doUpdate" parameterType="org.whale.pojo.EmployerInfo">
+  	 update SYS_EMPLOYER_INFO
+     set 
+     	  COMPANY_NAME = #{companyName,jdbcType=VARCHAR},
+	      ORGANIZATION_CODE = #{organizationCode,jdbcType=VARCHAR},
+	      REGISTER_DATE = #{registerDate,jdbcType=VARCHAR},
+	      REGISTER_CAPITAL = #{registerCapital,jdbcType=VARCHAR},
+	      COMPANY_TYPE = #{companyType,jdbcType=VARCHAR},
+	      INDUSTRY = #{industry,jdbcType=VARCHAR},
+	      EMPLOYER_NUM = #{employerNum,jdbcType=DECIMAL},
+	      HOT_LINE = #{hotLine,jdbcType=DECIMAL},
+	      PROVINCE = #{province,jdbcType=VARCHAR},
+	      CITY = #{city,jdbcType=VARCHAR},
+	      COMPANY_ADDRESS = #{companyAddress,jdbcType=VARCHAR},
+	      COMPANY_PROFILE = #{companyProfile,jdbcType=VARCHAR},
+	      LEGAL_REPRESENTATIVE = #{legalRepresentative,jdbcType=VARCHAR},
+	      MANAGEMENT_FORMS = #{managementForms,jdbcType=VARCHAR},
+	      SCOPE_OF_BUSINESS = #{scopeOfBusiness,jdbcType=VARCHAR},
+	      IS_VALID = 1
+      where 
+      	  FK_USER_ID = #{fkUserId,jdbcType=DECIMAL}
+  </update>
+  
+  <select id="getEmployerInfoByUserId" parameterType="Long" resultMap="employerInfoMapperMap">
+  	select * from sys_employer_info where FK_USER_ID = ${userId}
+  </select>
+  
+</mapper>

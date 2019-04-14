@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whale.dao.ResumeMapper">
+
+  <resultMap id="resumeMapperMap" type="org.whale.pojo.Resume">
+    <id column="PK_RESUME_ID" jdbcType="DECIMAL" property="pkResumeId" />
+    <result column="PROFESSIONAL_ABILITY" jdbcType="VARCHAR" property="professionalAbility" />
+    <result column="CERTIFICATE" jdbcType="VARCHAR" property="certificate" />
+    <result column="JOB_TYPE" jdbcType="VARCHAR" property="jobType" />
+    <result column="EXPERT_INDUSTRY" jdbcType="VARCHAR" property="expertIndustry" />
+    <result column="EXPERT_JOB_INTENSION" jdbcType="VARCHAR" property="expertJobIntension" />
+    <result column="PROVINCE" jdbcType="VARCHAR" property="province" />
+    <result column="CITY" jdbcType="VARCHAR" property="city" />
+    <result column="EXPERT_SALARY" jdbcType="DECIMAL" property="expertSalary" />
+    <result column="JOB_STATUS" jdbcType="VARCHAR" property="jobStatus" />
+    <result column="IS_VALID" jdbcType="DECIMAL" property="isValid" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="FK_USER_ID" jdbcType="DECIMAL" property="fkUserId" />
+  </resultMap>
+  
+  <resultMap type="org.whale.pojo.Resume" id="Resume">
+  	  <id column="PK_RESUME_ID" jdbcType="DECIMAL" property="pkResumeId" />
+    <result column="PROFESSIONAL_ABILITY" jdbcType="VARCHAR" property="professionalAbility" />
+    <result column="CERTIFICATE" jdbcType="VARCHAR" property="certificate" />
+    <result column="JOB_TYPE" jdbcType="VARCHAR" property="jobType" />
+    <result column="EXPERT_INDUSTRY" jdbcType="VARCHAR" property="expertIndustry" />
+    <result column="EXPERT_JOB_INTENSION" jdbcType="VARCHAR" property="expertJobIntension" />
+    <result column="EXPERT_WORKPLACE" jdbcType="VARCHAR" property="expertWorkplace" />
+    <result column="EXPERT_SALARY" jdbcType="DECIMAL" property="expertSalary" />
+    <result column="JOB_STATUS" jdbcType="VARCHAR" property="jobStatus" />
+    <result column="IS_VALID" jdbcType="DECIMAL" property="isValid" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="FK_USER_ID" jdbcType="DECIMAL" property="fkUserId" />
+    <association property="graduateInfo" javaType="org.whale.pojo.GraduateInfo">
+    	<id column="PK_GRAD_ID" jdbcType="DECIMAL" property="pkGradId" />
+	    <result column="SNO" jdbcType="DECIMAL" property="sno" />
+	    <result column="NAME" jdbcType="VARCHAR" property="name" />
+	    <result column="SEX" jdbcType="VARCHAR" property="sex" />
+	    <result column="BIRTHDAY" jdbcType="VARCHAR" property="birthday" />
+	    <result column="NATION" jdbcType="VARCHAR" property="nation" />
+	    <result column="NATIVE_PLACE" jdbcType="VARCHAR" property="nativePlace" />
+	    <result column="POLITICAL_STATUS" jdbcType="VARCHAR" property="politicalStatus" />
+	    <result column="TEL" jdbcType="DECIMAL" property="tel" />
+	    <result column="QQ" jdbcType="DECIMAL" property="qq" />
+	    <result column="WCHAT" jdbcType="VARCHAR" property="wchat" />
+	    <result column="HOME_ADDRESS" jdbcType="VARCHAR" property="homeAddress" />
+	    <result column="IN_DATE" jdbcType="DECIMAL" property="inDate" />
+	    <result column="GRAD_YEAR" jdbcType="DECIMAL" property="gradYear" />
+	    <result column="DEPT" jdbcType="VARCHAR" property="dept" />
+	    <result column="SPECIALTY" jdbcType="VARCHAR" property="specialty" />
+	    <result column="EDUCATION" jdbcType="VARCHAR" property="education" />
+	    <result column="GRAD_COLLEGE" jdbcType="VARCHAR" property="gradCollege" />
+	    <result column="HAVE_JOB" jdbcType="DECIMAL" property="haveJob" />
+	    <result column="COMPANY_NAME" jdbcType="VARCHAR" property="companyName" />
+	    <result column="INDUSTRY" jdbcType="VARCHAR" property="industry" />
+	    <result column="GET_JOB_TIME" jdbcType="VARCHAR" property="getJobTime" />
+	    <result column="MONTH_SALARY" jdbcType="DECIMAL" property="monthSalary" />
+	    <result column="POSITION" jdbcType="VARCHAR" property="position" />
+	    <result column="FK_USER_ID" jdbcType="DECIMAL" property="fkUserId" />
+	    <result column="AGE" jdbcType="DECIMAL" property="age" />
+	    <result column="WORK_YEAR" jdbcType="VARCHAR" property="workYear" />
+	    <result column="EMAIL" jdbcType="VARCHAR" property="email" />
+    </association>
+    <collection property="projectList" ofType="org.whale.pojo.ResumeProject">
+    	 <id column="PK_RESUME_PROJECT" jdbcType="DECIMAL" property="pkResumeProject" />
+    <result column="PROJECT_NAME" jdbcType="VARCHAR" property="projectName" />
+    <result column="PROJECT_DESCRIPTION" jdbcType="VARCHAR" property="projectDescription" />
+    <result column="PERSONAL_RESPONSIBILITY" jdbcType="VARCHAR" property="personalResponsibility" />
+    <result column="COMPANY_NAME" jdbcType="VARCHAR" property="companyName" />
+    <result column="PROJECT_DATE" jdbcType="VARCHAR" property="projectDate" />
+    <result column="FK_RESUME_ID" jdbcType="DECIMAL" property="fkResumeId" />
+    </collection>
+    <collection property="workList" ofType="org.whale.pojo.ResumeWork">
+    	 <id column="PK_RESUME_WORK_ID" jdbcType="DECIMAL" property="pkResumeWorkId" />
+	    <result column="COMPANY_NAME" jdbcType="VARCHAR" property="companyName" />
+	    <result column="INDUSTRY" jdbcType="VARCHAR" property="industry" />
+	    <result column="JOB_INTENSION" jdbcType="VARCHAR" property="jobIntension" />
+	    <result column="JOB_TYPE" jdbcType="VARCHAR" property="jobType" />
+	    <result column="MONTH_SALARY" jdbcType="DECIMAL" property="monthSalary" />
+	    <result column="JOB_DESCRIPTION" jdbcType="VARCHAR" property="jobDescription" />
+	    <result column="WORK_DATE" jdbcType="VARCHAR" property="workDate" />
+	    <result column="FK_RESUME_ID" jdbcType="DECIMAL" property="fkResumeId" />
+    </collection>
+  </resultMap>
+  
+  <insert id="doSave" parameterType="org.whale.pojo.Resume">
+ 	<selectKey keyProperty="pkResumeId" resultType="long" order="BEFORE">
+		select SEQ_SYS_RESUME.nextval as pkResumeId from dual
+	</selectKey>
+	insert into SYS_RESUME (PK_RESUME_ID, PROFESSIONAL_ABILITY, CERTIFICATE, JOB_TYPE, EXPERT_INDUSTRY, EXPERT_JOB_INTENSION, EXPERT_WORKPLACE, EXPERT_SALARY, JOB_STATUS, IS_VALID, CREATE_TIME, FK_USER_ID)
+    values (
+    	#{pkResumeId,jdbcType=DECIMAL}, 
+    	#{professionalAbility,jdbcType=VARCHAR}, 
+      	#{certificate,jdbcType=VARCHAR}, 
+      	#{jobType,jdbcType=VARCHAR}, 
+      	#{expertIndustry,jdbcType=VARCHAR}, 
+      	#{expertJobIntension,jdbcType=VARCHAR}, 
+      	#{expertWorkplace,jdbcType=VARCHAR}, 
+      	#{expertSalary,jdbcType=DECIMAL}, 
+      	#{jobStatus,jdbcType=VARCHAR}, 
+      	#{isValid,jdbcType=DECIMAL},
+      	sysdate,
+      	#{fkUserId,jdbcType=DECIMAL}
+   	)
+  </insert>
+  <select id="getResumeId" parameterType="org.whale.pojo.Resume" resultType="Long">
+  	select t.PK_RESUME_ID from SYS_RESUME t where 
+  		t.professional_ability = #{professionalAbility,jdbcType=VARCHAR} and 
+  		t.certificate = #{certificate,jdbcType=VARCHAR} and 
+  		t.job_type = #{jobType,jdbcType=VARCHAR} and 
+  		t.expert_industry = #{expertIndustry,jdbcType=VARCHAR} and 
+  		t.expert_job_intension = #{expertJobIntension,jdbcType=VARCHAR} and 
+  		t.expert_workplace = #{expertWorkplace,jdbcType=VARCHAR} and 
+  		t.expert_salary = #{expertSalary,jdbcType=DECIMAL} and 
+  		t.job_status = #{jobStatus,jdbcType=VARCHAR} and 
+  		t.fk_user_id = #{fkUserId,jdbcType=DECIMAL} and 
+  		t.is_valid = 1
+  </select>
+  
+  <select id="getResumeByUserId" resultMap="resumeMapperMap" parameterType="org.whale.pojo.Resume">
+  	select * from sys_resume where fk_user_id = #{fkUserId,jdbcType=DECIMAL} order by pk_resume_id
+  </select>
+  
+  <update id="doUpdateByResumeId" parameterType="org.whale.pojo.Resume">
+  	 update SYS_RESUME
+     set 
+     	PROFESSIONAL_ABILITY = #{professionalAbility,jdbcType=VARCHAR},
+      	CERTIFICATE = #{certificate,jdbcType=VARCHAR},
+      	JOB_TYPE = #{jobType,jdbcType=VARCHAR},
+      	EXPERT_INDUSTRY = #{expertIndustry,jdbcType=VARCHAR},
+      	EXPERT_JOB_INTENSION = #{expertJobIntension,jdbcType=VARCHAR},
+      	EXPERT_WORKPLACE = #{expertWorkplace,jdbcType=VARCHAR},
+      	EXPERT_SALARY = #{expertSalary,jdbcType=DECIMAL},
+      	JOB_STATUS = #{jobStatus,jdbcType=VARCHAR}
+      where 
+      	PK_RESUME_ID = #{pkResumeId,jdbcType=DECIMAL}
+  </update>
+  
+  <delete id="doDeleteByResumeId" parameterType="java.lang.Long">
+  	 delete from SYS_RESUME where PK_RESUME_ID = #{pkResumeId,jdbcType=DECIMAL}
+  </delete>
+  
+  <select id="getResumeByResumeId" parameterType="java.lang.Long" resultMap="resumeMapperMap">
+  	select * from sys_resume where pk_resume_id = #{pkResumeId,jdbcType=DECIMAL} order by pk_resume_id
+  </select>
+  
+  <select id="getResumeByEmployer" resultMap="resumeMapperMap">
+  	select * from sys_resume
+  </select>
+  
+  <select id="doSearchByRequire"  resultMap="Resume">
+  	select * from SYS_GRADUATE_INFO t1,Sys_Resume t2  left join SYS_RESUME_WORK t3 on t3.fk_resume_id = t2.pk_resume_id left join sys_resume_project t4 on t4.fk_resume_id = t2.pk_resume_id where t1.fk_user_id = t2.fk_user_id 
+  	<if test="resumeId != null">
+  		and t2.pk_resume_id = #{resumeId}
+  	</if>
+  	<if test="age != null">
+  		and t1.age = #{age}
+  	</if>
+  	<if test="expertIndustry != null and expertIndustry != ''">
+  		and t2.EXPERT_INDUSTRY = #{expertIndustry}
+  	</if>
+  	<if test="education != null and education != ''">
+  		and t1.education = #{education}
+  	</if>
+  	<if test="sex != null and sex != ''">
+  		and t1.sex = #{sex}
+  	</if>
+  	<if test="age != null">
+  		and t1.age >= #{age}
+  	</if>
+  	<if test="workYear != null and workYear != ''">
+  		and t1.WORK_YEAR = #{workYear}
+  	</if>
+  	<if test="gradCollege != null and gradCollege != ''">
+  		and t1.GRAD_COLLEGE = #{gradCollege}
+  	</if>
+  	<if test="expertJobIntension != null and expertJobIntension != ''">
+  		and t2.EXPERT_JOB_INTENSION = #{expertJobIntension}
+  	</if>
+  	<if test="userId != null">
+  		and t2.fk_user_id = #{userId}
+  	</if>
+  </select>
+</mapper>

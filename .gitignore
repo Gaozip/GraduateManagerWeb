@@ -1,0 +1,16 @@
+node_modules
+/target/
+/WebContent/WEB-INF/classes
+/WebContent/WEB-INF/lib
+/WebContent/static/js/*.chunk.js
+/target/classes/
+*.class
+.idea/encodings.xml
+.idea/GraduateManagerWeb.iml
+.idea/misc.xml
+.idea/modules.xml
+.idea/workspace.xml
+.idea/vcs.xml
+.idea/inspectionProfiles/Project_Default.xml
+.settings/org.eclipse.jst.jsp.core.prefs
+WebContent/

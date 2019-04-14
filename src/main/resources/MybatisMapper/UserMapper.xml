@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.whale.dao.UserMapper">
+	
+	<resultMap id="userMapperMap" type="org.whale.pojo.User">
+	   <id column="PK_USER_ID" jdbcType="DECIMAL" property="pkUserId" />
+	    <result column="USERNAME" jdbcType="VARCHAR" property="username" />
+	    <result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+	    <result column="ROLE" jdbcType="DECIMAL" property="role" />
+	    <result column="STATE" jdbcType="DECIMAL" property="state" />
+	    <result column="CODE" jdbcType="VARCHAR" property="code" />
+	    <result column="HEAD_PATH" jdbcType="VARCHAR" property="headPath" />
+	    <result column="REGISTER_TIME" jdbcType="TIMESTAMP" property="registerTime" />
+	    <result column="ACTIVE_TIME" jdbcType="TIMESTAMP" property="activeTime" />
+	    <result column="EMAIL" jdbcType="VARCHAR" property="email" />
+	    <result column="IS_VALID" jdbcType="DECIMAL" property="isValid" />
+ 	</resultMap>
+ 	
+ 	<!-- 提取公共sql 使用<include>标签引入 -->
+ 	<sql id="getUserSql">
+ 		select * from SYS_USER
+ 	</sql>
+ 	
+ 	<select id="IsRegister" resultType="int">
+ 		select count(pk_user_id) from sys_user where 1 = 1
+ 		<if test="userName != null and userName != ''">
+			and username = '${userName}' 			 
+ 		</if>
+ 		<if test="email != null and email != ''">
+ 			and email = '${email}'
+ 		</if>
+ 	</select>
+ 	
+	<insert id="addUser" parameterType="org.whale.pojo.User">
+	 	<selectKey keyProperty="pkUserId" resultType="long" order="BEFORE">
+			select SEQ_SYS_USER.nextval as pkUserId from dual
+		</selectKey>
+		
+		 insert into SYS_USER (PK_USER_ID, USERNAME, PASSWORD, ROLE, STATE, CODE, HEAD_PATH, REGISTER_TIME,EMAIL,IS_VALID)
+    	 values (
+    	 	#{pkUserId,jdbcType=DECIMAL}, 
+    	 	#{username,jdbcType=VARCHAR}, 
+    	 	#{password,jdbcType=VARCHAR}, 
+      		#{role,jdbcType=DECIMAL}, 
+      		#{state,jdbcType=DECIMAL}, 
+      		#{code,jdbcType=VARCHAR}, 
+      		#{headPath,jdbcType=VARCHAR}, 
+      		sysdate,
+      		#{email,jdbcType=VARCHAR},
+      		1
+      	)
+    </insert>
+    
+    <select id="doLogin" parameterType="org.whale.pojo.User" resultMap="userMapperMap">
+    	select * from sys_user where userName = #{username,jdbcType=VARCHAR} and password = #{password,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="getCode" parameterType="String" resultType="String">
+    	select code from sys_user where userName = #{username,jdbcType=VARCHAR}
+    </select>
+    
+    <update id="updateState" parameterType="String">
+    	update sys_user set state = 1,active_time = sysdate where userName = #{username,jdbcType=VARCHAR}
+    </update>
+    
+    <update id="changeUserName" parameterType="org.whale.pojo.User">
+    	update sys_user set userName = #{username,jdbcType=VARCHAR} where pk_User_Id = #{pkUserId,jdbcType=DECIMAL}
+    </update>
+    
+    <update id="changePassword" parameterType="org.whale.pojo.User">
+    	update sys_user set password = #{password,jdbcType=VARCHAR} where pk_User_Id = #{pkUserId,jdbcType=DECIMAL}
+    </update>
+    
+    <select id="getUserHeadPath" parameterType="java.lang.Long" resultType="String">
+    	select head_path from sys_user where pk_user_id = #{pkUserId,jdbcType=DECIMAL}
+    </select>
+    
+    <update id="uploadUserHeadImage">
+    	update sys_user set head_path = #{arg1} where pk_user_id = #{arg0}
+    </update>
+    
+    <select id="haveUserHeadPath" parameterType="java.lang.Long" resultType="String">
+    	select head_path from sys_user where pk_user_id = ${userId}
+    </select>
+</mapper>

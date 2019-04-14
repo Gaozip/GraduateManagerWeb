@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whale.dao.ArticleMapper">
+  
+  <resultMap id="articleMapperMap" type="org.whale.pojo.Article">
+    <id column="PK_ARTICLE_ID" jdbcType="DECIMAL" property="pkArticleId" />
+    <result column="ARTICLE_ITEM" jdbcType="VARCHAR" property="articleItem" />
+    <result column="ARTICLE_TYPE" jdbcType="DECIMAL" property="articleType" />
+    <result column="START_TIME" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="IS_VALID" jdbcType="DECIMAL" property="isValid" />
+    <result column="IS_HOP" jdbcType="DECIMAL" property="isHop" />
+  </resultMap>
+  
+  <insert id="doSave" parameterType="org.whale.pojo.Article">
+  	<selectKey keyProperty="pkArticleId" resultType="long" order="BEFORE">
+		select SEQ_SYS_ARTICLE.nextval as pkArticleId from dual
+	</selectKey>
+  	insert into SYS_ARTICLE (PK_ARTICLE_ID, ARTICLE_ITEM, ARTICLE_TYPE,START_TIME, IS_VALID, IS_TOP, ARTICLE_BODY)
+    values (
+    	#{pkArticleId,jdbcType=DECIMAL}, 
+    	#{articleItem,jdbcType=VARCHAR}, 
+    	#{articleType,jdbcType=DECIMAL}, 
+      	#{startTime,jdbcType=TIMESTAMP}, 
+      	#{isValid,jdbcType=DECIMAL}, 
+      	#{isTop,jdbcType=DECIMAL},
+    	#{articleBody,jdbcType=VARCHAR}
+    )
+  </insert>
+  
+</mapper>

@@ -1,0 +1,257 @@
+/*
+* @Author: Book
+* @Date:   2018-06-26 09:50:08
+* @Last Modified by:   Book
+* @Last Modified time: 2018-09-17 10:22:53
+*/
+
+@import 'utils/_constant.scss';
+@import 'utils/_variables.scss';
+
+@import 'base/normalize';
+@import 'base/typography';
+
+.login {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  bottom: 0;
+  overflow: hidden;
+
+  background: transparent url($img-url + 'denglu3_bj.jpg') no-repeat;
+  background-size: 100% 100%;
+
+
+  // &-logo {
+  //   position: absolute;
+  //   top: 15%;
+  //   left: 40%;
+  //   width: 20%;
+
+  //   img {
+  //     display: block;
+  //     width: 100%;
+  //     height: auto;
+  //   }
+  // }
+
+  &-form {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 16%;
+
+    padding: 30px 20px;
+
+    width: 20%;
+    // height: 40%;
+
+    min-width: 320px;
+    // min-height: 300px;
+
+    max-width: 400px;
+    // max-height: 400px;
+
+    background-color: #fff;
+    border-radius: 10px;
+
+
+    &-title {
+      width: 100%;
+      margin-bottom: 10px;
+
+      img {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+    }
+  }
+
+  &-input-row {
+    position: relative;
+
+    &:before {
+      position: absolute;
+      bottom: 8px;
+      left: 12px;
+
+      content: '';
+      width: 16px;
+      height: 16px;
+      background: transparent url($img-url + 'denglu2_yhm.png') no-repeat;
+      background-size: 100% 100%;
+    }
+
+    &.password:before {
+      width: 14px;
+      background: transparent url($img-url + 'denglu2_mm.png') no-repeat;
+      background-size: 100% 100%;
+    }
+  }
+
+  label {
+    display: block;
+    color: #333;
+    padding: 14px 0 10px;
+    font-size: 14px;
+  }
+
+  &-input {
+    display: inline-block;
+    width: 100%;
+    height: 34px;
+
+    border: 1px solid #0a469c;
+    border-radius: 6px;
+
+    box-shadow: none;
+    background-color: transparent;
+
+    font-size: 14px;
+    color: #666;
+
+    padding: 6px 10px 6px 40px;
+
+    &:focus {
+      outline: 0;
+      box-shadow: 0 0 0 2px rgba(#0a469c, .2);
+    }
+  }
+
+  // .el-checkbox__inner {
+  //   border: 1px solid #0474C6;
+  //   background-color: #0B406D;
+  //   border-radius: 0;
+  // }
+
+  // .el-checkbox__input.is-checked .el-checkbox__inner {
+  //   background-color: #0B406D;
+  // }
+
+  .el-checkbox__label,
+  .el-checkbox__input.is-checked + .el-checkbox__label {
+    color: #007deb;
+    font-weight: normal;
+  }
+
+  &-btn-row {
+    margin-top: 10px;
+    width: 100%;
+
+    .el-button {
+      width: 100%;
+      height: 34px;
+      line-height: 30px;
+      padding: 0;
+
+      font-size: 14px;
+
+      color: #fff;
+      background-color: #258ce9;
+
+      border: 0;
+      border-radius: 6px;
+
+      letter-spacing: .3em;
+
+      &:hover {
+        background-color: darken(#258ce9, 10%);
+      }
+    }
+  }
+}
+
+
+.register {
+  .el-form {
+    display: flex;
+    flex-wrap: wrap;
+
+    &-item {
+      width: 50%;
+      margin: 0 0 22px;
+
+      .el-form-item__content {
+        width: 250px;
+      }
+
+      &--long,
+      &--code {
+        width: 100%;
+        margin-bottom: 4px;
+
+        .el-form-item__content {
+          width: 610px;
+        }
+      }
+
+      &--code {
+        .el-input {
+          width: 250px;
+        }
+      }
+
+      .code-img {
+        display: inline-block;
+        vertical-align: middle;
+        padding-left: 10px;
+
+        img {
+          display: block;
+          height: 34px;
+        }
+      }
+    }
+  }
+
+  &__btns {
+    text-align: center;
+    margin-top: 24px;
+
+    .el-button {
+      width: 120px;
+    }
+  }
+
+  // Input
+  .el-input__inner,
+  .el-textarea__inner {
+    display: inline-block;
+    width: 100%;
+    height: 34px;
+
+    border: 1px solid #0a469c;
+    border-radius: 6px;
+
+    box-shadow: none;
+    background-color: transparent;
+
+    font-size: 14px;
+    color: #666;
+
+    padding: 6px 10px 6px;
+
+    &:focus {
+      outline: 0;
+      box-shadow: 0 0 0 2px rgba(#0a469c, .2);
+    }
+  }
+
+  .el-textarea__inner {
+    padding: 6px 10px;
+  }
+
+  label {
+    color: #333;
+    font-size: 14px;
+
+    padding: 0 .5em 0 0;
+    line-height: 40px;
+
+    width: 6em;
+    text-align: right;
+  }
+
+}
