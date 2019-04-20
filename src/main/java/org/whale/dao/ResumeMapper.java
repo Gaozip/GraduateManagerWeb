@@ -14,8 +14,6 @@ public interface ResumeMapper {
 
 	int doSave(Resume resume);
 
-	Long getResumeId(Resume resume);
-
 	List<Resume> getResumeByUserId(Resume resume);
 
 	void doUpdateByResumeId(Resume resume);
@@ -28,6 +26,12 @@ public interface ResumeMapper {
 
 	List<Resume> doSearchByRequire(@Param("resumeId")Long resumeId, @Param("expertIndustry")String expertIndustry, @Param("education")String education, @Param("sex")String sex, @Param("age")Long age,
 			@Param("workYear")String workYear, @Param("gradCollege")String gradCollege, @Param("expertJobIntension")String expertJobIntension,@Param("userId")Long userId);
+
+	Long getResumeId();
+
+	Resume queryResumeById(Long resumeId);
+
+	List<Resume> queryPageByFkId(@Param("fkUserId")Long userId, @Param("resumeId")String resumeId);
 
 }
 

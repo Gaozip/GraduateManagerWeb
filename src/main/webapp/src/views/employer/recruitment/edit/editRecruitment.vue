@@ -18,7 +18,7 @@
 	            <div class="dialog-edit__row">
                     <div class="dialog-edit__row__item">
 	          			<el-form-item label="工作地点" prop="workPlace">
-							<el-input v-model="form.workPlace"></el-input>              				
+							<v-distpicker hide-area @selected="setNativePlace" :province="form.province" :city="form.city"></v-distpicker>              				
 	          			</el-form-item>
 	          		</div>
 	          		<div class="dialog-edit__row__item">
@@ -71,8 +71,8 @@
 	          		<div class="dialog-edit__row__item">
 	          			<el-form-item label="是否立即发布">
 	          				<el-radio-group v-model="form.state" class="radioo">
-							    <el-radio-button label="发布"></el-radio-button>
-							    <el-radio-button label="不发布"></el-radio-button>
+								<el-radio-button :label="1" >发布</el-radio-button>
+								<el-radio-button :label="0" >不发布</el-radio-button>
 							</el-radio-group>
 	          			</el-form-item>
 	          		</div>
@@ -102,8 +102,12 @@
 </template>
 
 <script>
-import * as AXIOS from '@/api/axios.js';	
+import * as RECRUITMENT_API from '@/api/employer/recruitment.js';
+import VDistpicker from 'v-distpicker'
 export default{
+	components:{
+		VDistpicker,	
+	},
 	data(){
 		return{
 			dialogVisible:false,
@@ -111,8 +115,9 @@ export default{
 			form:{
 				position:'',//招聘职位
 				monthSalary:'',//月工资
-				workPlace:'',//工作地点
 				jobNature:'',//工作性质
+				province:'',
+				city:'',
 				recruitNum:'',//招收人数
 				education:'',//学历要求
 				workExperience:'',//工作经验
@@ -126,9 +131,6 @@ export default{
 				],
 				monthSalary:[
 					{ required: true, message: '请输入月薪', trigger: 'blur' },
-				],
-				workPlace:[
-					{ required: true, message: '请输入工作地点', trigger: 'blur' },
 				],
 				jobNature:[
 					{ required: true, message: '请选择工作性质', trigger: 'blur' },
@@ -166,31 +168,26 @@ export default{
         },
         show(scope) {
         	this.dialogVisible = true;
+        	this.form = scope;
         	this.pkRecruitmentId = scope.pkRecruitmentId;
-        	this.form.position=scope.position;
-        	this.form.monthSalary=scope.monthSalary;
-        	this.form.workPlace=scope.workPlace;
-        	this.form.jobNature=scope.jobNature;
-        	this.form.recruitNum=scope.recruitNum;
-        	this.form.education=scope.education;
-        	this.form.workExperience=scope.workExperience;
-        	this.form.jobContent=scope.jobContent;
-        	this.form.qualification=scope.qualification;
-        	if(scope.state == '1'){
-        		this.form.state = '发布';
-        	}else{
-				this.form.state = '不发布';
-        	}
         },
         btnClick(){
         	this.$refs['formName'].validate((valid) =>{
+				if(this.form.city == '市' || this.form.city == null || this.form.city == ''){
+					this.$message({
+						message: '请选择期望工作地点!',
+						type: 'warning'
+					});
+					return false;
+				}
 				if(valid){
 		        	this.$confirm('确认更改？').then(_ => {
 		        		let param = {
 		        			'pkRecruitmentId':this.pkRecruitmentId,
 			        		'position': this.form.position,
 							'monthSalary':this.form.monthSalary,
-							'workPlace':this.form.workPlace,
+							'province':this.form.province,
+							'city':this.form.city,
 							'jobNature':this.form.jobNature,
 							'recruitNum':this.form.recruitNum,
 							'education':this.form.education,
@@ -199,7 +196,7 @@ export default{
 							'qualification':this.form.qualification,
 							'state':this.form.state,
 			        	};
-			        	AXIOS.api('/recruitment/doUpdate',param).then(data =>{
+			        	RECRUITMENT_API.api(RECRUITMENT_API.URL_DO_UPDATE,param).then(data =>{
 							this.$message.success('修改成功');
 							this.dialogVisible = false;
 						});
@@ -209,6 +206,10 @@ export default{
 				}
 			});
         },
+		setNativePlace(value){
+			this.form.province = value.province.value;
+			this.form.city = value.city.value;
+		},
 	}
 }
 </script>

@@ -3,28 +3,59 @@
 <mapper namespace="org.whale.dao.ArticleMapper">
   
   <resultMap id="articleMapperMap" type="org.whale.pojo.Article">
-    <id column="PK_ARTICLE_ID" jdbcType="DECIMAL" property="pkArticleId" />
+      <id column="PK_ARTICLE_ID" jdbcType="DECIMAL" property="pkArticleId" />
     <result column="ARTICLE_ITEM" jdbcType="VARCHAR" property="articleItem" />
     <result column="ARTICLE_TYPE" jdbcType="DECIMAL" property="articleType" />
     <result column="START_TIME" jdbcType="TIMESTAMP" property="startTime" />
     <result column="IS_VALID" jdbcType="DECIMAL" property="isValid" />
-    <result column="IS_HOP" jdbcType="DECIMAL" property="isHop" />
+    <result column="IS_TOP" jdbcType="DECIMAL" property="isTop" />
+    <result column="ARTICLE_BODY" jdbcType="VARCHAR" property="articleBody" />
   </resultMap>
-  
   <insert id="doSave" parameterType="org.whale.pojo.Article">
   	<selectKey keyProperty="pkArticleId" resultType="long" order="BEFORE">
 		select SEQ_SYS_ARTICLE.nextval as pkArticleId from dual
 	</selectKey>
-  	insert into SYS_ARTICLE (PK_ARTICLE_ID, ARTICLE_ITEM, ARTICLE_TYPE,START_TIME, IS_VALID, IS_TOP, ARTICLE_BODY)
-    values (
-    	#{pkArticleId,jdbcType=DECIMAL}, 
-    	#{articleItem,jdbcType=VARCHAR}, 
-    	#{articleType,jdbcType=DECIMAL}, 
-      	#{startTime,jdbcType=TIMESTAMP}, 
+  	 insert into SYS_ARTICLE (PK_ARTICLE_ID, ARTICLE_ITEM, ARTICLE_TYPE,START_TIME, IS_VALID, IS_TOP, ARTICLE_BODY)
+     values (
+     	#{pkArticleId,jdbcType=DECIMAL}, 
+     	#{articleItem,jdbcType=VARCHAR}, 
+     	#{articleType,jdbcType=DECIMAL}, 
+      	sysdate, 
       	#{isValid,jdbcType=DECIMAL}, 
-      	#{isTop,jdbcType=DECIMAL},
-    	#{articleBody,jdbcType=VARCHAR}
-    )
+      	#{isTop,jdbcType=DECIMAL}, 
+      	#{articleBody,jdbcType=VARCHAR})
   </insert>
   
+  <update id="doUpdate" parameterType="org.whale.pojo.Article">
+  	update SYS_ARTICLE
+    set 
+      ARTICLE_ITEM = #{articleItem,jdbcType=VARCHAR},
+      ARTICLE_TYPE = #{articleType,jdbcType=DECIMAL},
+      START_TIME = sysdate,
+      IS_VALID = #{isValid,jdbcType=DECIMAL},
+      IS_TOP = #{isTop,jdbcType=DECIMAL},
+      ARTICLE_BODY = #{articleBody,jdbcType=VARCHAR}
+    WHERE
+      PK_ARTICLE_ID = #{pkArticleId,jdbcType=DECIMAL}
+  </update>
+  
+  <delete id="doDelete" parameterType="java.lang.Long">
+  	delete from sys_article where pk_article_id = ${pkArticleId}
+  </delete>
+  
+  <select id="queryPage" resultMap="articleMapperMap">
+  	select * from (select row_.*, rownum rownum_ from (  select * from sys_article where 1 = 1 
+  	<if test="pkArticleId != null and pkArticleId != ''">
+  	  and pk_article_id = ${pkArticleId}
+  	</if>
+  	order by is_top desc,start_time desc ) row_ where rownum <![CDATA[<=]]> ${limitA} ) where rownum_ <![CDATA[>=]]> ${limitB}
+  </select>
+  
+  <select id="queryTotalNum" resultType="java.lang.Long">
+  	select count(pk_article_id) from sys_article
+  </select>
+  
+  <select id="getArticleByPkId" resultMap="articleMapperMap">
+  	select * from sys_article where pk_article_id = ${pkArticleId}
+  </select>
 </mapper>

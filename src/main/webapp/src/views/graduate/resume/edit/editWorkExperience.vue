@@ -173,18 +173,12 @@ export default{
     },
 	methods:{
 		show(data,index){
+			this.form = data;
 			if(data.workDate.indexOf("[") != -1){
 				this.form.workDate =  JSON.parse(data.workDate);
 			}else{
 				this.form.workDate = data.workDate;
 			}
-			this.form.companyName = data.companyName;
-			this.form.industry = data.industry;
-			this.form.jobIntension = data.jobIntension;
-			this.form.jobType = data.jobType;
-			//this.form.workDate =  JSON.parse(data.workDate);
-			this.form.monthSalary = data.monthSalary;
-			this.form.jobDescription = data.jobDescription;
 			this.form.rowIndex = index;
 			this.dialogVisible = true;
 		},

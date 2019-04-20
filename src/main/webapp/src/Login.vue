@@ -90,7 +90,7 @@
   		},
   		changeCode(){
   			this.$refs.vCode.src=this.$refs.vCode.src+"?"+Math.random();
-  		}
+  		},
   	}
   };
 </script>

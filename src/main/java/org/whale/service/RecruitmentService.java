@@ -1,5 +1,7 @@
 package org.whale.service;
 
+import java.util.Map;
+
 import org.whale.pojo.Page;
 import org.whale.pojo.Recruitment;
 
@@ -13,7 +15,7 @@ public interface RecruitmentService {
 
 	void doSave(Recruitment recruitment);
 
-	Page queryPage(Page page, Long userId);
+	Page queryPage(Page page, Map<String, String> paramMap, Long userId);
 
 	void doUpdate(Recruitment recruitment);
 

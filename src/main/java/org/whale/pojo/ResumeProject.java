@@ -7,76 +7,86 @@ package org.whale.pojo;
  * @date：2019年2月20日
  */
 public class ResumeProject {
-	
+
 	private Long pkResumeProject;
 
-    private String projectName;
+	private String projectName;
 
-    private String projectDescription;
+	private String projectDescription;
 
-    private String personalResponsibility;
+	private String personalResponsibility;
 
-    private String companyName;
+	private String companyName;
 
-    private String projectDate;
+	private String projectDate;
 
-    private Long fkResumeId;
+	private Short isValid;
 
-    public Long getPkResumeProject() {
-        return pkResumeProject;
-    }
+	private Long fkResumeId;
 
-    public void setPkResumeProject(Long pkResumeProject) {
-        this.pkResumeProject = pkResumeProject;
-    }
+	public Long getPkResumeProject() {
+		return pkResumeProject;
+	}
 
-    public String getProjectName() {
-        return projectName;
-    }
+	public void setPkResumeProject(Long pkResumeProject) {
+		this.pkResumeProject = pkResumeProject;
+	}
 
-    public void setProjectName(String projectName) {
-        this.projectName = projectName == null ? null : projectName.trim();
-    }
+	public String getProjectName() {
+		return projectName;
+	}
 
-    public String getProjectDescription() {
-        return projectDescription;
-    }
+	public void setProjectName(String projectName) {
+		this.projectName = projectName == null ? null : projectName.trim();
+	}
 
-    public void setProjectDescription(String projectDescription) {
-        this.projectDescription = projectDescription == null ? null : projectDescription.trim();
-    }
+	public String getProjectDescription() {
+		return projectDescription;
+	}
 
-    public String getPersonalResponsibility() {
-        return personalResponsibility;
-    }
+	public void setProjectDescription(String projectDescription) {
+		this.projectDescription = projectDescription == null ? null : projectDescription.trim();
+	}
 
-    public void setPersonalResponsibility(String personalResponsibility) {
-        this.personalResponsibility = personalResponsibility == null ? null : personalResponsibility.trim();
-    }
+	public String getPersonalResponsibility() {
+		return personalResponsibility;
+	}
 
-    public String getCompanyName() {
-        return companyName;
-    }
+	public void setPersonalResponsibility(String personalResponsibility) {
+		this.personalResponsibility = personalResponsibility == null ? null : personalResponsibility.trim();
+	}
 
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName == null ? null : companyName.trim();
-    }
+	public String getCompanyName() {
+		return companyName;
+	}
 
-    public String getProjectDate() {
-        return projectDate;
-    }
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName == null ? null : companyName.trim();
+	}
 
-    public void setProjectDate(String projectDate) {
-        this.projectDate = projectDate == null ? null : projectDate.trim();
-    }
+	public String getProjectDate() {
+		return projectDate;
+	}
 
-    public Long getFkResumeId() {
-        return fkResumeId;
-    }
+	public void setProjectDate(String projectDate) {
+		this.projectDate = projectDate == null ? null : projectDate.trim();
+	}
 
-    public void setFkResumeId(Long fkResumeId) {
-        this.fkResumeId = fkResumeId;
-    }
+	public Short getIsValid() {
+		return isValid;
+	}
+
+	public void setIsValid(Short isValid) {
+		this.isValid = isValid;
+	}
+
+	public Long getFkResumeId() {
+		return fkResumeId;
+	}
+
+	public void setFkResumeId(Long fkResumeId) {
+		this.fkResumeId = fkResumeId;
+	}
 
 	@Override
 	public String toString() {
@@ -93,10 +103,11 @@ public class ResumeProject {
 		builder.append(companyName);
 		builder.append(", projectDate=");
 		builder.append(projectDate);
+		builder.append(", isValid=");
+		builder.append(isValid);
 		builder.append(", fkResumeId=");
 		builder.append(fkResumeId);
 		builder.append("]");
 		return builder.toString();
 	}
-    
 }

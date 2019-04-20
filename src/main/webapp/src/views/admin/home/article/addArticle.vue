@@ -79,7 +79,7 @@ export default{
 				startTime:new Date(),//发布时间
 				isValid:'1',//是否有效
 				isTop:'0',//是否热门
-				activeBody:'',//公告内容
+				articleBody:'',//公告内容
 			},
 			rules:{
 				articleItem:[

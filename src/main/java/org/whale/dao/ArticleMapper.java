@@ -1,5 +1,8 @@
 package org.whale.dao;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
 import org.whale.pojo.Article;
 
 /**
@@ -12,7 +15,16 @@ public interface ArticleMapper {
 
 	void doSave(Article article);
 
-//	List<Article> queryPage(@Param("arg0")Integer limitA, @Param("arg1")Integer limitB);
+	List<Article> queryPage(@Param("limitA")int limitA, @Param("limitB")int limitB, @Param("pkArticleId")String pkArticleId);
+
+	Long queryTotalNum();
+
+	Article getArticleByPkId(@Param("pkArticleId")Long pkArticleId);
+
+	void doUpdate(Article article);
+
+	void doDelete(@Param("pkArticleId")Long pkArticleId);
+
 
 }
 

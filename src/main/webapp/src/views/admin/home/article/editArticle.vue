@@ -6,26 +6,26 @@
 				<div class="dialog-edit__row dialog-edit__row--long">
 					<div class="dialog-edit__row__item">
 						<el-form-item label="公告标题" prop="articleItem">
-							<el-input v-model="form.ARTICLE_ITEM" ></el-input>
+							<el-input v-model="form.articleItem" ></el-input>
 						</el-form-item>
 					</div>
 				</div>
 				<div class="dialog-edit__row">
 					<div class="dialog-edit__row__item">
 						<el-form-item label="公告类型" prop="articleType">
-							<el-input v-model="articleType[form.ARTICLE_TYPE]"></el-input>
+							<el-input v-model="form.articleType"></el-input>
 						</el-form-item>
 					</div>
 					<div class="dialog-edit__row__item">
 						<el-form-item label="发布时间" prop="startTime" >
-							<el-date-picker v-model="form.START_TIME" type="date" placeholder="选择日期" ></el-date-picker>
+							<el-date-picker v-model="form.startTime" type="date" placeholder="选择日期" ></el-date-picker>
 						</el-form-item>
 					</div>
 				</div>
 				<div class="dialog-edit__row">
 					<div class="dialog-edit__row__item">
 						<el-form-item label="是否有效" prop="isValid">
-							<el-radio-group v-model="form.IS_VALID" size="small">
+							<el-radio-group v-model="form.isValid" size="small">
 								<el-radio :label="1" border >有效</el-radio>
 								<el-radio :label="0" border >无效</el-radio>
 							</el-radio-group>
@@ -33,7 +33,7 @@
 					</div>
 					<div class="dialog-edit__row__item">
 						<el-form-item label="是否热门" prop="isTop">
-							<el-radio-group v-model="form.IS_TOP" size="small">
+							<el-radio-group v-model="form.isTop" size="small">
 								<el-radio :label="1" border >是</el-radio>
 								<el-radio :label="0" border >否</el-radio>
 							</el-radio-group>
@@ -43,11 +43,11 @@
 				<div class="dialog-edit__row dialog-edit__row--long">
 					<div class="dialog-edit__row__item">
 						<el-form-item label="公告内容" prop="articleBody">
-							<el-input type="textarea"
-									  v-model="form.ARTICLE_BODY"
-									  :rows="4"
-									  :autosize="{ minRows: 4, maxRows: 4}">
-							</el-input>
+							<quill-editor v-model="form.articleBody"
+										  ref="quillEditor"
+										  @change="onEditorChange($event)"
+										  :options="editorOption">
+							</quill-editor>
 						</el-form-item>
 					</div>
 				</div>
@@ -62,10 +62,14 @@
 </template>
 
 <script>
+import * as tools from '@/assets/tools';	
 import * as ARTICLE_API from '@/api/admin/article.js'
 export default{
 	data(){
 		return{
+			editorOption: {
+				theme: 'snow'
+			},
 			dialogVisible:false,
 			articleType:{
 				0:'重要通知',
@@ -75,8 +79,20 @@ export default{
 			},
 			form:{
 			},
-			rules:{
-
+			rules: {
+				articleItem: [
+					{required: true, message: '请填写公告标题', trigger: 'blur'},
+					{max: 32, message: '标题最长不能超过32个字', trigger: 'blur'}
+				],
+				articleType: [
+					{required: true, message: '请选择公告类型', trigger: 'blur'},
+				],
+				startTime: [
+					{required: true, message: '请选择发布时间', trigger: 'blur'},
+				],
+				articleBody: [
+					{required: true, message: '请输入公告内容', trigger: 'blur'},
+				],
 			},
 		}
 	},
@@ -89,16 +105,24 @@ export default{
     },
 	methods:{
 		btnClick(){
-			let param = {
-				articleItem:this.form.articleItem,//公告标题
-				articleType:this.form.articleType,//公告类型
-				startTime:this.form.startTime,//发布时间
-				isValid:this.form.isValid,//是否有效
-				isTop:this.form.isTop,//是否热门
-				articleBody:this.form.articleBody,//公告内容
-			};
-			ARTICLE_API.api(ARTICLE_API.URL_DO_UPDATE,param).then(data =>{
-
+			this.$refs['formName'].validate((valid) => {
+				if (valid) {
+					let param = {
+						pkArticleId: this.form.pkArticleId,
+						articleItem: this.form.articleItem,//公告标题
+						articleType: this.form.articleType,//公告类型
+						startTime: tools.transformTime(this.form.startTime, 'YYYY-MM-DD'),//发布时间
+						isValid: this.form.isValid,//是否有效
+						isTop: this.form.isTop,//是否热门
+						articleBody: this.form.articleBody,//公告内容
+					};
+					ARTICLE_API.api(ARTICLE_API.URL_DO_UPDATE, param).then(data => {
+						if (data.rs) {
+							this.$message.success('修改成功');
+							this.dialogVisible = false;
+						}
+					});
+				}
 			});
 		},
 		beforeClose(){
@@ -107,9 +131,16 @@ export default{
 	        this.$emit('closed');
       	},
       	show(item){
-			this.form = item;
+			this.form = JSON.parse(JSON.stringify(item));
 			this.dialogVisible = true;
       	},
+		onEditorChange({ editor, html, text }) {
+			let textLength = text.length
+			this.$refs['formName'].validate((valid) => {
+				if (valid) {
+				}
+			});
+		},
 	},
 }
 </script>

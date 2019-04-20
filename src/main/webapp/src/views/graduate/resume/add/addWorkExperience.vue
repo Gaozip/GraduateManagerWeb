@@ -136,8 +136,8 @@ export default{
 				jobIntension:'java工程师',//职位
 				jobType:'实习生',
 				workDate:'',
-				monthSalary:'8000元/月',
-				jobDescription:'上班摸鱼',
+				monthSalary:'8000',
+				jobIntension:'上班摸鱼',
 			},
 			rules:{
 				companyName:[
@@ -155,7 +155,7 @@ export default{
 				monthSalary:[
 					{ required: true, message: '请选择税前薪资', trigger: 'blur' },
 				],
-				jobDescription:[
+				jobIntension:[
 					{ required: true, message: '请输入工作描述', trigger: 'blur' },
 				],
 			},

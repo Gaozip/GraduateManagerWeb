@@ -1,8 +1,8 @@
 import { Message as message } from 'element-ui';
 import axios from '../../axios/index.js';
-
 export const URL_GET_EMPLOYER_INFO_BY_ID = '/employer/getEmployerInfoByUserId'; 
 export const URL_DO_UPDATE = '/employer/doUpdate';    
+export const URL_GET_RESUME_BY_EMPLOYER = '/resume/getResumeByEmployer';
 
 export function api(url, param) {
     return new Promise((resolve, reject) => {

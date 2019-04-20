@@ -5,8 +5,9 @@
      <id column="PK_RECRUITMENT_ID" jdbcType="DECIMAL" property="pkRecruitmentId" />
     <result column="POSITION" jdbcType="VARCHAR" property="position" />
     <result column="MONTH_SALARY" jdbcType="DECIMAL" property="monthSalary" />
-    <result column="WORK_PLACE" jdbcType="VARCHAR" property="workPlace" />
     <result column="JOB_NATURE" jdbcType="VARCHAR" property="jobNature" />
+    <result column="PROVINCE" jdbcType="VARCHAR" property="province" />
+    <result column="CITY" jdbcType="VARCHAR" property="city" />
     <result column="POSTED_DATE" jdbcType="TIMESTAMP" property="postedDate" />
     <result column="STATE" jdbcType="DECIMAL" property="state" />
     <result column="RECRUIT_NUM" jdbcType="DECIMAL" property="recruitNum" />
@@ -17,85 +18,62 @@
     <result column="FK_USER_ID" jdbcType="DECIMAL" property="fkUserId" />
   </resultMap>
   	
-  <resultMap type="org.whale.pojo.Recruitment" id="Recruitment">
-  	<id column="PK_RECRUITMENT_ID" jdbcType="DECIMAL" property="pkRecruitmentId" />
-    <result column="POSITION" jdbcType="VARCHAR" property="position" />
-    <result column="MONTH_SALARY" jdbcType="DECIMAL" property="monthSalary" />
-    <result column="WORK_PLACE" jdbcType="VARCHAR" property="workPlace" />
-    <result column="JOB_NATURE" jdbcType="VARCHAR" property="jobNature" />
-    <result column="POSTED_DATE" jdbcType="TIMESTAMP" property="postedDate" />
-    <result column="STATE" jdbcType="DECIMAL" property="state" />
-    <result column="RECRUIT_NUM" jdbcType="DECIMAL" property="recruitNum" />
-    <result column="JOB_CONTENT" jdbcType="VARCHAR" property="jobContent" />
-    <result column="QUALIFICATION" jdbcType="VARCHAR" property="qualification" />
-    <result column="EDUCATION" jdbcType="VARCHAR" property="education" />
-    <result column="WORK_EXPERIENCE" jdbcType="VARCHAR" property="workExperience" />
-    <result column="FK_USER_ID" jdbcType="DECIMAL" property="fkUserId" />
-    <association property="employerInfo" javaType="org.whale.pojo.EmployerInfo">
-    	<id column="PK_EMPLOYER_ID" jdbcType="DECIMAL" property="pkEmployerId" />
-	    <result column="COMPANY_NAME" jdbcType="VARCHAR" property="companyName" />
-	    <result column="ORGANIZATION_CODE" jdbcType="VARCHAR" property="organizationCode" />
-	    <result column="REGISTER_DATE" jdbcType="VARCHAR" property="registerDate" />
-	    <result column="REGISTER_CAPITAL" jdbcType="VARCHAR" property="registerCapital" />
-	    <result column="COMPANY_TYPE" jdbcType="VARCHAR" property="companyType" />
-	    <result column="INDUSTRY" jdbcType="VARCHAR" property="industry" />
-	    <result column="EMPLOYER_NUM" jdbcType="DECIMAL" property="employerNum" />
-	    <result column="HOT_LINE" jdbcType="DECIMAL" property="hotLine" />
-	    <result column="EMAIL" jdbcType="VARCHAR" property="email" />
-	    <result column="COMPANY_ADDRESS" jdbcType="VARCHAR" property="companyAddress" />
-	    <result column="COMPANY_PROFILE" jdbcType="VARCHAR" property="companyProfile" />
-	    <result column="FK_USER_ID" jdbcType="DECIMAL" property="fkUserId" />
-	    <result column="LEGAL_REPRESENTATIVE" jdbcType="VARCHAR" property="legalRepresentative" />
-	    <result column="MANAGEMENT_FORMS" jdbcType="VARCHAR" property="managementForms" />
-	    <result column="SCOPE_OF_BUSINESS" jdbcType="VARCHAR" property="scopeOfBusiness" />
-    </association>
-  </resultMap>
   <insert id="doSave" parameterType="org.whale.pojo.Recruitment">
   	<selectKey keyProperty="pkRecruitmentId" resultType="long" order="BEFORE">
 		select SEQ_SYS_RECRUITMENT.nextval as pkRecruitmentId from dual
 	</selectKey>
-	
-	insert into SYS_RECRUITMENT (PK_RECRUITMENT_ID, POSITION, STATE, MONTH_SALARY, WORK_PLACE, JOB_NATURE, POSTED_DATE, STATE, RECRUIT_NUM, JOB_CONTENT, QUALIFICATION, EDUCATION, WORK_EXPERIENCE,FK_USER_ID)
-    values (
-    	#{pkRecruitmentId,jdbcType=DECIMAL}, 
-    	#{position,jdbcType=VARCHAR}, 
-    	#{state,jdbcType=DECIMAL},
-    	#{monthSalary,jdbcType=DECIMAL}, 
-      	#{workPlace,jdbcType=VARCHAR}, 
-      	#{jobNature,jdbcType=VARCHAR}, 
-      	sysdate, 
-      	#{state,jdbcType=DECIMAL}, 
-      	#{recruitNum,jdbcType=DECIMAL}, 
-      	#{jobContent,jdbcType=VARCHAR}, 
-      	#{qualification,jdbcType=VARCHAR},
-      	#{education,jdbcType=VARCHAR}, 
-      	#{workExperience,jdbcType=VARCHAR}, 
-      	#{fkUserId,jdbcType=DECIMAL}
-    )
+	 insert into SYS_RECRUITMENT 
+	 (PK_RECRUITMENT_ID, POSITION, MONTH_SALARY,JOB_NATURE, PROVINCE, CITY, POSTED_DATE, STATE, RECRUIT_NUM, JOB_CONTENT, QUALIFICATION, EDUCATION,WORK_EXPERIENCE, FK_USER_ID)
+     values (
+     	#{pkRecruitmentId,jdbcType=DECIMAL}, 
+     	#{position,jdbcType=VARCHAR}, 
+     	#{monthSalary,jdbcType=DECIMAL}, 
+        #{jobNature,jdbcType=VARCHAR}, 
+        #{province,jdbcType=VARCHAR}, 
+        #{city,jdbcType=VARCHAR}, 
+        sysdate, 
+        #{state,jdbcType=DECIMAL}, 
+        #{recruitNum,jdbcType=DECIMAL}, 
+        #{jobContent,jdbcType=VARCHAR}, 
+        #{qualification,jdbcType=VARCHAR}, 
+        #{education,jdbcType=VARCHAR}, 
+        #{workExperience,jdbcType=VARCHAR}, 
+        #{fkUserId,jdbcType=DECIMAL}
+      )
   </insert>
   
-  <select id="queryPage" parameterType="java.lang.Long" resultMap="Recruitment">
-  	select * from sys_recruitment t1,sys_employer_info t2 where t1.fk_user_id = #{fkUserId,jdbcType=DECIMAL} and t1.fk_user_id = t2.fk_user_id order by t1.pk_recruitment_id
+  <select id="queryPage" resultMap="recruitmentMapperMap">
+  	select * from SYS_RECRUITMENT where FK_USER_ID = ${userId}
+  	<if test="pkRecruitmentId != null and pkRecruitmentId != ''">
+  		and PK_RECRUITMENT_ID = ${pkRecruitmentId}
+  	</if>
   </select>
   
   <update id="doUpdate" parameterType="org.whale.pojo.Recruitment" >
-  	update SYS_RECRUITMENT
-    set 
-      POSITION = #{position,jdbcType=VARCHAR},
-      MONTH_SALARY = #{monthSalary,jdbcType=DECIMAL},
-      WORK_PLACE = #{workPlace,jdbcType=VARCHAR},
-      JOB_NATURE = #{jobNature,jdbcType=VARCHAR},
-      STATE = #{state,jdbcType=DECIMAL},
-      RECRUIT_NUM = #{recruitNum,jdbcType=DECIMAL},
-      JOB_CONTENT = #{jobContent,jdbcType=VARCHAR},
-      QUALIFICATION = #{qualification,jdbcType=VARCHAR},
-      EDUCATION = #{education,jdbcType=VARCHAR},
-      WORK_EXPERIENCE = #{workExperience,jdbcType=VARCHAR}
-    where 
-      PK_RECRUITMENT_ID = #{pkRecruitmentId,jdbcType=DECIMAL}
+  	 update SYS_RECRUITMENT
+     set 
+	      POSITION = #{position,jdbcType=VARCHAR},
+	      MONTH_SALARY = #{monthSalary,jdbcType=DECIMAL},
+	      JOB_NATURE = #{jobNature,jdbcType=VARCHAR},
+	      PROVINCE = #{province,jdbcType=VARCHAR},
+	      CITY = #{city,jdbcType=VARCHAR},
+	      POSTED_DATE = #{postedDate,jdbcType=TIMESTAMP},
+	      STATE = #{state,jdbcType=DECIMAL},
+	      RECRUIT_NUM = #{recruitNum,jdbcType=DECIMAL},
+	      JOB_CONTENT = #{jobContent,jdbcType=VARCHAR},
+	      QUALIFICATION = #{qualification,jdbcType=VARCHAR},
+	      EDUCATION = #{education,jdbcType=VARCHAR},
+	      WORK_EXPERIENCE = #{workExperience,jdbcType=VARCHAR},
+	      FK_USER_ID = #{fkUserId,jdbcType=DECIMAL}
+     WHERE
+      	  PK_RECRUITMENT_ID = #{pkRecruitmentId,jdbcType=DECIMAL}
   </update>
   
   <delete id="doDelete" parameterType="java.lang.Long">
   	delete from SYS_RECRUITMENT where PK_RECRUITMENT_ID = #{pkRecruitmentId,jdbcType=DECIMAL}
   </delete>
+  
+  <select id="getRecruitmentByPkId" resultMap="recruitmentMapperMap">
+  	select * from SYS_RECRUITMENT where PK_RECRUITMENT_ID = ${pkRecruitmentId}
+  </select>
 </mapper>

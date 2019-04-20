@@ -138,7 +138,7 @@
 					</div>
 				</div>
 				<div style="float: left;padding-left:38px;">
-					<el-form-item label="公司所在地" prop>
+					<el-form-item label="公司所在地" >
 						<v-distpicker hide-area @selected="setNativePlace" :province="form.province" :city="form.city"></v-distpicker>
 					</el-form-item>
 				</div>
@@ -166,6 +166,7 @@
 
 <script>
 import * as EMPLOYER_API from '@/api/employer/employer.js';
+import * as tools from '@/assets/tools';
 import VDistpicker from 'v-distpicker'
 	
 export default{
@@ -181,8 +182,8 @@ export default{
 				industry:'计算机软件',//所属行业
 				employerNum:'160',//员工人数
 				hotLine:'17746071584',//电话热线
-				province:'',
-				city:'',
+				province:'福建省',
+				city:'福州市',
 				companyAddress:'仓山万达',//公司地址
 				companyProfile:'ablala',//公司简介
 				legalRepresentative:'盘',//法人代表
@@ -240,8 +241,7 @@ export default{
 	methods:{
 		btnClick(){
 			this.$refs['formName'].validate((valid) =>{
-				console.info(this.form.city);
-				if(this.form.city == '市' || this.form.city == null){
+				if(this.form.city == '市' || this.form.city == null || this.form.city == ''){
 					this.$message({
 						message: '请选择公司所在地!',
 						type: 'warning'
@@ -252,7 +252,7 @@ export default{
 					let param = {
 						'companyName': this.form.companyName, //公司名称
 						'organizationCode':this.form.organizationCode,//组织机构代码
-						'registerDate':this.form.registerDate,//注册时间
+						'registerDate': tools.transformTime(this.form.registerDate, 'YYYY-MM-DD'),//注册时间
 						'registerCapital':this.form.registerCapital,//注册资本
 						'companyType':this.form.companyType,//公司性质
 						'industry':this.form.industry,//所属行业
@@ -278,17 +278,10 @@ export default{
 		},
 		fetchData(){
 			EMPLOYER_API.api(EMPLOYER_API.URL_GET_EMPLOYER_INFO_BY_ID,{}).then(data =>{
-				console.info(data.datas);
 				if(data.datas.isValid != '0'){
 					this.form = data.datas;
 				}
 			});
-		},
-		doUpdate(){
-			
-		},
-		doSave(){
-			
 		},
 		setNativePlace(value){
 			this.form.province = value.province.value;

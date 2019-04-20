@@ -20,7 +20,7 @@
 				      		<span class="lab">{{item.workDate}}</span>
 				      		
 				      		<dt>税前薪资:</dt>
-				      		<span class="lab">{{item.monthSalary}}</span>
+				      		<span class="lab">{{item.monthSalary}}元/月</span>
 				      		
 				      		<dt>工作描述:</dt>
 				      		<span class="lab">{{item.jobDescription}}</span>

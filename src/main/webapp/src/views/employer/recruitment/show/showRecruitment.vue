@@ -1,5 +1,5 @@
 <template>
-	<el-dialog :visible.sync="dialogVisible" :close-on-click-modal="false" title="简历" width="55%" append-to-body >
+	<el-dialog :visible.sync="dialogVisible" :close-on-click-modal="false" title="招聘信息" width="55%" append-to-body >
 	    <div class="dialog-edit">
 	    	<dl>
 	    		<dt>基本信息</dt>
@@ -29,9 +29,30 @@
 	    			<span class="lab">{{tableData.qualification}}</span>
 	    		</div>
 	    		<dt>公司介绍</dt>
+				<div class="box">
+					<div class="box1">
+						<span class="lab">【公司名称】{{employerInfo.companyName}}</span>
+						<br />
+						<span class="lab">【成立时间】{{employerInfo.registerDate | dateFmt('YYYY-MM-DD') }}</span>
+						<br />
+						<span class="lab">【所属行业】{{employerInfo.industry}}</span>
+					</div>
+					<div class="box2">
+						<span class="lab">【组织机构代码】{{employerInfo.organizationCode}}</span>
+						<br />
+						<span class="lab">【注册资本】{{employerInfo.registerCapital}}万</span>
+						<br />
+						<span class="lab">【所在地】{{employerInfo.province + employerInfo.city}}</span>
+					</div>
+				</div>
+				<dt>简介</dt>
 	    		<div>
 	    			<span class="lab">{{employerInfo.companyProfile}}</span>
 	    		</div>
+				<dt>经营范围</dt>
+				<div>
+					<span class="lab">{{employerInfo.scopeOfBusiness}}</span>
+				</div>
 	    	</dl>
 	    </div>
 	</el-dialog>

@@ -7,7 +7,7 @@
 	    			<div class="box1">
 	    				<span class="lab">【姓名】{{graduateInfo.name}}</span>
 	    				<br />
-	    				<span class="lab">【年龄】{{graduateInfo.age}}</span>
+	    				<span class="lab">【出生年月】{{  graduateInfo.birthday | dateFmt('YYYY-MM-DD') }}</span>
 	    				<br />
 	    				<span class="lab">【电话】{{graduateInfo.tel}}</span>
 	    				<br />
@@ -20,17 +20,17 @@
 		    			<br />
 		    			<span class="lab">【邮箱】{{graduateInfo.email}}</span>
 		    			<br />
-		    			<span class="lab">【住址】{{graduateInfo.homeAddress}}</span>
+		    			<span class="lab">【现居地】{{graduateInfo.province + graduateInfo.city}}</span>
 		    		</div>
 	    		</div>
 	    		<br />
 	    		<hr />
 	    		<dt>教育经历</dt>
 	    		<div>
-	    			<span class="lab">{{graduateInfo.gradYear-4}}.09-{{graduateInfo.gradYear}}.06</span>
+	    			<span class="lab">{{graduateInfo.inDate | dateFmt('YYYY') }}.09-{{gradYear}}.06</span>
 		    		<span class="lab">{{graduateInfo.gradCollege}}</span>
 		    		<span class="lab">{{graduateInfo.dept}}</span>
-		    		<span class="lab">{{graduateInfo.specialty}}({{graduateInfo.education}})</span>
+		    		<span class="lab">{{graduateInfo.speciality}}({{graduateInfo.education}})</span>
 	    		</div>
 	    		<br />
 	    		<hr />
@@ -39,7 +39,7 @@
 	    			<div class="box1">
 	    				<span class="lab">【从事行业】{{resumeInfo.expertIndustry}}</span>
 	    				<br />
-	    				<span class="lab">【工作地点】{{resumeInfo.expertWorkplace}}</span>
+	    				<span class="lab">【工作地点】{{resumeInfo.province + resumeInfo.city}}</span>
 	    				<br />
 	    				<span class="lab">【月薪】{{resumeInfo.expertSalary}}</span>
 	    			</div>
@@ -65,6 +65,7 @@
 	    		<hr />
 	    		<dt>工作经验</dt>
 	    		<div>
+					<ol>
 	    			<li v-for="item in workList">
 				    	<fieldset>
 				    		<legend>公司名称:&nbsp;&nbsp;&nbsp;{{item.companyName}}</legend>
@@ -123,6 +124,7 @@
 </template>
 
 <script>
+import * as tools from '@/assets/tools';	
 export default{
 	data(){
 		return{
@@ -131,16 +133,17 @@ export default{
 			resumeInfo:'',
 			projectList:[],
 			workList:[],
+			gradYear:'',
 		}
 	},
 	methods:{
 		show(scope){
 			this.dialogVisible = true;
-			console.info(scope);
 			this.graduateInfo = scope.graduateInfo;
 			this.resumeInfo = scope;
 			this.projectList = scope.projectList;
 			this.workList = scope.workList;
+			this.gradYear = parseInt(tools.transformTime(scope.graduateInfo.inDate,'YYYY')) + 4; 
 		},
 		btnClick(){
 			

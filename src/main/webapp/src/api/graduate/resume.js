@@ -2,7 +2,11 @@ import { Message as message } from 'element-ui';
 import axios from '../../axios/index.js';
 
 export const URL_DO_SEARCH = '/resume/doSearch'   
-export const URL_DO_UPDATE = '/graduate/doUpdate'  //更新用户基本信息
+export const URL_QUERY_PAGE = '/resume/queryPage'
+export const URL_DO_SAVE = '/resume/doSave'   
+export const URL_DO_UPDATE = '/resume/doUpdate'   
+export const URL_DO_DELETE = '/resume/doDelete'
+
 
 export function api(url, param) {
     return new Promise((resolve, reject) => {

@@ -17,8 +17,8 @@
 	            </div>
 	            <div class="dialog-edit__row">
                     <div class="dialog-edit__row__item">
-	          			<el-form-item label="工作地点" prop="workPlace">
-							<el-input v-model="form.workPlace"></el-input>              				
+	          			<el-form-item label="工作地点">
+							<v-distpicker hide-area @selected="setNativePlace" :province="form.province" :city="form.city"></v-distpicker>
 	          			</el-form-item>
 	          		</div>
 	          		<div class="dialog-edit__row__item">
@@ -54,7 +54,7 @@
                 	<div class="dialog-edit__row__item">
 	          			<el-form-item label="工作经验" prop="workExperience">
 	          				<el-select v-model="form.workExperience">
-	          					<el-option value="暂无要求"></el-option>
+								<el-option value="暂无"></el-option>
 								<el-option value="1年及以上"></el-option>
 								<el-option value="2年及以上"></el-option>
 								<el-option value="3年及以上"></el-option>
@@ -71,8 +71,8 @@
 	          		<div class="dialog-edit__row__item">
 	          			<el-form-item label="是否立即发布">
 	          				<el-radio-group v-model="form.state" class="radioo">
-							    <el-radio-button label="发布"></el-radio-button>
-							    <el-radio-button label="不发布"></el-radio-button>
+							    <el-radio-button :label="1" >发布</el-radio-button>
+							    <el-radio-button :label="0" >不发布</el-radio-button>
 							</el-radio-group>
 	          			</el-form-item>
 	          		</div>
@@ -102,10 +102,11 @@
 </template>
 
 <script>
-import * as AXIOS from '@/api/axios.js';
+import * as RECRUITMENT_API from '@/api/employer/recruitment.js'
+import VDistpicker from 'v-distpicker'
 export default{
 	components:{
-
+		VDistpicker,
 	},
 	data(){
 		return{
@@ -113,14 +114,16 @@ export default{
 			form:{
 				position:'java工程师',//招聘职位
 				monthSalary:'2600',//月工资
-				workPlace:'仓山万达福建',//工作地点
+				// workPlace:'仓山万达福建',//工作地点
+				province:'',
+				city: '',
 				jobNature:'实习生',//工作性质
 				recruitNum:'2',//招收人数
 				education:'本科',//学历要求
-				workExperience:'暂无要求',//工作经验
+				workExperience:'暂无',//工作经验
 				jobContent:'2333',//工作内容
 				qualification:'2333',//任职要求
-				state:'发布',//是否立即发布
+				state:'1',//是否立即发布
 			},
 			rules:{
 				position:[
@@ -128,9 +131,6 @@ export default{
 				],
 				monthSalary:[
 					{ required: true, message: '请输入月薪', trigger: 'blur' },
-				],
-				workPlace:[
-					{ required: true, message: '请输入工作地点', trigger: 'blur' },
 				],
 				jobNature:[
 					{ required: true, message: '请选择工作性质', trigger: 'blur' },
@@ -171,13 +171,20 @@ export default{
       	},
       	btnClick(){
       		this.$refs['formName'].validate((valid) =>{
-      			
+
+				if(this.form.city == '市' || this.form.city == null || this.form.city == ''){
+					this.$message({
+						message: '请选择期望工作地点!',
+						type: 'warning'
+					});
+					return false;
+				}
 				if(valid){
-					
 					let param = {
 						'position': this.form.position,
 						'monthSalary':this.form.monthSalary,
-						'workPlace':this.form.workPlace,
+						'province': this.form.province,
+						'city': this.form.city,
 						'jobNature':this.form.jobNature,
 						'recruitNum':this.form.recruitNum,
 						'education':this.form.education,
@@ -186,7 +193,7 @@ export default{
 						'qualification':this.form.qualification,
 						'state':this.form.state,
 					};
-					AXIOS.api('/recruitment/doSave',param).then(data =>{
+					RECRUITMENT_API.api(RECRUITMENT_API.URL_DO_SAVE,param).then(data =>{
 						this.$message.success('添加成功');
 						this.dialogVisible = false;
 					});
@@ -196,6 +203,10 @@ export default{
 				}
 			});
       	},
+		setNativePlace(value){
+			this.form.province = value.province.value;
+			this.form.city = value.city.value;
+		},
     }
 }
 </script>

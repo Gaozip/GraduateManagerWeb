@@ -1,5 +1,7 @@
 package org.whale.controller;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -9,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.whale.pojo.Page;
 import org.whale.pojo.Recruitment;
-import org.whale.pojo.User;
 import org.whale.service.RecruitmentService;
 import org.whale.utils.WebUtils;
 
@@ -28,8 +29,7 @@ public class RecruitmentController extends BaseController{
 	
 	@RequestMapping("/doSave")
 	public void doSave(HttpServletRequest request,HttpServletResponse response,Recruitment recruitment){
-		Long userId = ((User)request.getSession().getAttribute("user")).getPkUserId();
-		recruitment.setState((short)1);
+		Long userId = this.getUserId(request);
 		recruitment.setFkUserId(userId);
 		recruitmentService.doSave(recruitment);
 		WebUtils.printSuccess(request, response);
@@ -38,8 +38,9 @@ public class RecruitmentController extends BaseController{
 	@RequestMapping("/queryPage")
 	public void queryPage(HttpServletRequest request,HttpServletResponse response){
 		Page page = this.newPage(request);
-		Long userId = ((User)request.getSession().getAttribute("user")).getPkUserId();
-		Page pages = recruitmentService.queryPage(page,userId);
+		Map<String, String> paramMap = this.getParamMap(request);
+		Long userId = this.getUserId(request);
+		Page pages = recruitmentService.queryPage(page,paramMap,userId);
 		WebUtils.printSuccess(request, response, pages);
 	}
 	

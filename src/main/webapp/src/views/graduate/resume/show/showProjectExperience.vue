@@ -39,7 +39,6 @@ export default{
 		show(scope){
 			this.dialogVisible = true;
 			this.projectList = scope.projectList;
-			console.info(this.projectList);
 		},
 		btnClick(){
 			

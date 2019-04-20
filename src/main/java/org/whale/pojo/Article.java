@@ -5,13 +5,13 @@ import java.util.Date;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
-* @ClassName： Article
-* @Description：
-* @author： 皮卡尔稽
-* @date：2019年2月23日
-*/
+ * @ClassName： Article 
+ * @Description： 
+ * @author： 皮卡尔稽 
+ * @date：2019年2月23日
+ */
 public class Article {
-	
+
 	private Long pkArticleId;
 
     private String articleItem;
@@ -23,9 +23,9 @@ public class Article {
 
     private Short isValid;
 
-    private Short isHop;
+    private Short isTop;
 
-    private String articleDoby;
+    private String articleBody;
 
     public Long getPkArticleId() {
         return pkArticleId;
@@ -67,27 +67,41 @@ public class Article {
         this.isValid = isValid;
     }
 
-    public Short getIsHop() {
-        return isHop;
+    public Short getIsTop() {
+        return isTop;
     }
 
-    public void setIsHop(Short isHop) {
-        this.isHop = isHop;
+    public void setIsTop(Short isTop) {
+        this.isTop = isTop;
     }
 
-    public String getArticleDoby() {
-        return articleDoby;
+    public String getArticleBody() {
+        return articleBody;
     }
 
-    public void setArticleDoby(String articleDoby) {
-        this.articleDoby = articleDoby == null ? null : articleDoby.trim();
+    public void setArticleBody(String articleBody) {
+        this.articleBody = articleBody == null ? null : articleBody.trim();
     }
 
 	@Override
 	public String toString() {
-		return "Article [pkArticleId=" + pkArticleId + ", articleItem=" + articleItem + ", articleType=" + articleType
-				+ ", startTime=" + startTime + ", isValid=" + isValid + ", isHop=" + isHop + ", articleDoby="
-				+ articleDoby + "]";
+		StringBuilder builder = new StringBuilder();
+		builder.append("Article [pkArticleId=");
+		builder.append(pkArticleId);
+		builder.append(", articleItem=");
+		builder.append(articleItem);
+		builder.append(", articleType=");
+		builder.append(articleType);
+		builder.append(", startTime=");
+		builder.append(startTime);
+		builder.append(", isValid=");
+		builder.append(isValid);
+		builder.append(", isTop=");
+		builder.append(isTop);
+		builder.append(", articleBody=");
+		builder.append(articleBody);
+		builder.append("]");
+		return builder.toString();
 	}
     
 }

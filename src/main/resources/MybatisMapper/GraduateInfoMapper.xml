@@ -93,6 +93,40 @@
   </insert>
   
   <select id="queryBasicInfoById" parameterType="java.lang.Long" resultMap="graduateInfoMapperMap">
-  	select * from sys_graduate_info where fk_user_id = #{fkUserId,jdbcType=DECIMAL}
+  	select * from sys_graduate_info where fk_user_id = ${userId}
+  </select>
+  
+  <select id="queryIdByRequire" resultType="java.lang.Long">
+  	select FK_USER_ID from sys_graduate_info t where 1 = 1
+  	<if test="name != null and name != ''">
+  		and t.name like '%${name}%'
+  	</if>
+  	<if test="sex != null and sex != ''">
+  		and t.sex = '${sex}'
+  	</if>
+  	<if test="age != null and age != ''">
+  		and (select TRUNC(months_between(sysdate,s.birthday)/12) as age from SYS_GRADUATE_INFO s where s.PK_GRAD_ID = t.PK_GRAD_ID) = ${age}
+  	</if>
+  	<if test="province != null and province != ''">
+  		and t.province = '${province}' 
+  	</if>
+  	<if test="city != null and city != ''">
+  		and t.city = '${city}'
+  	</if>
+  	<if test="education != null and education != ''">
+  		and t.education = '${education}'
+  	</if>
+  	<if test="gradCollege != null and gradCollege != ''">
+  		and t.graduate_College like '%${gradCollege}%'
+  	</if>
+  	<if test="specialty != null and specialty != ''">
+  		and t.specialty like '%${specialty}%'
+  	</if>
+  	<if test="workYear != null and workYear != ''">
+  		and t.work_Year = '${workYear}'
+  	</if>
+  	<if test="fUZZY_WORD != null and fUZZY_WORD != ''">
+  		and (t.name = '${fUZZY_WORD}' or t.sex = '${fUZZY_WORD}' or t.province = '${fUZZY_WORD}' or t.city = '${fUZZY_WORD}' or t.education like '%${fUZZY_WORD}%' or t.graduate_College like '%${fUZZY_WORD}%' or t.specialty like '%${fUZZY_WORD}%' or t.work_Year like '%${fUZZY_WORD}%' )
+  	</if>
   </select>
 </mapper>

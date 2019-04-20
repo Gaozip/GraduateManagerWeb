@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whale.dao.DictMapper">
+	<resultMap id="dictMapperMap" type="org.whale.pojo.Dict">
+	    <id column="PK_DICT_ID" jdbcType="DECIMAL" property="pkDictId" />
+	    <result column="DICT_NAME" jdbcType="VARCHAR" property="dictName" />
+	    <result column="DICT_CODE" jdbcType="VARCHAR" property="dictCode" />
+	    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+	    <result column="IS_VALID" jdbcType="DECIMAL" property="isValid" />
+  	</resultMap>
+	
+	<insert id="doSave" parameterType="org.whale.pojo.Dict">
+		<selectKey keyColumn="pkDictId" resultType="long" order="BEFORE">
+			select SEQ_SYS_DICT.nextval as pkDictId from dual
+		</selectKey>
+		insert into SYS_DICT (PK_DICT_ID, DICT_NAME, DICT_CODE, REMARK, IS_VALID)
+    	values (
+    		#{pkDictId,jdbcType=DECIMAL}, 
+    		#{dictName,jdbcType=VARCHAR}, 
+    		#{dictCode,jdbcType=VARCHAR}, 
+      		#{remark,jdbcType=VARCHAR}, 
+      		#{isValid,jdbcType=DECIMAL}
+      	)
+	</insert>
+	
+	<update id="doUpdate" parameterType="org.whale.pojo.Dict">
+		update SYS_DICT
+    	set 
+     		DICT_NAME = #{record.dictName,jdbcType=VARCHAR},
+      		DICT_CODE = #{record.dictCode,jdbcType=VARCHAR},
+      		REMARK = #{record.remark,jdbcType=VARCHAR},
+      		IS_VALID = #{record.isValid,jdbcType=DECIMAL}
+      	where
+      		PK_DICT_ID = #{record.pkDictId,jdbcType=DECIMAL}
+	</update>
+	
+	<delete id="doDelete" parameterType="java.lang.Long">
+		delete from sys_dict where pk_dict_id = ${pkDictId}
+	</delete>
+	
+	<select id="queryPage" resultMap="dictMapperMap">
+		select * from sys_dict where 1 = 1
+	</select>
+
+	<select id="getDictByPkId" resultMap="dictMapperMap">
+		select * from sys_dict where pk_dict_id = ${pkDictId}
+	</select>
+</mapper>

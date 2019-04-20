@@ -2,9 +2,9 @@
 	<el-form :inline="true" :model="form" ref="formName" :rules="rules">
 		<div class="search-bar">
 			<el-form-item label="招聘信息编号" prop="resumeName">
-				<el-input v-model="form.resumeId" @keyup.enter.native="doSearch"></el-input>
+				<el-input v-model="form.pkRecruitmentId" @keyup.enter.native="doSearch"></el-input>
 			</el-form-item>
-			<el-button type="primary"  plain style="margin-top: 5px;"@click="doSearch">查询</el-button>
+			<el-button type="primary"  plain style="margin-top: 5px;"@click="fetchTableData">查询</el-button>
 			<el-button type="success"  plain style="margin-top: 5px;" @click="$refs.addRecruitment.show()">新建</el-button>
 		</div>
 		<div class="table-wrap">
@@ -17,6 +17,7 @@
 		        </template>
 	        </el-table-column>
 	        <el-table-column type="index" label="序号" width="49px"></el-table-column>
+			<el-table-column label="招聘编号" prop="pkRecruitmentId"></el-table-column>  
 	        <el-table-column label="发布状态">
 	        	<template slot-scope="scope">
 	        		<span v-if="scope.row.state == '1'">已发布</span>
@@ -25,7 +26,11 @@
 	        </el-table-column>
 	        <el-table-column prop="position" label="招聘职位" show-overflow-tooltip width="120px"></el-table-column>
 	        <el-table-column prop="monthSalary" label="月薪" show-overflow-tooltip width="80px"></el-table-column>
-	        <el-table-column prop="workPlace" label="工作地点" show-overflow-tooltip width="180px"></el-table-column>
+	        <el-table-column prop="workPlace" label="工作地点" show-overflow-tooltip width="180px">
+				<template slot-scope="scope">
+					{{scope.row.province + scope.row.city}}
+				</template>
+			</el-table-column>
 	        <el-table-column prop="jobNature" label="工作性质" show-overflow-tooltip width="100px"></el-table-column>
 	        <el-table-column prop="recruitNum" label="招收人数" show-overflow-tooltip width="80px"></el-table-column>
 	        <el-table-column prop="education" label="学历要求" show-overflow-tooltip width="120px"></el-table-column>
@@ -45,14 +50,14 @@
 	        </el-pagination>
 	      </div>
 	      <addRecruitment ref="addRecruitment" @closed="fetchTableData()"></addRecruitment>
-	      <editRecruitment ref="editRecruitment"></editRecruitment>
+	      <editRecruitment ref="editRecruitment" @closed="fetchTableData()"></editRecruitment>
 	      <showRecruitment ref="showRecruitment"></showRecruitment>
 	    </div>
 	</el-form>
 </template>
 
 <script>
-import * as AXIOS from '@/api/axios.js'
+import * as RECRUITMENT_API from '@/api/employer/recruitment.js'
 import addRecruitment from './add/addRecruitment.vue'
 import editRecruitment from './edit/editRecruitment.vue'
 import showRecruitment from './show/showRecruitment.vue'
@@ -92,8 +97,9 @@ export default{
       	},
       	deleteResumeByResumeId(Id){
       		this.$confirm('确认删除？').then(_ => {
-      			AXIOS.api('/recruitment/doDelete',{'pkRecruitmentId':Id,}).then(data =>{
+      			RECRUITMENT_API.api(RECRUITMENT_API.URL_DO_DELETE,{'pkRecruitmentId':Id,}).then(data =>{
 					this.$message.success('删除成功');
+					this.fetchTableData();
 				});
       		}).catch(_ => {});
 			
@@ -103,24 +109,13 @@ export default{
       			pageNo: this.currentPage,
           		pageSize: this.pageSize,
       		};
-      		AXIOS.api('/recruitment/queryPage',param).then(data =>{
+      		Object.assign(param,{ pkRecruitmentId:this.form.pkRecruitmentId})
+      		RECRUITMENT_API.api(RECRUITMENT_API.URL_QUERY_PAGE,param).then(data =>{
       			this.tableData = data.datas.datas;
                 this.totalNum = data.datas.totalNum;
                 this.currentPage = data.datas.pageNo;
       		});
       	},
-      	doSearch(){
-//    		if(this.form.resumeId != null && this.form.resumeId != ''){
-//    			AXIOS.api('/resume/doSearch',{'resumeId':this.form.resumeId,}).then(data =>{
-//	      			this.tableData = data.datas.datas;
-//	                this.totalNum = data.datas.totalNum;
-//	                this.currentPage = data.datas.pageNo;
-//	      		});
-//    		}else{
-//    			this.fetchTableData();
-//    		}
-      		
-      	}
 	},
 }
 </script>

@@ -85,17 +85,9 @@
 		              	<el-form-item label="期望从事职业:" prop="expertJobIntension">
 							<el-input v-model="form.expertJobIntension" style="width:215px"></el-input>			                
 		              	</el-form-item>
-		              	
-		              	<el-form-item label="期望工作地点:" prop="expertWorkPlace">
-		              		<el-select v-model="form.expertWorkPlace">
-		              			<el-option value="北京"></el-option>
-		              			<el-option value="天津"></el-option>
-		              			<el-option value="上海"></el-option>
-		              			<el-option value="重庆"></el-option>
-		              			<el-option value="深圳"></el-option>
-		              			<el-option value="福建"></el-option>
-		              		</el-select>
-		              	</el-form-item>
+						<el-form-item label="期望工作地点" >
+							<v-distpicker hide-area @selected="setNativePlace" :province="form.province" :city="form.city"></v-distpicker>
+						</el-form-item>
 		              	<el-form-item label="税前期望月薪:" prop="expertSalary">
 							<el-select v-model="form.expertSalary">
 								<el-option label="1000元/月" value="1000"></el-option>
@@ -126,7 +118,7 @@
               	<div class="box">
               		<dl>
 	              		<dt>工作经验</dt>
-						<!--<el-button type="primary" plain class="add" @click="$refs.addWorkExperience.show()">添加</el-button>-->
+						<el-button type="primary" plain class="add" @click="$refs.addWorkExperience.show()">添加</el-button>
 						<div class="table-wrap">
 						    <el-table :data="workTableData" border stripe style="width: 100%" :show-overflow-tooltip="true">
 						        <el-table-column  label="操作" width="90px">
@@ -149,13 +141,13 @@
               	<div class="box">
               		<dl>
 	              		<dt>项目经验</dt>
-						<!--<el-button type="primary" plain class="add" @click="$refs.addProjectExperience.show()" >添加</el-button>-->
+						<el-button type="primary" plain class="add" @click="$refs.addProjectExperience.show()" >添加</el-button>
 						<div class="table-wrap">
 						    <el-table :data="projectTableData"  style="width: 100%" border stripe :show-overflow-tooltip="true">
 						        <el-table-column prop="pkResumeProject" label="操作" width="90px">
-						        	<template slot-scope="scope2">
-							            <el-button type="text" @click="$refs.editProjectExperience.show(scope2.row,scope2.$index)">编辑</el-button>
-							            <el-button type="text" @click="handleDeleteProject(scope2.$index)">移除</el-button>
+						        	<template slot-scope="scope">
+							            <el-button type="text" @click="$refs.editProjectExperience.show(scope.row,scope.$index)">编辑</el-button>
+							            <el-button type="text" @click="handleDeleteProject(scope.$index)">移除</el-button>
 							        </template>
 						        </el-table-column>
 						        <el-table-column type="index" label="序号" width="45px"></el-table-column>
@@ -203,51 +195,50 @@
 </template>
 
 <script>
-import * as AXIOS from '@/api/axios.js';
+import * as RESUME_API from '@/api/graduate/resume.js';
 import addWorkExperience from '../add/addWorkExperience.vue';
 import editWorkExperience from './editWorkExperience.vue';
 import addProjectExperience from '../add/addProjectExperience.vue';
 import editProjectExperience from './editProjectExperience.vue';
+import VDistpicker from 'v-distpicker'
 export default{
 	components:{
-		addWorkExperience,editWorkExperience,addProjectExperience,editProjectExperience,
+		addWorkExperience,editWorkExperience,addProjectExperience,editProjectExperience,VDistpicker,
 	},
 	data(){
 		return{
 			dialogVisible: false,
 			resumeId:'',
 			form:{
-				jobType:'',
-				expertIndustry:'',	//期望从事行业
-				expertJobIntension:'',//期望从事职业
-				expertWorkPlace:'',//期望工作地点
-				expertSalary:'',//税前期望月薪
-				jobStatus:'',//求职状态
-				professionalAbility:'',//专业技能
-				certificate:'',//证书
+                jobType:'',
+                expertIndustry:'',	//期望从事行业
+                expertJobIntension:'',//期望从事职业
+                province:'',
+                city:'',
+                expertSalary:'',//税前期望月薪
+                jobStatus:'',//求职状态
+                professionalAbility:'',//专业技能
+                certificate:'',//证书
 			},
 			workTableData:[],
 			projectTableData:[],
 			rules:{
-				expertIndustry:[
+                expertIndustry:[
 					{ required: true, message: '请选择期望从事行业', trigger: 'blur' },
 				],
-				expertJobIntension:[
+                expertJobIntension:[
 					{ required: true, message: '请输入期望从事职业', trigger: 'blur' },
 				],
-				expertWorkPlace:[
-					{ required: true, message: '请选择期望工作地点', trigger: 'blur' },
-				],
-				expertSalary:[
+                expertSalary:[
 					{ required: true, message: '请选择税前期望月薪', trigger: 'blur' },
 				],
-				jobStatus:[
+                jobStatus:[
 					{ required: true, message: '请选择求职状态', trigger: 'blur' },
 				],
-				professionalAbility:[
+                professionalAbility:[
 					{ required: true, message: '请输入专业技能', trigger: 'blur' },
 				],
-				certificate:[
+                certificate:[
 					{ required: true, message: '请输入证书', trigger: 'blur' },
 				],
 			},
@@ -263,35 +254,36 @@ export default{
     methods:{
     	show(scope) {
         	this.dialogVisible = true;
+        	this.form = scope;
+        	this.projectTableData = scope.projectList;
+        	this.workTableData = scope.workList;
         	this.resumeId = scope.pkResumeId;
-        	this.form.jobType = scope.jobType;
-			this.form.expertIndustry = scope.expertIndustry;
-			this.form.expertJobIntension = scope.expertJobIntension;
-			this.form.expertWorkPlace = scope.expertWorkplace;
-			this.form.expertSalary = scope.expertSalary;
-			this.form.jobStatus = scope.jobStatus;
-			this.form.professionalAbility = scope.professionalAbility;
-			this.form.certificate = scope.certificate;
-			this.workTableData = scope.workList;
-			this.projectTableData = scope.projectList;
       	},
       	btnClick(){
       		this.$refs['formName'].validate((valid) =>{
+				if(this.form.city == '市' || this.form.city == null || this.form.city == ''){
+					this.$message({
+						message: '请选择期望工作地点!',
+						type: 'warning'
+					});
+					return false;
+				}
 				if(valid){
 					let param = {
 						'projectTableData':JSON.stringify(this.projectTableData),
 						'workTableData':JSON.stringify(this.workTableData),
-						'resumeId':this.resumeId,
+						'pkResumeId':this.resumeId,
 						'jobType':this.form.jobType,
 						'expertIndustry':this.form.expertIndustry,
 						'expertJobIntension':this.form.expertJobIntension,
-						'expertWorkplace':this.form.expertWorkPlace,
 						'expertSalary':this.form.expertSalary,
 						'jobStatus':this.form.jobStatus,
 						'professionalAbility':this.form.professionalAbility,
 						'certificate':this.form.certificate,
+						'city': this.form.city,
+						'province': this.form.province,
 					};
-					AXIOS.api('/resume/doUpdate',param).then(data =>{
+					RESUME_API.api(RESUME_API.URL_DO_UPDATE,param).then(data =>{
 						if(data.rs){
 							this.$message.success('修改成功');
 							this.dialogVisible = false;
@@ -307,6 +299,9 @@ export default{
       	beforeClose(){
       		this.$refs['formName'].resetFields();
 	        // 推送关闭消息
+			this.projectTableData = [];
+			this.workTableData = [];
+			this.resumeId = '';
 	        this.$emit('closed');
       	},//显示工作经验数据
       	showTableDataWork(data){
@@ -329,6 +324,10 @@ export default{
       	handleDeleteProject(index){
       		this.projectTableData.splice(index,1);
       	},
+		setNativePlace(value){
+			this.form.province = value.province.value;
+			this.form.city = value.city.value;
+		},
     },
  }
 </script>

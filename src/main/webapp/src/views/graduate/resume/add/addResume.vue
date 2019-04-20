@@ -85,17 +85,9 @@
 		              	<el-form-item label="期望从事职业:" prop="expectJobIntension">
 							<el-input v-model="form.expectJobIntension" style="width:215px"></el-input>			                
 		              	</el-form-item>
-		              	
-		              	<el-form-item label="期望工作地点:" prop="expectWorkPlace">
-		              		<el-select v-model="form.expectWorkPlace">
-		              			<el-option value="北京"></el-option>
-		              			<el-option value="天津"></el-option>
-		              			<el-option value="上海"></el-option>
-		              			<el-option value="重庆"></el-option>
-		              			<el-option value="深圳"></el-option>
-		              			<el-option value="福建"></el-option>
-		              		</el-select>
-		              	</el-form-item>
+						<el-form-item label="期望工作地点" >
+							<v-distpicker hide-area @selected="setNativePlace" :province="form.province" :city="form.city"></v-distpicker>
+						</el-form-item>
 		              	<el-form-item label="税前期望月薪:" prop="expectSalary">
 							<el-select v-model="form.expectSalary">
 								<el-option label="1000元/月" value="1000"></el-option>
@@ -205,14 +197,15 @@
 </template>
 
 <script>
-import * as AXIOS from '@/api/axios.js';
+import * as RESUME_API from '@/api/graduate/resume.js';
 import addWorkExperience from './addWorkExperience.vue';
 import editWorkExperience from '../edit/editWorkExperience.vue';
 import addProjectExperience from './addProjectExperience.vue';
 import editProjectExperience from '../edit/editProjectExperience.vue';
+import VDistpicker from 'v-distpicker'
 export default{
 	components:{
-		addWorkExperience,editWorkExperience,addProjectExperience,editProjectExperience,
+		addWorkExperience,editWorkExperience,addProjectExperience,editProjectExperience,VDistpicker,
 	},
 	data(){
 		return{
@@ -221,7 +214,8 @@ export default{
 				jobType:'实习生',
 				expectIndustry:'',	//期望从事行业
 				expectJobIntension:'java工程师',//期望从事职业
-				expectWorkPlace:'',//期望工作地点
+				province:'',
+				city:'',
 				expectSalary:'',//税前期望月薪
 				jobStatus:'',//求职状态
 				professionalAbility:'',//专业技能
@@ -290,7 +284,13 @@ export default{
       	},
       	btnClick(){
       		this.$refs['formName'].validate((valid) =>{
-      			
+				if(this.form.city == '市' || this.form.city == null || this.form.city == ''){
+					this.$message({
+						message: '请选择期望工作地点!',
+						type: 'warning'
+					});
+					return false;
+				}
 				if(valid){
 					if(this.addWorkList || this.addProjectList){
 	      				return false;
@@ -302,13 +302,14 @@ export default{
 						'jobType':this.form.jobType,
 						'expertIndustry':this.form.expectIndustry,
 						'expertJobIntension':this.form.expectJobIntension,
-						'expertWorkplace':this.form.expectWorkPlace,
 						'expertSalary':this.form.expectSalary,
 						'jobStatus':this.form.jobStatus,
 						'professionalAbility':this.form.professionalAbility,
 						'certificate':this.form.certificate,
+						'city': this.form.city,
+						'province': this.form.province,
 					};
-					AXIOS.api('/resume/doSave',param).then(data =>{
+					RESUME_API.api(RESUME_API.URL_DO_SAVE,param).then(data =>{
 						this.$message.success('添加成功');
 						this.dialogVisible = false;
 					});
@@ -338,6 +339,10 @@ export default{
       	handleDeleteProject(index){
       		this.projectTableData.splice(index,1);
       	},
+		setNativePlace(value){
+			this.form.province = value.province.value;
+			this.form.city = value.city.value;
+		},
     },
 }
 </script>

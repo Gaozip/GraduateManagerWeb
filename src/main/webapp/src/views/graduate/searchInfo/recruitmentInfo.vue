@@ -1,5 +1,7 @@
 <template>
-    
+    <div class="mainBody">
+        
+    </div>
 </template>
 
 <script>

@@ -76,17 +76,12 @@ export default{
     },
 	methods:{
 		show(data,index){
-			
+			this.form = data;
 			if(data.projectDate.indexOf("[") != -1){
 				this.form.projectDate =  JSON.parse(data.projectDate);
 			}else{
 				this.form.projectDate = data.projectDate;
 			}
-			this.form.projectName = data.projectName;
-			//this.form.projectDate = JSON.parse(data.projectDate);
-			this.form.projectDescription = data.projectDescription;
-			this.form.personalResponsibility = data.personalResponsibility;
-			this.form.companyName = data.companyName;
 			this.form.rowIndex = index;
 			this.dialogVisible = true;
 		},

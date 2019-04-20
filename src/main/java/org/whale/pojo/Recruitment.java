@@ -7,20 +7,22 @@ import org.springframework.format.annotation.DateTimeFormat;
 /**
  * @ClassName： Recruitment 
  * @Description：
- *  @author： 皮卡尔稽 
- *  @date：2019年2月26日
+ * @author： 皮卡尔稽 
+ * @date：2019年2月26日
  */
 public class Recruitment {
 
-	private Long pkRecruitmentId;
+    private Long pkRecruitmentId;
 
     private String position;
 
     private Long monthSalary;
 
-    private String workPlace;
-
     private String jobNature;
+
+    private String province;
+
+    private String city;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date postedDate;
@@ -38,8 +40,20 @@ public class Recruitment {
     private String workExperience;
 
     private Long fkUserId;
+    
+    private EmployerInfo employerInfo;
+    
+    
 
-    public Long getPkRecruitmentId() {
+    public EmployerInfo getEmployerInfo() {
+		return employerInfo;
+	}
+
+	public void setEmployerInfo(EmployerInfo employerInfo) {
+		this.employerInfo = employerInfo;
+	}
+
+	public Long getPkRecruitmentId() {
         return pkRecruitmentId;
     }
 
@@ -63,20 +77,28 @@ public class Recruitment {
         this.monthSalary = monthSalary;
     }
 
-    public String getWorkPlace() {
-        return workPlace;
-    }
-
-    public void setWorkPlace(String workPlace) {
-        this.workPlace = workPlace == null ? null : workPlace.trim();
-    }
-
     public String getJobNature() {
         return jobNature;
     }
 
     public void setJobNature(String jobNature) {
         this.jobNature = jobNature == null ? null : jobNature.trim();
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province == null ? null : province.trim();
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city == null ? null : city.trim();
     }
 
     public Date getPostedDate() {
@@ -145,11 +167,36 @@ public class Recruitment {
 
 	@Override
 	public String toString() {
-		return "Recruitment [pkRecruitmentId=" + pkRecruitmentId + ", position=" + position + ", monthSalary="
-				+ monthSalary + ", workPlace=" + workPlace + ", jobNature=" + jobNature + ", postedDate=" + postedDate
-				+ ", state=" + state + ", recruitNum=" + recruitNum + ", jobContent=" + jobContent + ", qualification="
-				+ qualification + ", education=" + education + ", workExperience=" + workExperience + ", fkUserId="
-				+ fkUserId + "]";
+		StringBuilder builder = new StringBuilder();
+		builder.append("Recruitment [pkRecruitmentId=");
+		builder.append(pkRecruitmentId);
+		builder.append(", position=");
+		builder.append(position);
+		builder.append(", monthSalary=");
+		builder.append(monthSalary);
+		builder.append(", jobNature=");
+		builder.append(jobNature);
+		builder.append(", province=");
+		builder.append(province);
+		builder.append(", city=");
+		builder.append(city);
+		builder.append(", postedDate=");
+		builder.append(postedDate);
+		builder.append(", state=");
+		builder.append(state);
+		builder.append(", recruitNum=");
+		builder.append(recruitNum);
+		builder.append(", jobContent=");
+		builder.append(jobContent);
+		builder.append(", qualification=");
+		builder.append(qualification);
+		builder.append(", education=");
+		builder.append(education);
+		builder.append(", workExperience=");
+		builder.append(workExperience);
+		builder.append(", fkUserId=");
+		builder.append(fkUserId);
+		builder.append("]");
+		return builder.toString();
 	}
-    
 }

@@ -2,6 +2,7 @@ package org.whale.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.whale.pojo.ResumeProject;
 
 /**
@@ -12,13 +13,23 @@ import org.whale.pojo.ResumeProject;
 */
 public interface ResumeProjectMapper {
 
-	int doSave(List<ResumeProject> projectList);
+	void doSave(ResumeProject project);
 
 	List<ResumeProject> getResumeProjectByResumeId(Long pkResumeId);
 
 	void doUpdateByResumeId(List<ResumeProject> projectList);
 
-	void doDeleteByResumeId(Long resumeId);
+	void doDeleteByResumeId(@Param("resumeId")Long resumeId);
+
+	List<Long> getResumeProjectIdByResumeId(Long pkResumeId);
+
+	List<ResumeProject> queryPageByFkId(@Param("fkResumeId")Long fkResumeId);
+
+	void doDelete(@Param("id")Long id);
+
+	void doUpdate(ResumeProject project);
+
+	ResumeProject getResumeProjectByPkId(@Param("pkResumeProject")Long pkResumeProject);
 
 }
 

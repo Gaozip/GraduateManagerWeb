@@ -1,6 +1,8 @@
 package org.whale.controller;
 
 import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -12,9 +14,7 @@ import org.whale.pojo.Page;
 import org.whale.pojo.Resume;
 import org.whale.pojo.ResumeProject;
 import org.whale.pojo.ResumeWork;
-import org.whale.pojo.User;
 import org.whale.service.ResumeService;
-import org.whale.utils.Log4jUtils;
 import org.whale.utils.StringUtils;
 import org.whale.utils.WebUtils;
 
@@ -72,10 +72,10 @@ public class ResumeController extends BaseController {
 	@RequestMapping("/queryPage")
 	public void queryPage(HttpServletRequest request,HttpServletResponse response){
 		Page page = this.newPage(request);
-		Long userId = ((User)request.getSession().getAttribute("user")).getPkUserId();
-
+		Long userId = this.getUserId(request);
+		Map<String, String> paramMap = this.getParamMap(request);
 		try {
-			Page pages = resumeService.queryResumePage(page, userId);
+			Page pages = resumeService.queryResumePage(page, paramMap,userId);
             WebUtils.printSuccess(request, response, pages);
         } catch (Exception e) {
             e.printStackTrace();
@@ -93,7 +93,7 @@ public class ResumeController extends BaseController {
 	 * @param projectTableData
 	 */
 	@RequestMapping("/doUpdate")
-	public void doUpdateByResumeId(HttpServletRequest request,HttpServletResponse response,@RequestParam("resumeId")Long resumeId,Resume resume,String workTableData,String projectTableData){
+	public void doUpdateByResumeId(HttpServletRequest request,HttpServletResponse response,Resume resume,String workTableData,String projectTableData){
 		
 		if(StringUtils.isBlank(workTableData) || StringUtils.isBlank(projectTableData) || resume == null){
 			return;
@@ -101,8 +101,7 @@ public class ResumeController extends BaseController {
 		List<ResumeWork> workList = JSONObject.parseArray(workTableData, ResumeWork.class);
 		List<ResumeProject> projectList = JSONObject.parseArray(projectTableData, ResumeProject.class);
 		
-		resumeService.doUpdateByResumeId(resumeId,resume, workList,projectList);
-		
+		resumeService.doUpdateByResumeId(resume.getPkResumeId(),resume, workList,projectList);
 		
 		WebUtils.printSuccess(request, response);
 	}
@@ -114,19 +113,6 @@ public class ResumeController extends BaseController {
 		WebUtils.printSuccess(request, response);
 	}
 	
-	@RequestMapping("/doSearch")
-	public void doSearch(HttpServletRequest request, HttpServletResponse response,@RequestParam("resumeId") Long resumeId){
-		Page page = this.newPage(request);
-		
-		try {
-			Page pages = resumeService.doSearch(page, resumeId);
-            WebUtils.printSuccess(request, response, pages);
-        } catch (Exception e) {
-            e.printStackTrace();
-            WebUtils.printFail(request, response, "查询列表数据失败!");
-        }
-	}
-	
 	/**
 	 * 用人单位查询简历
 	 * @param request
@@ -135,9 +121,9 @@ public class ResumeController extends BaseController {
 	@RequestMapping("/getResumeByEmployer")
 	public void getResumeByEmployer(HttpServletRequest request,HttpServletResponse response){
 		Page page = this.newPage(request);
-
+		Map<String, String> paramMap = this.getParamMap(request);
 		try {
-			Page pages = resumeService.getResumeByEmployer(page);
+			Page pages = resumeService.getResumeByEmployer(page,paramMap);
             WebUtils.printSuccess(request, response, pages);
         } catch (Exception e) {
             e.printStackTrace();

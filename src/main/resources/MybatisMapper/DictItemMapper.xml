@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whale.dao.DictItemMapper">
+	<resultMap id="dictItemMapperMap" type="org.whale.pojo.DictItem">
+	    <id column="PK_DICT_ITEM_ID" jdbcType="DECIMAL" property="pkDictItemId" />
+	    <result column="ITEM_NAME" jdbcType="VARCHAR" property="itemName" />
+	    <result column="ITEM_CODE" jdbcType="VARCHAR" property="itemCode" />
+	    <result column="ITEM_VAL" jdbcType="VARCHAR" property="itemVal" />
+	    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+	    <result column="IS_VALID" jdbcType="DECIMAL" property="isValid" />
+	    <result column="FK_DICT_ID" jdbcType="DECIMAL" property="fkDictId" />
+	</resultMap>
+
+	<insert id="doSave" parameterType="org.whale.pojo.DictItem">
+		<selectKey keyColumn="pkDictItemId" resultType="long" order="BEFORE">
+			select SEQ_SYS_DICT_ITEM.nextval as pkDictItemId from dual
+		</selectKey>
+		insert into SYS_DICT_ITEM (PK_DICT_ITEM_ID, ITEM_NAME, ITEM_CODE,ITEM_VAL, REMARK, IS_VALID,FK_DICT_ID)
+    	values (
+    		#{pkDictItemId,jdbcType=DECIMAL}, 
+    		#{itemName,jdbcType=VARCHAR}, 
+    		#{itemCode,jdbcType=VARCHAR}, 
+      		#{itemVal,jdbcType=VARCHAR}, 
+      		#{remark,jdbcType=VARCHAR}, 
+      		#{isValid,jdbcType=DECIMAL}.
+      		#{fkDictId,jdbcType=DECIMAL}
+      	)
+	</insert>
+	
+	<update id="doUpdate" parameterType="org.whale.pojo.DictItem">
+		update SYS_DICT_ITEM
+    	set 
+	      ITEM_NAME = #{itemName,jdbcType=VARCHAR},
+	      ITEM_CODE = #{itemCode,jdbcType=VARCHAR},
+	      ITEM_VAL = #{itemVal,jdbcType=VARCHAR},
+	      REMARK = #{remark,jdbcType=VARCHAR},
+	      IS_VALID = #{isValid,jdbcType=DECIMAL}.
+	      FK_DICT_ID = #{fkDictId,jdbcType=DECIMAL}
+      	where
+      	  PK_DICT_ITEM_ID = #{pkDictItemId,jdbcType=DECIMAL}
+	</update>
+	
+	<delete id="doDelete" parameterType="java.lang.Long">
+		delete from sys_dict_item where pk_dict_item_id = ${pkDictItemId}
+	</delete>
+	
+	<select id="queryPage" resultMap="dictItemMapperMap">
+		select * from sys_dict_item where 1 = 1
+	</select>
+</mapper>

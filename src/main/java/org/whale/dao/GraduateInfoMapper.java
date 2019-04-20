@@ -1,5 +1,8 @@
 package org.whale.dao;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
 import org.whale.pojo.GraduateInfo;
 
 /**
@@ -16,7 +19,9 @@ public interface GraduateInfoMapper {
 
 	void addLine(GraduateInfo graduateInfo);
 
-	GraduateInfo queryBasicInfoById(Long userId);
+	GraduateInfo queryBasicInfoById(@Param("userId")Long userId);
 
+	List<Long> queryIdByRequire(@Param("name")String name, @Param("age")String age, @Param("sex")String sex, @Param("province")String province, @Param("city")String city, @Param("education")String education,
+			@Param("gradCollege")String gradCollege, @Param("specialty")String specialty, @Param("workYear")String workYear, @Param("fUZZY_WORD")String fUZZY_WORD);
 }
 

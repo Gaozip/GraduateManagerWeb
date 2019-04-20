@@ -7,8 +7,8 @@
 				    <span>公告</span>
 				</div>
 				<ul class="arti">
-					<li v-for="(key,value) in articleMap">
-						<a href="javascript:void(0)" @click="$refs.showDetail.show(key[0])">{{key[1]}}</a>
+					<li v-for="item in articleList">
+						<a href="javascript:void(0)" @click="$refs.showDetail.show(item.key)" style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap">{{item.value}}</a>
 					</li>
 				</ul>
 				<div class="pagination-bar">
@@ -31,7 +31,6 @@
 			  	<div class="bod">
 					<ol>
 						<li>客服：400-885-9898</li>
-						<li>销售：总部待审核公共库</li>
 						<li>手机：12345678901</li>
 						<li>电话：010-58635888-</li>
 						<li>邮箱： crmnoreply@zhaopin.com.cn</li>
@@ -69,8 +68,7 @@ export default {
 	          "/managersystem/images/lunbo2.jpg",
 	          "/managersystem/images/lunbo3.jpg",
 	        ],
-			articleMap: new Map(),//公告
-			articleList: [],//公告展示
+			articleList: [],//公告
 			//== 公告分页
 			tableData: [],
 			totalNum: 0,
@@ -93,15 +91,21 @@ export default {
 				pageNo: this.currentPage,
 				pageSize: this.pageSize,
 			};
+			this.articleList = [];
 			ARTICLE_API.api(ARTICLE_API.URL_ARTICLE_SHOW,param).then(data =>{
 				this.tableData = data.datas.datas;
 				this.totalNum = data.datas.totalNum;
 				this.currentPage = data.datas.pageNo;
-				console.info(this.totalNum);
 				
-				this.articleMap = new Map();
 				this.tableData.forEach(item =>{
-					this.articleMap.set(item,"【"+articleType[item.ARTICLE_TYPE]+"】"+item.ARTICLE_ITEM);
+					var type = "";
+					switch (item.articleType) {
+						case 0: type = "重要通知"; break;
+						case 1: type = "版本更新"; break;
+						case 2: type = "修复bug";  break;
+						case 3: type = "热门事件"; break;
+					}
+					this.articleList.push({key: item,value: "【"+type+"】"+item.articleItem});
 				});
 			});
 		},
@@ -115,20 +119,18 @@ export default {
 	width: 98%;
 	height:95%;
 	margin: 20px;
-	padding-top: 30px;
 	border-radius: 5px;
-	padding-left:30px;
-	padding-right:30px;
+	
 	position:absolute;
 	line-height: 30px;
 	font-size: 16px;
 }
 
 .card {
-   width: 280px;
+   width: 320px;
 }
 .article{
-	width: 280px;
+	width: 320px;
 }
 
 .card >>> div,.article >>> div{
@@ -138,18 +140,20 @@ export default {
 .card1{
 	position: absolute;
 	display: inline;
-	margin-left: 800px;
+	margin-left: 750px;
+	margin-top: 50px;
 	float: right;
 }
 .card2{
 	position: absolute;
 	display: inline;
 	float: right;
-	margin-left: 800px;
-	margin-top: 290px;
+	margin-left: 750px;
+	margin-top: 340px;
 }
 .card3{
 	width: 700px;
+	height: 600px;
 	position: absolute;
 	margin-left: 20px;
 	margin-top: 30px;
@@ -166,13 +170,6 @@ export default {
     margin: 0;
 }
   
-.el-carousel__item:nth-child(2n) {
-    background-color: #99a9bf;
-}
-  
-.el-carousel__item:nth-child(2n+1) {
-    background-color: #d3dce6;
-}
 .arti >>> li{
 	font-size: 12px;
 	line-height: 25px;

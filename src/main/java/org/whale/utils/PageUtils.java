@@ -8,13 +8,13 @@ import org.springframework.stereotype.Component;
 import org.whale.dao.PageMapper;
 import org.whale.pojo.Page;
 
-
 /**
  * @ClassName： PageUtils 
  * @Description： 简单的分页查询功能，类似mysql的limit
  * @author： 皮卡尔稽
  * @date：2019年3月19日
  */
+
 @Component
 public class PageUtils {
 
@@ -31,8 +31,7 @@ public class PageUtils {
 	 */
 	public Page queryPageAll(Page page,String tableName) {
 		page.setTotalNum(pageMapper.queryTotalNumAll(tableName));
-		@SuppressWarnings("rawtypes")
-		List<HashMap> list = pageMapper.queryPageAll(tableName, page.getLimitA(), page.getLimitB());
+		List<HashMap<?, ?>> list = pageMapper.queryPageAll(tableName, page.getLimitA(), page.getLimitB());
 		page.setDatas(list);
 		return page;
 	}
@@ -51,17 +50,14 @@ public class PageUtils {
 	 * @param tableName
 	 * @return
 	 */
-	@SuppressWarnings("rawtypes")
-	public HashMap queryPageById(Long pkId,String tableName){
+	public HashMap<String,Object> queryPageById(Long pkId,String tableName){
 		
 		String pkName = pageMapper.getPkNameByTableName(tableName);
 		return pageMapper.queryPageById(pkId,tableName,pkName);
 	}
 	
 	
-	@SuppressWarnings("rawtypes")
-	public HashMap queryPageByFkId(Long fkId,String tableName,String fkIdName){
-		
+	public List<HashMap<String,Object>> queryPageByFkId(Long fkId,String tableName,String fkIdName){
 		return pageMapper.queryPageByFkId(fkId,tableName,fkIdName);
 	}
 }

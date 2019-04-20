@@ -2,6 +2,7 @@ package org.whale.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.whale.pojo.Recruitment;
 
 /**
@@ -14,11 +15,13 @@ public interface RecruitmentMapper {
 
 	void doSave(Recruitment recruitment);
 
-	List<Recruitment> queryPage(Long userId);
+	List<Recruitment> queryPage(@Param("userId")Long userId, @Param("pkRecruitmentId")String pkRecruitmentId);
 
 	void doUpdate(Recruitment recruitment);
 
 	void doDelete(Long pkRecruitmentId);
+
+	Recruitment getRecruitmentByPkId(@Param("pkRecruitmentId")Long pkRecruitmentId);
 
 }
 

@@ -13,8 +13,7 @@ import org.apache.ibatis.annotations.Param;
 */
 public interface PageMapper {
 
-	@SuppressWarnings("rawtypes")
-	List<HashMap> queryPageAll(@Param("args1")String tableName, @Param("args2")int limitA, @Param("args3")int limitB);
+	List<HashMap<?, ?>> queryPageAll(@Param("args1")String tableName, @Param("args2")int limitA, @Param("args3")int limitB);
 
 	Long queryTotalNumAll(@Param("args1")String sql);
 	
@@ -23,12 +22,11 @@ public interface PageMapper {
 	
 	Long queryTotalNum(@Param("args1")String sql);
 
-	@SuppressWarnings("rawtypes")
-	HashMap queryPageById(@Param("pkId")Long pkId, @Param("tableName")String tableName,@Param("pkName")String pkName);
+	HashMap<String,Object> queryPageById(@Param("pkId")Long pkId, @Param("tableName")String tableName,@Param("pkName")String pkName);
 
 	String getPkNameByTableName(@Param("tableName")String tableName);
 
-	HashMap queryPageByFkId(@Param("fkId")Long fkId, @Param("tableName")String tableName, @Param("fkName")String fkIdName);
+	List<HashMap<String, Object>> queryPageByFkId(@Param("fkId")Long fkId, @Param("tableName")String tableName, @Param("fkName")String fkIdName);
 
 	
 	

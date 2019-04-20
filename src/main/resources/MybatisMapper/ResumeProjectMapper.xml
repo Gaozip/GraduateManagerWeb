@@ -9,23 +9,20 @@
     <result column="PERSONAL_RESPONSIBILITY" jdbcType="VARCHAR" property="personalResponsibility" />
     <result column="COMPANY_NAME" jdbcType="VARCHAR" property="companyName" />
     <result column="PROJECT_DATE" jdbcType="VARCHAR" property="projectDate" />
+    <result column="IS_VALID" jdbcType="DECIMAL" property="isValid" />
     <result column="FK_RESUME_ID" jdbcType="DECIMAL" property="fkResumeId" />
   </resultMap>
   
   <insert id="doSave" parameterType="java.util.List">
-    insert into SYS_RESUME_PROJECT (PK_RESUME_PROJECT, PROJECT_NAME, PROJECT_DESCRIPTION, PERSONAL_RESPONSIBILITY, COMPANY_NAME, FK_RESUME_ID, PROJECT_DATE)
-    select SEQ_SYS_RESUME_PROJECT.nextval, t.* from(
-    	<foreach collection="list" item="item" index="index" separator="UNION ALL">
-    		select
-		    	#{item.projectName,jdbcType=VARCHAR}, 
-		    	#{item.projectDescription,jdbcType=VARCHAR}, 
-		      	#{item.personalResponsibility,jdbcType=VARCHAR}, 
-		      	#{item.companyName,jdbcType=VARCHAR}, 
-		      	#{item.fkResumeId,jdbcType=DECIMAL}, 
-		      	#{item.projectDate,jdbcType=VARCHAR}
-	    	from DUAL
-	    </foreach>
-	 )t
+  	<selectKey keyProperty="pkResumeProject" resultType="long"  order="BEFORE">
+  		select SEQ_SYS_RESUME_PROJECT.nextval as pkResumeProject from dual
+  	</selectKey>
+    insert into SYS_RESUME_PROJECT (PK_RESUME_PROJECT, PROJECT_NAME, PROJECT_DESCRIPTION, 
+      PERSONAL_RESPONSIBILITY, COMPANY_NAME, PROJECT_DATE, 
+      IS_VALID, FK_RESUME_ID)
+    values (#{pkResumeProject,jdbcType=DECIMAL}, #{projectName,jdbcType=VARCHAR}, #{projectDescription,jdbcType=VARCHAR}, 
+      #{personalResponsibility,jdbcType=VARCHAR}, #{companyName,jdbcType=VARCHAR}, #{projectDate,jdbcType=VARCHAR}, 
+      #{isValid,jdbcType=DECIMAL}, #{fkResumeId,jdbcType=DECIMAL})
   </insert>
   
   <select id="getResumeProjectByResumeId" resultMap="resumeProjectMapperMap" parameterType="Long">
@@ -47,6 +44,37 @@
   </update>
   
   <delete id="doDeleteByResumeId" parameterType="java.lang.Long">
-  	 delete from SYS_RESUME_PROJECT where FK_RESUME_ID = #{fkResumeId,jdbcType=DECIMAL}
+  	 delete from SYS_RESUME_PROJECT where FK_RESUME_ID = ${resumeId}
   </delete>
+  
+  <select id="getResumeProjectIdByResumeId" parameterType="java.lang.Long" resultType="java.lang.Long">
+  	select PK_RESUME_PROJECT from SYS_RESUME_PROJECT where FK_RESUME_ID = #{fkResumeId,jdbcType=DECIMAL}
+  </select>
+  
+  <select id="queryPageByFkId" parameterType="java.lang.Long" resultMap="resumeProjectMapperMap">
+  	select * from SYS_RESUME_PROJECT where FK_RESUME_ID = ${fkResumeId}
+  </select>
+  
+  <delete id="doDelete" parameterType="java.lang.Long">
+  	delete from SYS_RESUME_PROJECT where PK_RESUME_PROJECT = ${id}
+  </delete>
+  
+  <update id="doUpdate" parameterType="org.whale.pojo.ResumeProject">
+  	  update 
+  	      SYS_RESUME_PROJECT
+      set 
+      	  PROJECT_NAME = #{projectName,jdbcType=VARCHAR},
+	      PROJECT_DESCRIPTION = #{projectDescription,jdbcType=VARCHAR},
+	      PERSONAL_RESPONSIBILITY = #{personalResponsibility,jdbcType=VARCHAR},
+	      COMPANY_NAME = #{companyName,jdbcType=VARCHAR},
+	      PROJECT_DATE = #{projectDate,jdbcType=VARCHAR},
+	      IS_VALID = #{isValid,jdbcType=DECIMAL},
+	      FK_RESUME_ID = #{fkResumeId,jdbcType=DECIMAL}
+      where 
+          PK_RESUME_PROJECT = #{pkResumeProject,jdbcType=DECIMAL}
+  </update>
+  
+  <select id="getResumeProjectByPkId" parameterType="java.lang.Long" resultMap="resumeProjectMapperMap">
+    select * from SYS_RESUME_PROJECT where PK_RESUME_PROJECT = ${pkResumeProject}
+  </select>
 </mapper>

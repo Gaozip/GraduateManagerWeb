@@ -11,48 +11,61 @@
     <result column="MONTH_SALARY" jdbcType="DECIMAL" property="monthSalary" />
     <result column="JOB_DESCRIPTION" jdbcType="VARCHAR" property="jobDescription" />
     <result column="WORK_DATE" jdbcType="VARCHAR" property="workDate" />
+    <result column="IS_VALID" jdbcType="DECIMAL" property="isValid" />
     <result column="FK_RESUME_ID" jdbcType="DECIMAL" property="fkResumeId" />
   </resultMap>
   
   <insert id="doSave" parameterType="java.util.List">
-    insert into SYS_RESUME_WORK (PK_RESUME_WORK_ID, COMPANY_NAME, INDUSTRY, JOB_INTENSION, JOB_TYPE, MONTH_SALARY, JOB_DESCRIPTION, FK_RESUME_ID, WORK_DATE)
-    select SEQ_SYS_RESUME_WORK.nextval , t.* from (
-	    <foreach collection="list" item="item" index="index" separator="UNION ALL">
-	    	select
-		    	#{item.companyName,jdbcType=VARCHAR}, 
-		    	#{item.industry,jdbcType=VARCHAR}, 
-		      	#{item.jobIntension,jdbcType=VARCHAR}, 
-		      	#{item.jobType,jdbcType=VARCHAR}, 
-		      	#{item.monthSalary,jdbcType=DECIMAL}, 
-		      	#{item.jobDescription,jdbcType=VARCHAR}, 
-		      	#{item.fkResumeId,jdbcType=DECIMAL}, 
-		      	#{item.workDate,jdbcType=VARCHAR}
-		     from DUAL
-	    </foreach>
-    ) t
+  	<selectKey keyProperty="pkResumeWorkId" resultType="long" order="BEFORE">
+  		select SEQ_SYS_RESUME_WORK.nextval as pkResumeWorkId from dual
+  	</selectKey>
+     insert into SYS_RESUME_WORK (PK_RESUME_WORK_ID, COMPANY_NAME, INDUSTRY, 
+      JOB_INTENSION, JOB_TYPE, MONTH_SALARY, 
+      JOB_DESCRIPTION, WORK_DATE, IS_VALID, 
+      FK_RESUME_ID)
+    values (#{pkResumeWorkId,jdbcType=DECIMAL}, #{companyName,jdbcType=VARCHAR}, #{industry,jdbcType=VARCHAR}, 
+      #{jobIntension,jdbcType=VARCHAR}, #{jobType,jdbcType=VARCHAR}, #{monthSalary,jdbcType=DECIMAL}, 
+      #{jobDescription,jdbcType=VARCHAR}, #{workDate,jdbcType=VARCHAR}, #{isValid,jdbcType=DECIMAL}, 
+      #{fkResumeId,jdbcType=DECIMAL})
   </insert>
   
   <select id="getResumeWorkByResumeId" resultMap="resumeWorkMapperMap" parameterType="Long">
   	select * from sys_resume_work where FK_resume_id = #{fkResumeId,jdbcType=DECIMAL}
   </select>
   
-  <update id="doUpdateByResumeId" parameterType="java.util.List">
-  	 <foreach collection="list" item="item" index="index" separator=";">
-  	 	 update SYS_RESUME_WORK
-   		 set 
-   		 	COMPANY_NAME = #{item.companyName,jdbcType=VARCHAR},
-      		INDUSTRY = #{item.industry,jdbcType=VARCHAR},
-      		JOB_INTENSION = #{item.jobIntension,jdbcType=VARCHAR},
-      		JOB_TYPE = #{item.jobType,jdbcType=VARCHAR},
-      		MONTH_SALARY = #{item.monthSalary,jdbcType=DECIMAL},
-      		JOB_DESCRIPTION = #{item.jobDescription,jdbcType=VARCHAR},
-      		WORK_DATE = #{item.workDate,jdbcType=VARCHAR}
-    	 where 
-    	 	FK_RESUME_ID = #{item.fkResumeId,jdbcType=DECIMAL}
-  	 </foreach>
+  <update id="doUpdate" parameterType="org.whale.pojo.ResumeWork">
+ 	 update SYS_RESUME_WORK
+     set 
+	      COMPANY_NAME = #{companyName,jdbcType=VARCHAR},
+	      INDUSTRY = #{industry,jdbcType=VARCHAR},
+	      JOB_INTENSION = #{jobIntension,jdbcType=VARCHAR},
+	      JOB_TYPE = #{jobType,jdbcType=VARCHAR},
+	      MONTH_SALARY = #{monthSalary,jdbcType=DECIMAL},
+	      JOB_DESCRIPTION = #{jobDescription,jdbcType=VARCHAR},
+	      WORK_DATE = #{workDate,jdbcType=VARCHAR},
+	      IS_VALID = #{isValid,jdbcType=DECIMAL},
+	      FK_RESUME_ID = #{fkResumeId,jdbcType=DECIMAL}
+     where 
+     	  PK_RESUME_WORK_ID = #{pkResumeWorkId,jdbcType=DECIMAL}
   </update>
   
+  <delete id="doDelete" parameterType="java.lang.Long">
+  	 delete from SYS_RESUME_WORK where PK_RESUME_WORK_ID = #{pkResumeWorkId,jdbcType=DECIMAL}
+  </delete>
+  
+  <select id="getResumeWorkIdByResumeId" parameterType="java.lang.Long" resultType="java.lang.Long">
+  	select PK_RESUME_WORK_ID from SYS_RESUME_WORK where FK_RESUME_ID = #{fkResumeId,jdbcType=DECIMAL}
+  </select>
+  
+  <select id="queryPageByFkId" parameterType="java.lang.Long" resultMap="resumeWorkMapperMap">
+  	select * from SYS_RESUME_WORK where FK_RESUME_ID = ${fkResumeId}
+  </select>
+  
+  <select id="getResumeWorkByPkId" parameterType="java.lang.Long" resultMap="resumeWorkMapperMap">
+    select * from SYS_RESUME_WORK where PK_RESUME_WORK_ID = ${pkResumeWorkId}
+  </select>
+  
   <delete id="doDeleteByResumeId" parameterType="java.lang.Long">
-  	 delete from SYS_RESUME_WORK where FK_RESUME_ID = #{fkResumeId,jdbcType=DECIMAL}
+  	delete from SYS_RESUME_WORK where FK_RESUME_ID = ${fkResumeId}
   </delete>
 </mapper>

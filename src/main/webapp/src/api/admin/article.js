@@ -4,6 +4,7 @@ import { Message as message } from 'element-ui';
 export const URL_ARTICLE_SAVE = '/article/doSave'  //保存公告
 export const URL_ARTICLE_SHOW = '/article/queryPage' //查询公告列表
 export const URL_DO_UPDATE = '/article/doUpdate' //更新公告信息
+export const URL_DO_DELETE = '/article/doDelete' 
 
 export function api(url, param) {
     return new Promise((resolve, reject) => {

@@ -33,9 +33,9 @@
 <script>
   import person from "../../../assets/icon/person.png";
   import * as LOGIN_API from '@/api/user/login.js';
-  import changeUserName from '../changeUserName.vue'
-  import changePassword from '../changePassword.vue'
-  import changeHeadImage from '../changeHeadImage.vue'
+  import changeUserName from '../changeUserInfo/changeUserName.vue'
+  import changePassword from '../changeUserInfo/changePassword.vue'
+  import changeHeadImage from '../changeUserInfo/changeHeadImage.vue'
 
   export default {
     name: "Header",

@@ -10,93 +10,103 @@ public class ResumeWork {
 
 	private Long pkResumeWorkId;
 
-    private String companyName;
+	private String companyName;
 
-    private String industry;
+	private String industry;
 
-    private String jobIntension;
+	private String jobIntension;
 
-    private String jobType;
+	private String jobType;
 
-    private Long monthSalary;
+	private Long monthSalary;
 
-    private String jobDescription;
+	private String jobDescription;
 
-    private String workDate;
+	private String workDate;
 
-    private Long fkResumeId;
+	private Short isValid;
 
-    public Long getPkResumeWorkId() {
-        return pkResumeWorkId;
-    }
+	private Long fkResumeId;
 
-    public void setPkResumeWorkId(Long pkResumeWorkId) {
-        this.pkResumeWorkId = pkResumeWorkId;
-    }
+	public Long getPkResumeWorkId() {
+		return pkResumeWorkId;
+	}
 
-    public String getCompanyName() {
-        return companyName;
-    }
+	public void setPkResumeWorkId(Long pkResumeWorkId) {
+		this.pkResumeWorkId = pkResumeWorkId;
+	}
 
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName == null ? null : companyName.trim();
-    }
+	public String getCompanyName() {
+		return companyName;
+	}
 
-    public String getIndustry() {
-        return industry;
-    }
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName == null ? null : companyName.trim();
+	}
 
-    public void setIndustry(String industry) {
-        this.industry = industry == null ? null : industry.trim();
-    }
+	public String getIndustry() {
+		return industry;
+	}
 
-    public String getJobIntension() {
-        return jobIntension;
-    }
+	public void setIndustry(String industry) {
+		this.industry = industry == null ? null : industry.trim();
+	}
 
-    public void setJobIntension(String jobIntension) {
-        this.jobIntension = jobIntension == null ? null : jobIntension.trim();
-    }
+	public String getJobIntension() {
+		return jobIntension;
+	}
 
-    public String getJobType() {
-        return jobType;
-    }
+	public void setJobIntension(String jobIntension) {
+		this.jobIntension = jobIntension == null ? null : jobIntension.trim();
+	}
 
-    public void setJobType(String jobType) {
-        this.jobType = jobType == null ? null : jobType.trim();
-    }
+	public String getJobType() {
+		return jobType;
+	}
 
-    public Long getMonthSalary() {
-        return monthSalary;
-    }
+	public void setJobType(String jobType) {
+		this.jobType = jobType == null ? null : jobType.trim();
+	}
 
-    public void setMonthSalary(Long monthSalary) {
-        this.monthSalary = monthSalary;
-    }
+	public Long getMonthSalary() {
+		return monthSalary;
+	}
 
-    public String getJobDescription() {
-        return jobDescription;
-    }
+	public void setMonthSalary(Long monthSalary) {
+		this.monthSalary = monthSalary;
+	}
 
-    public void setJobDescription(String jobDescription) {
-        this.jobDescription = jobDescription == null ? null : jobDescription.trim();
-    }
+	public String getJobDescription() {
+		return jobDescription;
+	}
 
-    public String getWorkDate() {
-        return workDate;
-    }
+	public void setJobDescription(String jobDescription) {
+		this.jobDescription = jobDescription == null ? null : jobDescription.trim();
+	}
 
-    public void setWorkDate(String workDate) {
-        this.workDate = workDate == null ? null : workDate.trim();
-    }
+	public String getWorkDate() {
+		return workDate;
+	}
 
-    public Long getFkResumeId() {
-        return fkResumeId;
-    }
+	public void setWorkDate(String workDate) {
+		this.workDate = workDate == null ? null : workDate.trim();
+	}
 
-    public void setFkResumeId(Long fkResumeId) {
-        this.fkResumeId = fkResumeId;
-    }
+	public Short getIsValid() {
+		return isValid;
+	}
+
+	public void setIsValid(Short isValid) {
+		this.isValid = isValid;
+	}
+
+	public Long getFkResumeId() {
+		return fkResumeId;
+	}
+
+	public void setFkResumeId(Long fkResumeId) {
+		this.fkResumeId = fkResumeId;
+	}
 
 	@Override
 	public String toString() {
@@ -117,10 +127,11 @@ public class ResumeWork {
 		builder.append(jobDescription);
 		builder.append(", workDate=");
 		builder.append(workDate);
+		builder.append(", isValid=");
+		builder.append(isValid);
 		builder.append(", fkResumeId=");
 		builder.append(fkResumeId);
 		builder.append("]");
 		return builder.toString();
 	}
-    
 }

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whale.dao.CarouselMapper">
+	<resultMap id="carouseLMapperMap" type="org.whale.pojo.Carousel">
+		<id column="PK_CAROUSEL_ID" jdbcType="DECIMAL" property="pkCarouselId" />
+    	<result column="IMG_PATH" jdbcType="VARCHAR" property="imgPath" />
+	</resultMap>
+	
+	<insert id="doSave" parameterType="org.whale.pojo.Carousel">
+		<selectKey keyProperty="pkCarouselId" resultType="long" order="BEFORE">
+			select SEQ_SYS_CAROUSEL.nextval as pkCarouselId from dual
+		</selectKey>
+		 insert into SYS_CAROUSEL (PK_CAROUSEL_ID, IMG_PATH)
+    	 values (
+    	 	#{pkCarouselId,jdbcType=DECIMAL}, 
+    	 	#{imgPath,jdbcType=VARCHAR}
+    	 )
+	</insert>
+	
+	<update id="doUpdate" parameterType="org.whale.pojo.Carousel">
+		update SYS_CAROUSEL
+    	set 
+      		IMG_PATH = #{imgPath,jdbcType=VARCHAR}
+      	where
+      		PK_CAROUSEL_ID = #{pkCarouselId,jdbcType=DECIMAL}
+	</update>
+	
+	<delete id="doDelete" parameterType="java.lang.Long">
+		delete from sys_carousel where pk_carousel_id = ${pkCarouselId}
+	</delete>
+	
+	<select id="queryPage" resultMap="carouseLMapperMap">
+		select * from sys_carousel
+	</select>
+</mapper>

@@ -2,13 +2,10 @@ package org.whale.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.sound.midi.MidiDevice.Info;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.whale.pojo.EmployerInfo;
-import org.whale.pojo.User;
 import org.whale.service.EmployerInfoService;
 import org.whale.utils.WebUtils;
 
@@ -44,6 +41,8 @@ public class EmployerController extends BaseController{
 			info.setCompanyAddress(employerInfo.getCompanyAddress());
 			info.setScopeOfBusiness(employerInfo.getScopeOfBusiness());
 			info.setCompanyProfile(employerInfo.getCompanyProfile());
+			info.setProvince(employerInfo.getProvince());
+			info.setCity(employerInfo.getCity());
 			
 			this.employerInfoService.doUpdate(info);
 			
