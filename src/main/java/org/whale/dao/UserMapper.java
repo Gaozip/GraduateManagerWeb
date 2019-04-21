@@ -1,5 +1,8 @@
 package org.whale.dao;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 import org.whale.pojo.User;
 
@@ -34,6 +37,20 @@ public interface UserMapper {
 	void uploadUserHeadImage(@Param("arg0")Long pkUserId, @Param("arg1")String path);
 
 	String haveUserHeadPath(@Param("userId")Long userId);
+
+	List<User> queryUserPage(@Param("limitA")int limitA, @Param("limitB")int limitB, @Param("username")String username, @Param("email")String email, @Param("role")String role, @Param("state")String state,
+			@Param("isValid")String isValid, @Param("registerStartTime")String registerStartTime, @Param("registerEndTime")String registerEndTime, @Param("activeStartTime")String activeStartTime,
+			@Param("activeEndTime")String activeEndTime,@Param("FUZZY_WORD")String FUZZY_WORD);
+
+	int getTotalNum(@Param("username")String username, @Param("email")String email, @Param("role")String role, @Param("state")String state,
+			@Param("isValid")String isValid, @Param("registerStartTime")String registerStartTime, @Param("registerEndTime")String registerEndTime, @Param("activeStartTime")String activeStartTime,
+			@Param("activeEndTime")String activeEndTime,@Param("FUZZY_WORD")String FUZZY_WORD);
+
+	void doUpdateUserState(@Param("state")String state, @Param("isValid")String isValid, @Param("pkUserId")String pkUserId);
+
+	void doRegisterAdminUser(User user);
+
+	Map<String, Double> queryJobRate(@Param("grade")String grade, @Param("dept")String dept, @Param("specialty")String specialty);
 
 }
 

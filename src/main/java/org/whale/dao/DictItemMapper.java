@@ -19,6 +19,15 @@ public interface DictItemMapper {
 	
 	void doDelete(@Param("pkDictItemId")Long pkDictItemId);
 	
-	List<DictItem> queryPage(@Param("limitA")int limitA,@Param("limitB")int limitB,@Param("fkDictId")Long fkDictId);
+	List<DictItem> queryPage(@Param("limitA")int limitA,@Param("limitB")int limitB,@Param("fkDictId")String fkDictId,@Param("itemName")String itemName, @Param("itemCode")String itemCode);
+
+	void doDeleteByFkId(@Param("fkDictId")Long fkDictId);
+
+	int ifExist(@Param("itemCode")String itemCode);
+
+	DictItem getDictItemByPkId(@Param("pkDictItemId")Long pkDictItemId);
+
+	int getTotalNum(@Param("fkDictId")String fkDictId,@Param("itemName")String itemName, @Param("itemCode")String itemCode);
+
 }
 

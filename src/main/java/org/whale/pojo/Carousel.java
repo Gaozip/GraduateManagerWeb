@@ -11,6 +11,8 @@ public class Carousel {
 
     private String imgPath;
 
+    private String fileName;
+
     public Long getPkCarouselId() {
         return pkCarouselId;
     }
@@ -26,4 +28,26 @@ public class Carousel {
     public void setImgPath(String imgPath) {
         this.imgPath = imgPath == null ? null : imgPath.trim();
     }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName == null ? null : fileName.trim();
+    }
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Carousel [pkCarouselId=");
+		builder.append(pkCarouselId);
+		builder.append(", imgPath=");
+		builder.append(imgPath);
+		builder.append(", fileName=");
+		builder.append(fileName);
+		builder.append("]");
+		return builder.toString();
+	}
+    
 }

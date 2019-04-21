@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -38,6 +39,9 @@ public class UserController extends BaseController{
 	
 	@Autowired
 	private UserService userService;
+	
+	@Resource
+	private MailUtils mailUtils;
 	
 	/**
 	 * 判断是否被注册
@@ -96,7 +100,7 @@ public class UserController extends BaseController{
 	        info.setSubject(title);
 	        info.setContent(content);
 	        
-			MailUtils.sendHtmlMail(info);
+			mailUtils.sendHtmlMail(info);
 			userService.addUser(user);
 			WebUtils.printSuccess(request, response);
 		} catch (Exception e) {
@@ -282,7 +286,6 @@ public class UserController extends BaseController{
 		
 		//如果已有头像，则先删除已有头像
 		String head = userService.haveUserHeadPath(this.getUserId(request));
-		System.out.println(head);
 		if(head != null){
 			new File(path+head.replace("/upload/", "")).delete();
 		}
@@ -293,7 +296,7 @@ public class UserController extends BaseController{
         	String fileName =UUIDUtils.getCode()+".jpg";
         	
         	//将头像路径存入数据库
-			Long pkUserId = ((User)request.getSession().getAttribute("user")).getPkUserId();
+			Long pkUserId = this.getUserId(request);
 			
 			userService.uploadUserHeadImage(pkUserId,headPath+fileName);
         	
@@ -302,6 +305,24 @@ public class UserController extends BaseController{
         }else{
         	WebUtils.printFail(request, response, "请选择上传图片");
         }
+	}
+	
+	@RequestMapping("/doRegisterAdminUser")
+	public void doRegisterAdminUser(HttpServletRequest request,HttpServletResponse response,User user){
+		
+		//用户名，密码非空校验
+		if(StringUtils.isBlank(user.getUsername())||StringUtils.isBlank(user.getPassword())){
+			WebUtils.printFail(request, response, "请将表单填写完整！");
+		}
+		
+		try {
+			user.setPassword(MD5Utils.md5(user.getPassword()));
+			this.userService.doRegisterAdminUser(user);
+			WebUtils.printSuccess(request, response);
+		} catch (Exception e) {
+			WebUtils.printFail(request, response, "用户注册失败！");
+			e.printStackTrace();
+		}
 	}
 }
 

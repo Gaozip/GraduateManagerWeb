@@ -3,15 +3,12 @@ package org.whale.service.impl;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.whale.dao.ArticleMapper;
 import org.whale.pojo.Article;
 import org.whale.pojo.Page;
 import org.whale.service.ArticleService;
-import org.whale.utils.PageUtils;
 import org.whale.utils.StringUtils;
 
 /**
@@ -25,9 +22,6 @@ public class ArticleServiceImpl implements ArticleService{
 
 	@Autowired
 	private ArticleMapper articleMapper;
-	
-	@Resource(name="pageUtils")
-	private PageUtils pageUtils;
 	
 	@Override
 	public void doSave(Article article) {

@@ -30,5 +30,7 @@ public interface UserService {
 
 	String haveUserHeadPath(Long userId);
 
+	void doRegisterAdminUser(User user);
+
 }
 

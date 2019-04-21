@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.whale.pojo.GraduateInfo;
 import org.whale.pojo.Page;
-import org.whale.pojo.User;
 import org.whale.service.GraduateInfoService;
 import org.whale.utils.WebUtils;
 
@@ -36,7 +35,7 @@ public class GraduateController extends BaseController{
 	@RequestMapping("/queryBasicInfoById")
 	public void queryBasicInfoById(HttpServletRequest request,HttpServletResponse response){
 		try {
-			Long userId = ((User)request.getSession().getAttribute("user")).getPkUserId();
+			Long userId = this.getUserId(request);
 			GraduateInfo graduateInfo = this.graduateService.queryBasicInfoById(userId);
 			WebUtils.printSuccess(request, response, graduateInfo);
 		} catch (Exception e) {
@@ -47,7 +46,7 @@ public class GraduateController extends BaseController{
 	
 	@RequestMapping("/doUpdate")
 	public void doSave(HttpServletRequest request,HttpServletResponse response,GraduateInfo graduate) throws ParseException{
-		Long userId = ((User)request.getSession().getAttribute("user")).getPkUserId();
+		Long userId = this.getUserId(request);
 		GraduateInfo graduateInfo = this.graduateService.queryBasicInfoById(userId);
 		graduateInfo.setSno(graduate.getSno());
 		graduateInfo.setName(graduate.getName());

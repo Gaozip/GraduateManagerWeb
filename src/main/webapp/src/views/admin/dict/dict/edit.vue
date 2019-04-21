@@ -19,8 +19,8 @@
                     <div class="dialog-edit__row__item">
                         <el-form-item label="是否有效" prop="isValid">
                             <el-radio-group v-model="form.isValid" size="small">
-                                <el-radio label="1" border>有效</el-radio>
-                                <el-radio label="0" border>无效</el-radio>
+                                <el-radio :label="1" border>有效</el-radio>
+                                <el-radio :label="0" border>无效</el-radio>
                             </el-radio-group>
                         </el-form-item>
                     </div>
@@ -43,6 +43,7 @@
 </template>
 
 <script>
+    import * as DICT_API from '@/api/admin/dict.js'
     export default {
         components: {},
         data() {
@@ -55,7 +56,12 @@
                     isValid:'1',
                 },
                 rules:{
-
+                    dictName:[
+                        { required: true, message: '请输入字典名称', trigger: 'blur' },
+                    ],
+                    dictCode:[
+                        { required: true, message: '请输入字典编码', trigger: 'blur' },
+                    ],
                 },
             }
         },
@@ -75,11 +81,27 @@
                 // 推送关闭消息
                 this.$emit('closed');
             },
-            show(){
+            show(data){
+                this.form = JSON.parse(JSON.stringify(data));
+                
                 this.dialogVisible = true;
             },
             btnClick(){
-
+                this.$refs['formName'].validate((valid) => {
+                    if (valid) {
+                        let param ={
+                            pkDictId: this.form.pkDictId,
+                            dictName: this.form.dictName,
+                            dictCode: this.form.dictCode,
+                            isValid: this.form.isValid,
+                            remark: this.form.remark,
+                        };
+                        DICT_API.api(DICT_API.URL_DO_UPDATE,param).then(data =>{
+                            this.$message.success('修改成功');
+                            this.dialogVisible = false;
+                        });
+                    }
+                });
             },
         }
     }

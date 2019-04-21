@@ -23,5 +23,9 @@ public interface GraduateInfoMapper {
 
 	List<Long> queryIdByRequire(@Param("name")String name, @Param("age")String age, @Param("sex")String sex, @Param("province")String province, @Param("city")String city, @Param("education")String education,
 			@Param("gradCollege")String gradCollege, @Param("specialty")String specialty, @Param("workYear")String workYear, @Param("fUZZY_WORD")String fUZZY_WORD);
+
+	List<GraduateInfo> queryStudentInfo(@Param("limitA")int limitA, @Param("limitB")int limitB, @Param("grade")String grade, @Param("dept")String dept, @Param("specialty")String specialty);
+
+	int queryTotalNum(@Param("grade")String grade, @Param("dept")String dept, @Param("specialty")String specialty);
 }
 

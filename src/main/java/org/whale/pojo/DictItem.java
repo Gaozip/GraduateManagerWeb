@@ -10,73 +10,83 @@ public class DictItem {
 
 	private Long pkDictItemId;
 
-	private String itemName;
+    private String itemName;
 
-	private String itemCode;
+    private String itemCode;
 
-	private String itemVal;
+    private String itemVal;
 
-	private String remark;
+    private String dictType;
 
-	private Short isValid;
+    private String remark;
 
-	private Long fkDictId;
+    private Short isValid;
 
-	public Long getPkDictItemId() {
-		return pkDictItemId;
-	}
+    private Long fkDictId;
 
-	public void setPkDictItemId(Long pkDictItemId) {
-		this.pkDictItemId = pkDictItemId;
-	}
+    public Long getPkDictItemId() {
+        return pkDictItemId;
+    }
 
-	public String getItemName() {
-		return itemName;
-	}
+    public void setPkDictItemId(Long pkDictItemId) {
+        this.pkDictItemId = pkDictItemId;
+    }
 
-	public void setItemName(String itemName) {
-		this.itemName = itemName == null ? null : itemName.trim();
-	}
+    public String getItemName() {
+        return itemName;
+    }
 
-	public String getItemCode() {
-		return itemCode;
-	}
+    public void setItemName(String itemName) {
+        this.itemName = itemName == null ? null : itemName.trim();
+    }
 
-	public void setItemCode(String itemCode) {
-		this.itemCode = itemCode == null ? null : itemCode.trim();
-	}
+    public String getItemCode() {
+        return itemCode;
+    }
 
-	public String getItemVal() {
-		return itemVal;
-	}
+    public void setItemCode(String itemCode) {
+        this.itemCode = itemCode == null ? null : itemCode.trim();
+    }
 
-	public void setItemVal(String itemVal) {
-		this.itemVal = itemVal == null ? null : itemVal.trim();
-	}
+    public String getItemVal() {
+        return itemVal;
+    }
 
-	public String getRemark() {
-		return remark;
-	}
+    public void setItemVal(String itemVal) {
+        this.itemVal = itemVal == null ? null : itemVal.trim();
+    }
 
-	public void setRemark(String remark) {
-		this.remark = remark == null ? null : remark.trim();
-	}
+    public String getDictType() {
+        return dictType;
+    }
 
-	public Short getIsValid() {
-		return isValid;
-	}
+    public void setDictType(String dictType) {
+        this.dictType = dictType == null ? null : dictType.trim();
+    }
 
-	public void setIsValid(Short isValid) {
-		this.isValid = isValid;
-	}
+    public String getRemark() {
+        return remark;
+    }
 
-	public Long getFkDictId() {
-		return fkDictId;
-	}
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
+    }
 
-	public void setFkDictId(Long fkDictId) {
-		this.fkDictId = fkDictId;
-	}
+    public Short getIsValid() {
+        return isValid;
+    }
+
+    public void setIsValid(Short isValid) {
+        this.isValid = isValid;
+    }
+
+    public Long getFkDictId() {
+        return fkDictId;
+    }
+
+    public void setFkDictId(Long fkDictId) {
+        this.fkDictId = fkDictId;
+    }
 
 	@Override
 	public String toString() {
@@ -89,6 +99,8 @@ public class DictItem {
 		builder.append(itemCode);
 		builder.append(", itemVal=");
 		builder.append(itemVal);
+		builder.append(", dictType=");
+		builder.append(dictType);
 		builder.append(", remark=");
 		builder.append(remark);
 		builder.append(", isValid=");
@@ -98,5 +110,4 @@ public class DictItem {
 		builder.append("]");
 		return builder.toString();
 	}
-	
 }

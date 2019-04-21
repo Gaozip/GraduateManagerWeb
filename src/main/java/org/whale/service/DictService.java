@@ -1,6 +1,10 @@
 package org.whale.service;
 
+import java.util.List;
+import java.util.Map;
+
 import org.whale.pojo.Dict;
+import org.whale.pojo.Page;
 
 /**
 * @ClassName： DictService
@@ -15,6 +19,12 @@ public interface DictService {
 	void doUpdate(Dict dict);
 
 	void doDelete(Long pkDictId);
+
+	Page queryPage(Page page2, Map<String, String> paramMap);
+
+	List<Dict> queryAllDict();
+
+	int ifExist(String dictCode);
 
 }
 

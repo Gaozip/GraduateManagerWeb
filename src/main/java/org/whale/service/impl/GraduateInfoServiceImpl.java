@@ -2,15 +2,12 @@ package org.whale.service.impl;
 
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.whale.dao.GraduateInfoMapper;
 import org.whale.pojo.GraduateInfo;
 import org.whale.pojo.Page;
 import org.whale.service.GraduateInfoService;
-import org.whale.utils.PageUtils;
 import org.whale.utils.StringUtils;
 
 /**
@@ -24,9 +21,6 @@ public class GraduateInfoServiceImpl implements GraduateInfoService {
 
 	@Autowired
 	private GraduateInfoMapper graduateInfoMapper;
-	
-	@Resource(name="pageUtils")
-	private PageUtils pageUtils;
 	
 	@Override
 	public GraduateInfo queryBasicInfoById(Long userId) {
@@ -99,7 +93,8 @@ public class GraduateInfoServiceImpl implements GraduateInfoService {
 			}
 		}
 		page.setSql(sql.toString());
-		return pageUtils.queryPage(page);
+//		return pageUtils.queryPage(page);
+		return null;
 	}
 
 	

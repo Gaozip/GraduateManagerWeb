@@ -12,13 +12,13 @@ export default[
 		path:`${BASE_URL}/carousel`,
 		component: () => import('@/views/admin/home/carousel/carousel.vue')
 	},
-	{	//服务热线管理
-		path:`${BASE_URL}/hotLineInfo`,
-		component: () => import('@/views/admin/home/hotLine/hotLine.vue')
-	},
-	{	//就业统计
+	{	//就业率
 		path:`${BASE_URL}/jobRate`,
 		component: () => import('@/views/admin/jobRate/jobRate.vue')
+	},
+	{	//就业情况
+		path:`${BASE_URL}/studentInfo`,
+		component: () => import('@/views/admin/jobRate/studentInfo.vue')	
 	},
 	{	//字典分类
 		path:`${BASE_URL}/dict`,

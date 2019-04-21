@@ -2,7 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.whale.dao.GraduateInfoMapper">
   <resultMap id="graduateInfoMapperMap" type="org.whale.pojo.GraduateInfo">
-   <id column="PK_GRAD_ID" jdbcType="DECIMAL" property="pkGradId" />
     <id column="PK_GRAD_ID" jdbcType="DECIMAL" property="pkGradId" />
     <result column="SNO" jdbcType="DECIMAL" property="sno" />
     <result column="NAME" jdbcType="VARCHAR" property="name" />
@@ -128,5 +127,33 @@
   	<if test="fUZZY_WORD != null and fUZZY_WORD != ''">
   		and (t.name = '${fUZZY_WORD}' or t.sex = '${fUZZY_WORD}' or t.province = '${fUZZY_WORD}' or t.city = '${fUZZY_WORD}' or t.education like '%${fUZZY_WORD}%' or t.graduate_College like '%${fUZZY_WORD}%' or t.specialty like '%${fUZZY_WORD}%' or t.work_Year like '%${fUZZY_WORD}%' )
   	</if>
+  </select>
+  
+  <select id="queryStudentInfo" resultMap="graduateInfoMapperMap">
+  	select * from (select row_.*, rownum rownum_ from ( select pk_grad_id,sno,name,sex,in_date,dept,specialty,have_Job,company_Name,month_Salary from sys_graduate_info where 1 = 1
+  	<if test="grade != null and grade != ''">
+  		and to_char(in_date,'YYYY') = ${grade}
+  	</if> 
+  	<if test="dept != null and dept != ''">
+  		and dept = '${dept}'
+  	</if>
+  	<if test="specialty != null and specialty != ''">
+  		and specialty = '${specialty}'
+  	</if>
+  	) row_ where rownum <![CDATA[<=]]> ${limitA} ) where rownum_ <![CDATA[>=]]> ${limitB}
+  </select>
+  
+  <select id="queryTotalNum" resultType="int">
+  	select count(*) from (select pk_grad_id,sno,name,sex,in_date,dept,specialty,have_Job,company_Name,month_Salary from sys_graduate_info where 1 = 1
+  	<if test="grade != null and grade != ''">
+  		and to_char(in_date,'YYYY') = ${grade}
+  	</if> 
+  	<if test="dept != null and dept != ''">
+  		and dept = '${dept}'
+  	</if>
+  	<if test="specialty != null and specialty != ''">
+  		and specialty = '${specialty}'
+  	</if>
+  	)
   </select>
 </mapper>

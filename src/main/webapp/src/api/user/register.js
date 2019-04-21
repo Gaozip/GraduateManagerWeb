@@ -3,6 +3,7 @@ import axios from '../../axios/index.js';
 
 export const URL_USER_IS_REGISTER = '/user/IsRegister'  //判断用户名、邮箱是否已被注册
 export const UEL_USER_OD_SAVE = '/user/doSave'; //注册用户
+export const URL_REGISTER_ADMIN_USER = '/user/doRegisterAdminUser'
 
 export function api(url, param) {
     return new Promise((resolve, reject) => {

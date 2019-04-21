@@ -53,7 +53,7 @@
     </insert>
     
     <select id="doLogin" parameterType="org.whale.pojo.User" resultMap="userMapperMap">
-    	select * from sys_user where userName = #{username,jdbcType=VARCHAR} and password = #{password,jdbcType=VARCHAR}
+    	select * from sys_user where userName = #{username,jdbcType=VARCHAR} and password = #{password,jdbcType=VARCHAR}  and is_valid = 1
     </select>
     
     <select id="getCode" parameterType="String" resultType="String">
@@ -82,5 +82,115 @@
     
     <select id="haveUserHeadPath" parameterType="java.lang.Long" resultType="String">
     	select head_path from sys_user where pk_user_id = ${userId}
+    </select>
+    
+    <select id="queryUserPage" resultMap="userMapperMap">
+    	select * from (select row_.*, rownum rownum_ from ( select u.pk_user_id,u.username,u.role,u.state,u.register_time,u.active_time,u.email,u.is_valid from sys_user u where 1 = 1
+    	<if test="username != null and username != ''">
+    		and username = '${username}'
+    	</if>
+    	<if test="email != null and email != ''">
+    	 	and email = '${email}'
+    	</if>
+    	<if test="role != null and role != ''">
+    		and role = ${role}
+    	</if>
+    	<if test="state != null and state != ''">
+    		and state = ${state}
+    	</if>
+    	<if test="isValid != null and isValid != ''">
+    		and is_Valid = ${isValid}
+    	</if>
+    	<if test="registerStartTime != null and registerStartTime != ''">
+    		and register_Time <![CDATA[>=]]> to_date('${registerStartTime}','yyyy-mm-dd hh24:mi:ss')
+    	</if>
+    	<if test="registerEndTime != null and registerEndTime != ''">
+    		and register_time <![CDATA[<=]]> to_date('${registerEndTime}','yyyy-mm-dd hh24:mi:ss')
+    	</if>
+    	<if test="activeStartTime != null and activeStartTime != ''">
+    		and active_time <![CDATA[>=]]> to_date('${activeStartTime}','yyyy-mm-dd hh24:mi:ss')
+    	</if>
+    	<if test="activeEndTime != null and activeEndTime != ''">
+    		and active_time <![CDATA[<=]]> to_date('${activeEndTime}','yyyy-mm-dd hh24:mi:ss')
+    	</if>
+    	<if test="FUZZY_WORD != null and FUZZY_WORD != ''">
+    		and (username like '%${FUZZY_WORD}%' or email like '%${FUZZY_WORD}%' or role = ${FUZZY_WORD} or state = ${FUZZY_WORD} or is_valid = ${FUZZY_WORD} )
+    	</if>
+    	) row_ where rownum <![CDATA[<=]]> ${limitA} ) where rownum_ <![CDATA[>=]]> ${limitB}
+    </select>
+    
+    <select id="getTotalNum" resultType="int">
+    	select count(pk_user_id) from (select u.pk_user_id,u.username,u.role,u.state,u.register_time,u.active_time,u.email,u.is_valid from sys_user u where 1 = 1
+    	<if test="username != null and username != ''">
+    		and username = '${username}'
+    	</if>
+    	<if test="email != null and email != ''">
+    	 	and email = '${email}'
+    	</if>
+    	<if test="role != null and role != ''">
+    		and role = ${role}
+    	</if>
+    	<if test="state != null and state != ''">
+    		and state = ${state}
+    	</if>
+    	<if test="isValid != null and isValid != ''">
+    		and is_Valid = ${isValid}
+    	</if>
+    	<if test="registerStartTime != null and registerStartTime != ''">
+    		and register_Time <![CDATA[>=]]> to_date('${registerStartTime}','yyyy-mm-dd hh24:mi:ss')
+    	</if>
+    	<if test="registerEndTime != null and registerEndTime != ''">
+    		and register_time <![CDATA[<=]]> to_date('${registerEndTime}','yyyy-mm-dd hh24:mi:ss')
+    	</if>
+    	<if test="activeStartTime != null and activeStartTime != ''">
+    		and active_time <![CDATA[>=]]> to_date('${activeStartTime}','yyyy-mm-dd hh24:mi:ss')
+    	</if>
+    	<if test="activeEndTime != null and activeEndTime != ''">
+    		and active_time <![CDATA[<=]]> to_date('${activeEndTime}','yyyy-mm-dd hh24:mi:ss')
+    	</if>
+    	<if test="FUZZY_WORD != null and FUZZY_WORD != ''">
+    		and (username like '%${FUZZY_WORD}%' or email like '%${FUZZY_WORD}%' or role = ${FUZZY_WORD} or state = ${FUZZY_WORD} or is_valid = ${FUZZY_WORD} )
+    	</if>
+    	)
+    </select>
+    
+    <update id="doUpdateUserState">
+    	update sys_user set 
+    	<if test="state != null and state != ''">
+    		state = ${state}
+    	</if>
+    	<if test="isValid != null and isValid != ''">
+    		is_valid = ${isValid}
+    	</if>
+    	 where pk_user_id = ${pkUserId}
+    </update>
+    
+    <insert id="doRegisterAdminUser" parameterType="org.whale.pojo.User">
+    	<selectKey keyProperty="pkUserId" resultType="long" order="BEFORE">
+			select SEQ_SYS_USER.nextval as pkUserId from dual
+		</selectKey>
+    	insert into sys_user(pk_User_Id,username,password,role,state,is_valid,register_time,active_time)
+    	values(
+    		#{pkUserId,jdbcType=DECIMAL}, 
+    	 	#{username,jdbcType=VARCHAR}, 
+    	 	#{password,jdbcType=VARCHAR}, 
+      		0, 
+      		1, 
+      		1, 
+      		sysdate,
+      		sysdate
+    	)
+    </insert>
+    
+    <select id="queryJobRate" resultType="java.util.HashMap">
+    	<if test="grade != null and grade != '' and !(dept != null and dept != '') and !(specialty != null and specialty != '')">
+    		select round((select count(pk_grad_id) as year from sys_graduate_info t  where have_job = 1 and to_char(t.in_date,'YYYY') = ${grade})/decode((select count(pk_grad_id) from sys_graduate_info t where to_char(t.in_date,'YYYY') = ${grade}),0,1,(select count(pk_grad_id) from sys_graduate_info t where to_char(t.in_date,'YYYY') = ${grade})),2)*100 as totalRate,(select count(pk_grad_id) from sys_graduate_info where to_char(in_date,'YYYY') = ${grade}) as totalNum,(select count(pk_grad_id) as year from sys_graduate_info t  where have_job = 1 and to_char(t.in_date,'YYYY') = ${grade}) as jobNum from sys_graduate_info where 1=1 and rownum = 1
+    	</if>
+    	<if test="grade != null and grade != '' and dept != null and dept != '' and !(specialty != null and specialty != '')">
+    		select round((select count(pk_grad_id) as year from sys_graduate_info t  where have_job = 1 and to_char(t.in_date,'YYYY') = ${grade} and dept = '${dept}')/decode((select count(pk_grad_id) from sys_graduate_info t where to_char(t.in_date,'YYYY') = ${grade} and dept = '${dept}'),0,1,(select count(pk_grad_id) from sys_graduate_info t where to_char(t.in_date,'YYYY') = ${grade} and dept = '${dept}')),2)*100 as totalRate,(select count(pk_grad_id) from sys_graduate_info where to_char(in_date,'YYYY') = ${grade} and dept = '${dept}') as totalNum,(select count(pk_grad_id) as year from sys_graduate_info t  where have_job = 1 and to_char(t.in_date,'YYYY') = ${grade} and dept = '${dept}') as jobNum from sys_graduate_info where 1=1 and rownum = 1
+    	</if>
+    	<if test="grade != null and grade != '' and dept != null and dept != '' and specialty != null and specialty != ''">
+    		select round((select count(pk_grad_id) as year from sys_graduate_info t  where have_job = 1 and to_char(t.in_date,'YYYY') = ${grade} and dept = '${dept}' and specialty = '${specialty}')/decode((select count(pk_grad_id) from sys_graduate_info t where to_char(t.in_date,'YYYY') = ${grade} and dept = '${dept}' and specialty = '${specialty}'),0,1,(select count(pk_grad_id) from sys_graduate_info t where to_char(t.in_date,'YYYY') = ${grade} and dept = '${dept}' and specialty = '${specialty}')),2)*100 as totalRate,(select count(pk_grad_id) from sys_graduate_info where to_char(in_date,'YYYY') = ${grade} and dept = '${dept}' and specialty = '${specialty}') as totalNum,(select count(pk_grad_id) as year from sys_graduate_info t  where have_job = 1 and to_char(t.in_date,'YYYY') = ${grade} and dept = '${dept}' and specialty = '${specialty}') as jobNum from sys_graduate_info where 1=1 and rownum = 1
+    	</if>
     </select>
 </mapper>

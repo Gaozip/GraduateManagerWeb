@@ -17,8 +17,12 @@ public interface CarouselMapper {
 	
 	void doUpdate(Carousel carousel);
 	
-	void doDelete(@Param("pkCarouselId")Long pkCarouselId);
-	
 	List<Carousel> queryPage();
+
+	List<Carousel> queryPictureList();
+
+	void doSave(@Param("fileName")String fileName, @Param("imgPath")String imgPath);
+
+	void doDeleteByImgName(@Param("fileName")String fileName);
 }
 

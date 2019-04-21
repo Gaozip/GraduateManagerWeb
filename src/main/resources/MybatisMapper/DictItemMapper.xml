@@ -6,23 +6,25 @@
 	    <result column="ITEM_NAME" jdbcType="VARCHAR" property="itemName" />
 	    <result column="ITEM_CODE" jdbcType="VARCHAR" property="itemCode" />
 	    <result column="ITEM_VAL" jdbcType="VARCHAR" property="itemVal" />
+	    <result column="DICT_TYPE" jdbcType="VARCHAR" property="dictType" />
 	    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
 	    <result column="IS_VALID" jdbcType="DECIMAL" property="isValid" />
 	    <result column="FK_DICT_ID" jdbcType="DECIMAL" property="fkDictId" />
 	</resultMap>
 
 	<insert id="doSave" parameterType="org.whale.pojo.DictItem">
-		<selectKey keyColumn="pkDictItemId" resultType="long" order="BEFORE">
+		<selectKey keyProperty="pkDictItemId" resultType="long" order="BEFORE">
 			select SEQ_SYS_DICT_ITEM.nextval as pkDictItemId from dual
 		</selectKey>
-		insert into SYS_DICT_ITEM (PK_DICT_ITEM_ID, ITEM_NAME, ITEM_CODE,ITEM_VAL, REMARK, IS_VALID,FK_DICT_ID)
+		insert into SYS_DICT_ITEM (PK_DICT_ITEM_ID, ITEM_NAME, ITEM_CODE,ITEM_VAL, DICT_TYPE,REMARK, IS_VALID,FK_DICT_ID)
     	values (
     		#{pkDictItemId,jdbcType=DECIMAL}, 
     		#{itemName,jdbcType=VARCHAR}, 
     		#{itemCode,jdbcType=VARCHAR}, 
       		#{itemVal,jdbcType=VARCHAR}, 
+      		#{dictType,jdbcType=VARCHAR},
       		#{remark,jdbcType=VARCHAR}, 
-      		#{isValid,jdbcType=DECIMAL}.
+      		#{isValid,jdbcType=DECIMAL},
       		#{fkDictId,jdbcType=DECIMAL}
       	)
 	</insert>
@@ -33,8 +35,9 @@
 	      ITEM_NAME = #{itemName,jdbcType=VARCHAR},
 	      ITEM_CODE = #{itemCode,jdbcType=VARCHAR},
 	      ITEM_VAL = #{itemVal,jdbcType=VARCHAR},
+	      DICT_TYPE = #{dictType,jdbcType=VARCHAR},
 	      REMARK = #{remark,jdbcType=VARCHAR},
-	      IS_VALID = #{isValid,jdbcType=DECIMAL}.
+	      IS_VALID = #{isValid,jdbcType=DECIMAL},
 	      FK_DICT_ID = #{fkDictId,jdbcType=DECIMAL}
       	where
       	  PK_DICT_ITEM_ID = #{pkDictItemId,jdbcType=DECIMAL}
@@ -45,6 +48,41 @@
 	</delete>
 	
 	<select id="queryPage" resultMap="dictItemMapperMap">
-		select * from sys_dict_item where 1 = 1
+		select * from (select row_.*, rownum rownum_ from ( select t.* from sys_dict_item t where 1 = 1 
+		<if test="itemName != null and itemName != ''">
+			and item_name like '%${itemName}%'
+		</if>
+		<if test="itemCode != null and itemCode != ''">
+			and item_code like '%${itemCode}%'
+		</if>
+		<if test="fkDictId != null and fkDictId != ''">
+			and fk_dict_id = ${fkDictId}
+		</if>
+		) row_ where rownum <![CDATA[<=]]> ${limitA} ) where rownum_ <![CDATA[>=]]> ${limitB}
 	</select>
-</mapper>
+	
+	<delete id="doDeleteByFkId" parameterType="java.lang.Long">
+		delete from sys_dict_item where fk_dict_id = ${fkDictId}
+	</delete>
+	
+	<select id="ifExist" parameterType="string" resultType="int">
+		select count(pk_dict_item_id) from sys_dict_item where 1 = 1 and item_code = '${itemCode}'
+	</select>
+	
+	<select id="getDictItemByPkId" parameterType="java.lang.Long" resultMap="dictItemMapperMap">
+		select * from sys_dict_item where pk_dict_item_id = ${pkDictItemId}
+	</select>
+	
+	<select id="getTotalNum" resultType="int">
+		select count(pk_dict_item_id) from  sys_dict_item t where 1 = 1
+		<if test="itemName != null and itemName != ''">
+			and item_name like '%${itemName}%'
+		</if>
+		<if test="itemCode != null and itemCode != ''">
+			and item_code like '%${itemCode}%'
+		</if>
+		<if test="fkDictId != null and fkDictId != ''">
+			and fk_dict_id = ${fkDictId}
+		</if>
+	</select>
+</mapper> 

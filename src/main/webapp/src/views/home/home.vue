@@ -30,18 +30,20 @@
 				</div>
 			  	<div class="bod">
 					<ol>
-						<li>客服：400-885-9898</li>
-						<li>手机：12345678901</li>
-						<li>电话：010-58635888-</li>
-						<li>邮箱： crmnoreply@zhaopin.com.cn</li>
+						<li>客服：{{hotLineForm.customerServiceTel}}</li>
+						<li>手机：{{hotLineForm.mobilePhone}}</li>
+						<li>电话：{{hotLineForm.telephone}}</li>
+						<li>邮箱：{{hotLineForm.serviceEmail}}</li>
+						<li>服务地址：{{hotLineForm.serviceAddress}}</li>
 					</ol>
+					<br/>
 			  	</div>
 			</el-card>
 		</div>
 		<div class="card3">
 			<el-carousel indicator-position="outside" arrow="always" :interval="5000" height="380px">
-				<el-carousel-item v-for="item in imgList" :key="item" style="text-align: center;">
-				  	<img :src="item" width="580px" height="330px" style="margin-top: 25px;">
+				<el-carousel-item v-for="item in fileList" style="text-align: center;">
+				  	<img :src="item.url" width="580px" height="330px" style="margin-top: 25px;">
 				</el-carousel-item>
 	  		</el-carousel>
 		</div>
@@ -50,6 +52,7 @@
 </template>	
 <script>
 import * as ARTICLE_API from '@/api/admin/article.js'
+import * as ADMIN_API from '@/api/admin/home.js'
 import showDetail from './showDetail.vue';
 const articleType = {
 	0:'重要通知',
@@ -63,11 +66,14 @@ export default {
     data() {
         return {
         	ctxPath,
-        	imgList: [
-	          "/managersystem/images/lunbo1.jpg",
-	          "/managersystem/images/lunbo2.jpg",
-	          "/managersystem/images/lunbo3.jpg",
-	        ],
+			fileList:[],
+			hotLineForm:{
+				customerServiceTel:'',
+				serviceAddress:'',
+				serviceEmail:'',
+				telephone:'',
+				mobilePhone:'',
+			},
 			articleList: [],//公告
 			//== 公告分页
 			tableData: [],
@@ -79,6 +85,8 @@ export default {
     },
 	mounted(){
 		this.fetchArticleData();
+		this.fetchHotLineData();
+		this.fetchPictureList();
 	},
     methods: {
 		// 修改当前页
@@ -109,6 +117,19 @@ export default {
 				});
 			});
 		},
+		fetchHotLineData(){
+			ADMIN_API.api(ADMIN_API.URL_QUERY_HOT_LINE_INFO,{}).then(data =>{
+				this.hotLineForm = data.datas;
+			});	
+		},
+		fetchPictureList(){
+			this.fileList = [];
+			ADMIN_API.api(ADMIN_API.URL_QUERY_PICTURE_LIST,{}).then(data =>{
+				data.datas.forEach(item =>{
+					this.fileList.push({name:item.fileName,url:item.imgPath});
+				});
+			});
+		},
     },
 };
 </script>
@@ -116,11 +137,9 @@ export default {
 <style scoped>
 .mainBody{
 	background-color:#f0f0f0;
-	width: 98%;
-	height:95%;
-	margin: 20px;
+	width: 100%;
+	height:100%;
 	border-radius: 5px;
-	
 	position:absolute;
 	line-height: 30px;
 	font-size: 16px;
@@ -141,7 +160,7 @@ export default {
 	position: absolute;
 	display: inline;
 	margin-left: 750px;
-	margin-top: 50px;
+	margin-top: 40px;
 	float: right;
 }
 .card2{
@@ -149,14 +168,14 @@ export default {
 	display: inline;
 	float: right;
 	margin-left: 750px;
-	margin-top: 340px;
+	margin-top: 330px;
 }
 .card3{
 	width: 700px;
 	height: 600px;
 	position: absolute;
 	margin-left: 20px;
-	margin-top: 30px;
+	margin-top: 80px;
 }
 .bod li{
 	font-size: 10px;

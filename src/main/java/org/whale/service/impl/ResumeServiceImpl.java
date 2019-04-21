@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +17,6 @@ import org.whale.pojo.ResumeProject;
 import org.whale.pojo.ResumeWork;
 import org.whale.service.ResumeService;
 import org.whale.utils.Log4jUtils;
-import org.whale.utils.PageUtils;
 
 /**
 * @ClassName： ResumeServiceImpl
@@ -42,9 +39,6 @@ public class ResumeServiceImpl implements ResumeService {
 	
 	@Autowired
 	private GraduateInfoMapper graduateInfoMapper;
-	
-	@Resource
-	private PageUtils pageUtils;
 	
 	@Transactional
 	@Override

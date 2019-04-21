@@ -22,5 +22,9 @@ public interface DictMapper {
 	List<Dict> queryPage(@Param("limitA")int limitA,@Param("limitB")int limitB);
 
 	Dict getDictByPkId(@Param("pkDictId")Long pkDictId);
+
+	List<Dict> queryAllDict();
+
+	int ifExist(@Param("dictCode")String dictCode);
 }
 

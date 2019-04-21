@@ -10,7 +10,7 @@
   	</resultMap>
 	
 	<insert id="doSave" parameterType="org.whale.pojo.Dict">
-		<selectKey keyColumn="pkDictId" resultType="long" order="BEFORE">
+		<selectKey keyProperty="pkDictId" resultType="long" order="BEFORE">
 			select SEQ_SYS_DICT.nextval as pkDictId from dual
 		</selectKey>
 		insert into SYS_DICT (PK_DICT_ID, DICT_NAME, DICT_CODE, REMARK, IS_VALID)
@@ -26,12 +26,12 @@
 	<update id="doUpdate" parameterType="org.whale.pojo.Dict">
 		update SYS_DICT
     	set 
-     		DICT_NAME = #{record.dictName,jdbcType=VARCHAR},
-      		DICT_CODE = #{record.dictCode,jdbcType=VARCHAR},
-      		REMARK = #{record.remark,jdbcType=VARCHAR},
-      		IS_VALID = #{record.isValid,jdbcType=DECIMAL}
+     		DICT_NAME = #{dictName,jdbcType=VARCHAR},
+      		DICT_CODE = #{dictCode,jdbcType=VARCHAR},
+      		REMARK = #{remark,jdbcType=VARCHAR},
+      		IS_VALID = #{isValid,jdbcType=DECIMAL}
       	where
-      		PK_DICT_ID = #{record.pkDictId,jdbcType=DECIMAL}
+      		PK_DICT_ID = #{pkDictId,jdbcType=DECIMAL}
 	</update>
 	
 	<delete id="doDelete" parameterType="java.lang.Long">
@@ -39,10 +39,18 @@
 	</delete>
 	
 	<select id="queryPage" resultMap="dictMapperMap">
-		select * from sys_dict where 1 = 1
+		select * from (select row_.*, rownum rownum_ from ( select * from sys_dict where 1 = 1) row_ where rownum <![CDATA[<=]]> ${limitA} ) where rownum_ <![CDATA[>=]]> ${limitB}
 	</select>
 
 	<select id="getDictByPkId" resultMap="dictMapperMap">
 		select * from sys_dict where pk_dict_id = ${pkDictId}
+	</select>
+	
+	<select id="queryAllDict" resultMap="dictMapperMap">
+		select pk_dict_id,dict_name from sys_dict where 1 = 1
+	</select>
+	
+	<select id="ifExist" parameterType="string" resultType="int">
+		 select count(pk_dict_id) from sys_dict where dict_code = '${dictCode}'
 	</select>
 </mapper>

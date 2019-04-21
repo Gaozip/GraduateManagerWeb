@@ -3,6 +3,7 @@ package org.whale.utils;
 import java.util.Date;
 import java.util.Properties;
 
+import javax.annotation.Resource;
 import javax.mail.Authenticator;
 import javax.mail.BodyPart;
 import javax.mail.Message;
@@ -15,30 +16,35 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+import org.springframework.stereotype.Component;
 import org.whale.pojo.MailInfo;
 
+@Component
 public class MailUtils {
 	
-	private final static String host_163 = "smtp.163.com"; //163的服务器
-	private final static String formName_163 = "13115912059@163.com";//邮箱
-	private final static String password_163 = "as153759"; //授权码
-	private final static String replayAddress_163 = "13115912059@163.com"; //接收者邮箱
-	private final static String host_qq = "smtp.qq.com"; //qq的服务器
-	private final static String formName_qq = "2982824388@qq.com";//邮箱
-	private final static String password_qq = "tvuzoycsqrjidfbi"; //授权码
-	private final static String replayAddress_qq = "2982824388@qq.com"; //接收者邮箱
+	@Resource
+	private DictUtils dictUtils;
+	
+//	private final static String host_163 = "smtp.163.com"; //163的服务器
+//	private final static String formName_163 = "13115912059@163.com";//邮箱
+//	private final static String password_163 = "as153759"; //授权码
+//	private final static String replayAddress_163 = "13115912059@163.com"; //接收者邮箱
+//	private final static String host_qq = "smtp.qq.com"; //qq的服务器
+//	private final static String formName_qq = "2982824388@qq.com";//邮箱
+//	private final static String password_qq = "tvuzoycsqrjidfbi"; //授权码
+//	private final static String replayAddress_qq = "2982824388@qq.com"; //接收者邮箱
 
-	public static void sendHtmlMail(MailInfo info)throws Exception{
+	public  void sendHtmlMail(MailInfo info)throws Exception{
 		if(info.getToAddress().endsWith("163.com")){
-			info.setHost(host_163);
-	        info.setFormName(formName_163);
-	        info.setFormPassword(password_163);   
-	        info.setReplayAddress(replayAddress_163);
+			info.setHost(dictUtils.getDictItemByItemCode("HOST_163"));
+	        info.setFormName(dictUtils.getDictItemByItemCode("FORM_NAME_163"));
+	        info.setFormPassword(dictUtils.getDictItemByItemCode("PASSWORD_163"));   
+	        info.setReplayAddress(dictUtils.getDictItemByItemCode("REPLAY_ADDRESS_163"));
 		}else if(info.getToAddress().endsWith("qq.com")){
-			info.setHost(host_qq);
-	        info.setFormName(formName_qq);
-	        info.setFormPassword(password_qq);   
-	        info.setReplayAddress(replayAddress_qq);
+			info.setHost(dictUtils.getDictItemByItemCode("HOST_QQ"));
+	        info.setFormName(dictUtils.getDictItemByItemCode("FORM_NAME_QQ"));
+	        info.setFormPassword(dictUtils.getDictItemByItemCode("PASSWORD_QQ"));   
+	        info.setReplayAddress(dictUtils.getDictItemByItemCode("REPLAY_ADDRESS_QQ"));
 		}
 		
 		 Message message = getMessage(info);
@@ -54,18 +60,18 @@ public class MailUtils {
         Transport.send(message);
     }
 
-    public static void sendTextMail(MailInfo info) throws Exception {
+    public  void sendTextMail(MailInfo info) throws Exception {
 
     	if(info.getToAddress().endsWith("163.com")){
-			info.setHost(host_163);
-	        info.setFormName(formName_163);
-	        info.setFormPassword(password_163);   
-	        info.setReplayAddress(replayAddress_163);
+			info.setHost(dictUtils.getDictItemByItemCode("HOST_163"));
+	        info.setFormName(dictUtils.getDictItemByItemCode("FORM_NAME_163"));
+	        info.setFormPassword(dictUtils.getDictItemByItemCode("PASSWORD_163"));   
+	        info.setReplayAddress(dictUtils.getDictItemByItemCode("REPLAY_ADDRESS_163"));
 		}else if(info.getToAddress().endsWith("qq.com")){
-			info.setHost(host_qq);
-	        info.setFormName(formName_qq);
-	        info.setFormPassword(password_qq);   
-	        info.setReplayAddress(replayAddress_qq);
+			info.setHost(dictUtils.getDictItemByItemCode("HOST_QQ"));
+	        info.setFormName(dictUtils.getDictItemByItemCode("FORM_NAME_QQ"));
+	        info.setFormPassword(dictUtils.getDictItemByItemCode("PASSWORD_QQ"));   
+	        info.setReplayAddress(dictUtils.getDictItemByItemCode("REPLAY_ADDRESS_QQ"));
 		}
         Message message = getMessage(info);
         //消息发送的内容

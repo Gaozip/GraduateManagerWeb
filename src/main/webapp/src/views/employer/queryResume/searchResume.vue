@@ -90,7 +90,7 @@
 <script>
 import FuzzySearch from '@/components/fuzzySearch/fuzzySearch.vue';	
 import * as EMPLOYER_API from '@/api/employer/employer.js'
-import showResume from '../graduate/resume/show/showResume.vue'
+import showResume from '@/views/graduate/resume/show/showResume.vue'
 import VDistpicker from 'v-distpicker'
 	
 export default{

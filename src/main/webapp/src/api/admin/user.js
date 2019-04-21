@@ -1,12 +1,8 @@
 import axios from '../../axios/index.js';
 import { Message as message } from 'element-ui';
 
-export const URL_DO_SAVE = '/dict/doSave'  
-export const URL_DO_UPDATE = '/dict/doUpdate'  
-export const URL_QUERY_PAGE = '/dict/queryPage'
-export const URL_DO_DELETE = '/dict/doDelete'
-export const URL_QUERY_ALL_DICT = '/dict/queryAllDict'
-export const URL_IF_EXIST = '/dict/ifExist'
+export const URL_QUERY_USER_PAGE = '/admin/queryUserPage'  
+export const URL_DO_UPDATE_USER_STATE = '/admin/doUpdateUserState'
 
 export function api(url, param) {
     return new Promise((resolve, reject) => {

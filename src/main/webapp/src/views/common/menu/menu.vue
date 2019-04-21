@@ -34,9 +34,9 @@ export default {
 	    ],
 	    adminRouterList:[
 	    	{label:'首页',to:'/home'},
-            {label:'首页管理',children:[{label:'公告管理',to:'/admin/article',name:'公告管理'},{label:'走马灯图片管理',to:'/admin/carousel',name:'走马灯图片管理'},{label:'服务热线信息管理',to:'/admin/hotLineInfo',name:'服务热线信息管理'}]},
-	    	{label:'用户管理',children:[{label:'用户信息管理',to:'/admin/user',name:'用户信息管理'},]},
-	    	{label:'就业管理',children:[{label:'就业统计',to:'/admin/jobRate',name:'就业统计'},]},
+            {label:'首页管理',children:[{label:'公告管理',to:'/admin/article',name:'公告管理'},{label:'走马灯图片管理',to:'/admin/carousel',name:'走马灯图片管理'}]},
+            {label:'就业统计',children:[{label:'就业率',to:'/admin/jobRate',name:'就业率'},{label:'就业情况',to:'/admin/studentInfo',name:'就业情况'},]},
+            {label:'用户管理',children:[{label:'用户管理',to:'/admin/user',name:'用户管理'},]},
             {label:'字典管理',children:[{label:'字典分类',to:'/admin/dict',name:'字典分类'},{label:'字典元素',to:'/admin/dictItem',name:'字典元素'},]},
 	    ],
 	    options: {

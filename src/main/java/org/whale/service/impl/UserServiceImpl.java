@@ -102,5 +102,12 @@ public class UserServiceImpl implements UserService{
 		return this.userMapper.haveUserHeadPath(userId);
 	}
 
+
+	@Override
+	public void doRegisterAdminUser(User user) {
+		
+		this.userMapper.doRegisterAdminUser(user);
+	}
+
 }
 

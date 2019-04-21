@@ -1,5 +1,9 @@
 package org.whale.controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -8,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.whale.pojo.Dict;
+import org.whale.pojo.Page;
 import org.whale.service.DictService;
 import org.whale.utils.WebUtils;
 
@@ -59,6 +64,46 @@ public class DictController extends BaseController {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	@RequestMapping("/queryPage")
+	public void queryPage(HttpServletRequest request,HttpServletResponse response){
+		
+		try {
+			Page page2 = this.newPage(request);
+			Map<String, String> paramMap = this.getParamMap(request);
+			Page page = this.dictService.queryPage(page2,paramMap);
+			WebUtils.printSuccess(request, response, page);
+		} catch (Exception e) {
+			WebUtils.printFail(request, response, "数据查询失败!");
+			e.printStackTrace();
+		}
+	}
+	
+	@RequestMapping("/queryAllDict")
+	public void queryAllDict(HttpServletRequest request,HttpServletResponse response){
+		
+		try {
+			List<Dict> dictList = this.dictService.queryAllDict();
+			WebUtils.printSuccess(request, response, dictList);
+		} catch (Exception e) {
+			WebUtils.printFail(request, response, "数据查询失败!");
+			e.printStackTrace();
+		}
+	}
+	
+	@RequestMapping("/ifExist")
+	public void IfExist(HttpServletRequest request,HttpServletResponse response,@RequestParam("dictCode")String dictCode){
+		
+		try {
+			int num = this.dictService.ifExist(dictCode);
+			Map<String, Integer> map = new HashMap<>();
+			map.put("num", num);
+			WebUtils.printSuccess(request, response, map);
+		} catch (Exception e) {
+			WebUtils.printFail(request, response, "数据查询失败!");
+			e.printStackTrace();
+		}
 	}
 }
 

@@ -1,5 +1,5 @@
 <template>
-    <el-dialog :visible.sync="dialogVisible" :close-on-click-modal="false" title="新建字典" width="60%" append-to-body >
+    <el-dialog :visible.sync="dialogVisible" :close-on-click-modal="false" title="新增字典" width="60%" append-to-body >
         <div class="dialog-edit">
             <!-- 添加了校验规则 -->
             <el-form :inline="true" :model="form" ref="formName" :rules="rules" >
@@ -47,6 +47,15 @@
     export default {
         components: {},
         data() {
+            var IfExist = (rule, value, callback) => {
+                DICT_API.api(DICT_API.URL_IF_EXIST,{dictCode:value,}).then(data =>{
+                    if(data.datas.num == '1'){
+                        callback(new Error('该字典编码已存在!'));
+                    }else{
+                        callback();
+                    }
+                });
+            };
             return {
                 dialogVisible:false,
                 form:{
@@ -61,6 +70,7 @@
                     ],
                     dictCode:[
                         { required: true, message: '请输入字典编码', trigger: 'blur' },
+                        { validator:IfExist,trigger: 'blur'},
                     ],
                 },
             }
@@ -94,7 +104,8 @@
                             remark: this.form.remark,
                         };
                         DICT_API.api(DICT_API.URL_DO_SAVE,param).then(data =>{
-                            console.info(data);
+                            this.$message.success('添加成功');
+                            this.dialogVisible = false;
                         });
                     }
                 });
