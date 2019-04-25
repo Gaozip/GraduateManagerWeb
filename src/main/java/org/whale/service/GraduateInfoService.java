@@ -21,5 +21,7 @@ public interface GraduateInfoService {
 
 	Page doSearchCompanyInfo(Page page, Map<String, String> paramMap);
 
+	Page doSearchRecruitment(Page page2, Map<String, String> paramMap);
+
 }
 

@@ -24,7 +24,7 @@ export default {
        	{label:'首页',to:'/home',name:'首页'},
 	    	{label:'资料管理',children:[{label:'基本资料',to:'/graduate/basicInfo',name:'基本资料'},{label:'修改资料',to:'/graduate/changeBasicInfo',name:'修改资料'}]},
 	    	{label:'信息咨询',children:[{label:'企业信息查询',to:'/graduate/companyInfo',name:'企业信息查询'},{label:'招聘信息查询',to:'/graduate/recruitmentInfo',name:'招聘信息查询'},{label:'简历投递结果查询',to:'/graduate/resultInfo',name:'简历投递结果查询'},]},
-	    	{label:'简历管理',children:[{label:'我的简历',to:'/graduate/myResume',name:'我的简历'},{label:'上传本地简历',to:'/graduate/uploadResume',name:'上传本地简历'}]},
+	    	{label:'简历管理',children:[{label:'我的简历',to:'/graduate/myResume',name:'我的简历'},]},
     	],
 	    employerRouterList:[
 	    	{label:'首页',to:'/home',name:'首页'},

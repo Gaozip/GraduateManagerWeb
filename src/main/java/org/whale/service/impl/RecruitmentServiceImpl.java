@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.whale.dao.EmployerInfoMapper;
 import org.whale.dao.RecruitmentMapper;
+import org.whale.dao.ResumeMapper;
 import org.whale.pojo.EmployerInfo;
 import org.whale.pojo.Page;
 import org.whale.pojo.Recruitment;
@@ -26,6 +27,9 @@ public class RecruitmentServiceImpl implements RecruitmentService{
 	
 	@Autowired
 	private EmployerInfoMapper employerInfoMapper;
+	
+	@Autowired
+	private ResumeMapper resumeMapper;
 	
 	@Override
 	public void doSave(Recruitment recruitment) {
@@ -71,6 +75,11 @@ public class RecruitmentServiceImpl implements RecruitmentService{
 	@Override
 	public void doDelete(Long pkRecruitmentId) {
 		recruitmentMapper.doDelete(pkRecruitmentId);
+	}
+
+	@Override
+	public List<Long> queryAllResumeIdByUserId(Long userId) {
+		return this.resumeMapper.queryAllResumeIdByUserId(userId);
 	}
 
 	

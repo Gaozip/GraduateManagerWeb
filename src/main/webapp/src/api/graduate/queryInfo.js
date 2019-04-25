@@ -2,6 +2,7 @@ import { Message as message } from 'element-ui';
 import axios from '../../axios/index.js';
 
 export const URL_QUERY_COMPANY_INFO = '/graduate/doSearchCompanyInfo'    //查询用户基本信息
+export const URL_QUERY_RECRUITMENT_INFO = '/graduate/doSearchRecruitment';  //查询简历信息
 
 export function api(url, param) {
     return new Promise((resolve, reject) => {

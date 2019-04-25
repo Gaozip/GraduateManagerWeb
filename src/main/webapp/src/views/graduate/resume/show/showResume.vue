@@ -120,11 +120,17 @@
 				</ol>
 	    	</dl>
 	    </div>
+		<!-- 最后是按钮，（不要放在 form 里面） -->
+		<div class="dialog-edit__btnGroup" slot="footer">
+			<el-button type="primary"  v-show="type == 'employer'" @click="doUpdate">通过</el-button>
+			<el-button @click="dialogVisible = false">关闭</el-button>
+		</div>
 	</el-dialog>
 </template>
 
 <script>
 import * as tools from '@/assets/tools';	
+import * as GERINFO_API from '@/api/employer/gerInfo.js'
 export default{
 	data(){
 		return{
@@ -134,10 +140,16 @@ export default{
 			projectList:[],
 			workList:[],
 			gradYear:'',
+			type:'',
+			gerId:'',
 		}
 	},
 	methods:{
-		show(scope){
+		show(scope,gerId,type){
+			if(type == 'employer'){
+				this.type = type;
+				this.gerId = gerId;
+			}
 			this.dialogVisible = true;
 			this.graduateInfo = scope.graduateInfo;
 			this.resumeInfo = scope;
@@ -145,8 +157,16 @@ export default{
 			this.workList = scope.workList;
 			this.gradYear = parseInt(tools.transformTime(scope.graduateInfo.inDate,'YYYY')) + 4; 
 		},
-		btnClick(){
-			
+		doUpdate(){
+			let param = {
+				pkGerId: this.gerId,
+			};
+			this.$confirm('确认通过？').then(_ => {
+				GERINFO_API.api(GERINFO_API.URL_DO_UPDATE,param).then(data =>{
+					this.$message.success('设置成功!');
+					this.dialogVisible = false;
+				});
+			}).catch(_ => {});
 		},
 	},
 }

@@ -1,5 +1,6 @@
 package org.whale.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -63,6 +64,24 @@ public class RecruitmentController extends BaseController{
 		} catch (Exception e) {
 			e.printStackTrace();
 			WebUtils.printFail(request, response, "删除失败");
+		}
+	}
+	
+	/**
+	 * 查询当前用户所有的简历id
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping("/queryAllResumeIdByUserId")
+	public void queryAllResumeIdByUserId(HttpServletRequest request,HttpServletResponse response){
+		
+		try {
+			Long userId = this.getUserId(request);
+			List<Long> resumeIdList = recruitmentService.queryAllResumeIdByUserId(userId);
+			WebUtils.printSuccess(request, response, resumeIdList);
+		} catch (Exception e) {
+			WebUtils.printFail(request, response, "数据查询失败！");
+			e.printStackTrace();
 		}
 	}
 }

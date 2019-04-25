@@ -11,7 +11,7 @@
 	      <el-table :data="tableData" border stripe style="width: 100%">
 	        <el-table-column prop="pkResumeId" label="操作" width="135px" :show-overflow-tooltip="true">
 	        	<template slot-scope="scope">
-	        		<el-button type="text" @click="$refs.showRecruitment.show(scope.row)">查看</el-button>
+	        		<el-button type="text" @click="$refs.showRecruitment.show(scope.row,'employer')">查看</el-button>
 	        		<el-button type="text" @click="$refs.editRecruitment.show(scope.row)">修改</el-button>
 		            <el-button type="text" @click="deleteResumeByResumeId(scope.row.pkRecruitmentId)">删除</el-button>
 		        </template>

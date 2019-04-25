@@ -1,7 +1,6 @@
 package org.whale.pojo;
 
 import java.util.Date;
-
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
@@ -42,8 +41,6 @@ public class Recruitment {
     private Long fkUserId;
     
     private EmployerInfo employerInfo;
-    
-    
 
     public EmployerInfo getEmployerInfo() {
 		return employerInfo;
@@ -199,4 +196,5 @@ public class Recruitment {
 		builder.append("]");
 		return builder.toString();
 	}
+
 }

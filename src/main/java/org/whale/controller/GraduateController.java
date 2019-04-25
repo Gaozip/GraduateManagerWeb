@@ -84,9 +84,29 @@ public class GraduateController extends BaseController{
 	@RequestMapping("/doSearchCompanyInfo")
 	public void doSearchCompanyInfo(HttpServletRequest request,HttpServletResponse response){
 		try {
-			Page page = this.newPage(request);
+			Page page2 = this.newPage(request);
 			Map<String, String> paramMap = this.getParamMap(request);
-			WebUtils.printSuccess(request, response, this.graduateService.doSearchCompanyInfo(page,paramMap));
+			Page page = this.graduateService.doSearchCompanyInfo(page2,paramMap);
+			WebUtils.printSuccess(request, response, page);
+		} catch (Exception e) {
+			WebUtils.printFail(request, response, "数据查询失败!");
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 查询招聘信息
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping("/doSearchRecruitment")
+	public void doSearchRecruitment(HttpServletRequest request,HttpServletResponse response){
+		
+		try {
+			Page page2 = this.newPage(request);
+			Map<String, String> paramMap = this.getParamMap(request);
+			Page page = this.graduateService.doSearchRecruitment(page2,paramMap);
+			WebUtils.printSuccess(request, response, page);
 		} catch (Exception e) {
 			WebUtils.printFail(request, response, "数据查询失败!");
 			e.printStackTrace();

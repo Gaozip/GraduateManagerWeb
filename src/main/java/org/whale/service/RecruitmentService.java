@@ -1,5 +1,6 @@
 package org.whale.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.whale.pojo.Page;
@@ -20,6 +21,8 @@ public interface RecruitmentService {
 	void doUpdate(Recruitment recruitment);
 
 	void doDelete(Long pkRecruitmentId);
+
+	List<Long> queryAllResumeIdByUserId(Long userId);
 
 }
 

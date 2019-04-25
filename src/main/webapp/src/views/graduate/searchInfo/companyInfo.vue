@@ -3,16 +3,16 @@
         <div class="search-bar">
             <FuzzySearch placeholder="输入关键字进行搜索" @fuzzyClick="fuzzyClick" width="300px">
                 <el-form-item label="公司名称" prop="resumeName">
-                    <el-input v-model="searchForm.COMPANY_NAME" @keyup.enter.native="doSearch"></el-input>
+                    <el-input v-model="searchForm.companyName" @keyup.enter.native="doSearch"></el-input>
                 </el-form-item>
                 <el-form-item label="组织结构代码">
-                    <el-input v-model="searchForm.ORGANIZATION_CODE"></el-input>
+                    <el-input v-model="searchForm.organizationCode"></el-input>
                 </el-form-item>
                 <el-form-item label="法人代表">
-                    <el-input v-model="searchForm.LEGAL_REPRESENTATIVE"></el-input>
+                    <el-input v-model="searchForm.legalRepresentative"></el-input>
                 </el-form-item>
                 <el-form-item label="公司类型">
-                    <el-select v-model="searchForm.COMPANY_TYPE" placeholder="请选择">
+                    <el-select v-model="searchForm.companyType" placeholder="请选择">
                         <el-option value="内资企业"></el-option>
                         <el-option value="国有企业"></el-option>
                         <el-option value="集体企业"></el-option>
@@ -34,7 +34,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="所属行业">
-                    <el-select v-model="searchForm.INDUSTRY" placeholder="请选择">
+                    <el-select v-model="searchForm.industry" placeholder="请选择">
                         <el-option value="互联网/电子商务"></el-option>
                         <el-option value="计算机软件"></el-option>
                         <el-option value="IT服务(系统/数据/维护)"></el-option>
@@ -103,15 +103,15 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="员工人数">
-                    <el-input v-model="searchForm.EMPLOYER_NUM"></el-input>
+                    <el-input v-model="searchForm.employerNum"></el-input>
                 </el-form-item>
                 <el-form-item label="注册资本">
-                    <el-input v-model="searchForm.REGISTER_CAPITAL" placeholder="单位:万以上"></el-input>
+                    <el-input v-model="searchForm.registerCapital" placeholder="单位:万以上"></el-input>
                 </el-form-item>
                 <el-form-item label="成立时间">
-                    <el-date-picker v-model="searchForm.BEGIN_REGISTER_DATE" type="date" placeholder="选择日期"></el-date-picker>
+                    <el-date-picker v-model="searchForm.beginRegisterDate" type="date" placeholder="选择日期"></el-date-picker>
                     --
-                    <el-date-picker v-model="searchForm.END_REGISTER_DATE" type="date" placeholder="选择日期"></el-date-picker>
+                    <el-date-picker v-model="searchForm.endRegisterDate" type="date" placeholder="选择日期"></el-date-picker>
                 </el-form-item>
                 <el-button type="primary"  plain style="margin-top: 5px;"@click="doSearch">查询</el-button>
             </FuzzySearch>
@@ -124,7 +124,25 @@
                     </template>
                 </el-table-column>
                 <el-table-column type="index" label="序号" width="60px"></el-table-column>
-                <el-table-column prop="pkResumeId" label="简历编号"></el-table-column>
+                <el-table-column prop="companyName" label="公司名称"></el-table-column>
+                <el-table-column prop="organizationCode" label="组织机构代码"></el-table-column>
+                <el-table-column prop="legalRepresentative" label="法人代表"></el-table-column>
+                <el-table-column prop="industry" label="所属行业"></el-table-column>
+                <el-table-column prop="employerNum" label="员工人数">
+                    <template slot-scope="scope">
+                        {{scope.row.employerNum}}人
+                    </template>
+                </el-table-column>
+                <el-table-column prop="registerCapital" label="注册资本">
+                    <template slot-scope="scope">
+                        {{scope.row.registerCapital}}万
+                    </template>
+                </el-table-column>
+                <el-table-column prop="registerDate" label="成立时间">
+                    <template slot-scope="scope">
+                        {{scope.row.registerDate | dateFmt('YYYY-MM-DD')}}
+                    </template>
+                </el-table-column>
             </el-table>
             <div class="pagination-bar" v-show="tableData.length > 0">
                 <el-pagination
@@ -145,20 +163,21 @@
     import FuzzySearch from '@/components/fuzzySearch/fuzzySearch.vue';
     import * as QUERY_INFO from '@/api/graduate/queryInfo.js';
     import * as tools from '@/assets/tools';
+   
     export default {
-        components: {FuzzySearch,},
+        components: { FuzzySearch,},
         data() {
             return {
                 searchForm:{
-                    COMPANY_NAME:'',    //公司名称
-                    ORGANIZATION_CODE:'',//组织机构代码
-                    LEGAL_REPRESENTATIVE:'',//法人代表
-                    COMPANY_TYPE:'',//公司类型
-                    INDUSTRY:'',//所属行业
-                    EMPLOYER_NUM:'',//员工人数
-                    REGISTER_CAPITAL:'',//注册资本
-                    BEGIN_REGISTER_DATE:'',//成立时间-开始
-                    END_REGISTER_DATE:'',//成立时间-结束
+                    companyName:'',    //公司名称
+                    organizationCode:'',//组织机构代码
+                    legalRepresentative:'',//法人代表
+                    companyType:'',//公司类型
+                    industry:'',//所属行业
+                    employerNum:'',//员工人数
+                    registerCapital:'',//注册资本
+                    beginRegisterDate:'',//成立时间-开始
+                    endRegisterDate:'',//成立时间-结束
                 },
                 searchFormClone:{},
                 tableData: [],
@@ -171,7 +190,7 @@
             }
         },
         mounted() {
-            
+            this.fetchTableData();
         },
         watch: {
             
@@ -187,25 +206,25 @@
             },
             doSearch(){    //高级查询
                 this.currentPage = 1;
-                var BEGIN_REGISTER_DATE = '';
-                var END_REGISTER_DATE = '';
-                if(this.searchForm.BEGIN_REGISTER_DATE != '' && this.searchForm.BEGIN_REGISTER_DATE != null){
-                    BEGIN_REGISTER_DATE = tools.transformTime(this.searchForm.BEGIN_REGISTER_DATE,'YYYY-MM-DD 00:00:00');
+                var beginRegisterDate = '';
+                var endRegisterDate = '';
+                if(this.searchForm.beginRegisterDate != '' && this.searchForm.beginRegisterDate != null){
+                    beginRegisterDate = tools.transformTime(this.searchForm.beginRegisterDate,'YYYY-MM-DD');
                 }
-                if(this.searchForm.END_REGISTER_DATE != '' && THIS.searchForm.END_REGISTER_DATE != null){
-                    END_REGISTER_DATE = tools.transformTime(this.searchForm.END_REGISTER_DATE,'YYYY-MM-DD 23:59:59');
+                if(this.searchForm.endRegisterDate != '' && THIS.searchForm.endRegisterDate != null){
+                    endRegisterDate = tools.transformTime(this.searchForm.endRegisterDate,'YYYY-MM-DD');
                 }
                 
                 let param = {
-                    COMPANY_NAME: this.searchForm.COMPANY_NAME,    //公司名称
-                    ORGANIZATION_CODE: this.searchForm.ORGANIZATION_CODE,  //组织机构代码
-                    LEGAL_REPRESENTATIVE: this.searchForm.LEGAL_REPRESENTATIVE,//法人代表
-                    COMPANY_TYPE: this.searchForm.COMPANY_TYPE,//公司类型
-                    INDUSTRY: this.searchForm.INDUSTRY,//所属行业
-                    EMPLOYER_NUM: this.searchForm.EMPLOYER_NUM,//员工人数
-                    REGISTER_CAPITAL: this.searchForm.REGISTER_CAPITAL,//注册资本
-                    BEGIN_REGISTER_DATE: this.searchForm.BEGIN_REGISTER_DATE,//成立时间-开始
-                    END_REGISTER_DATE: this.searchForm.END_REGISTER_DATE,//成立时间-结束
+                    companyName: this.searchForm.companyName,    //公司名称
+                    organizationCode: this.searchForm.organizationCode,  //组织机构代码
+                    legalRepresentative: this.searchForm.legalRepresentative,//法人代表
+                    companyType: this.searchForm.companyType,//公司类型
+                    industry: this.searchForm.industry,//所属行业
+                    employerNum: this.searchForm.employerNum,//员工人数
+                    registerCapital: this.searchForm.registerCapital,//注册资本
+                    beginRegisterDate: beginRegisterDate,//成立时间-开始
+                    endRegisterDate: endRegisterDate,//成立时间-结束
                 };
                 this.searchFormClone = Object.assign(param,{});
                 this.fetchTableData();
@@ -217,7 +236,9 @@
                 };
                 Object.assign(param,this.searchFormClone);
                 QUERY_INFO.api(QUERY_INFO.URL_QUERY_COMPANY_INFO,param).then(data =>{
-                    console.info(data);
+                    this.tableData = data.datas.datas;
+                    this.totalNum = data.datas.totalNum;
+                    this.currentPage = data.datas.pageNo;
                 });
             },
             // 修改每页显示条数

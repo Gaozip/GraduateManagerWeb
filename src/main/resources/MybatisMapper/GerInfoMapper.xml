@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.whale.dao.GerInfoMapper">
+	<resultMap id="GerInfoMapperMap" type="org.whale.pojo.GerInfo">
+	    <id column="PK_GER_ID" jdbcType="DECIMAL" property="pkGerId" />
+	    <result column="FK_RESUME_ID" jdbcType="DECIMAL" property="fkResumeId" />
+	    <result column="FK_RECRUITMENT_ID" jdbcType="DECIMAL" property="fkRecruitmentId" />
+	    <result column="FK_EMPLOYER_ID" jdbcType="DECIMAL" property="fkEmployerId" />
+	    <result column="FK_GRADUATE_ID" jdbcType="DECIMAL" property="fkGraduateId" />
+	    <result column="SEND_TIME" jdbcType="TIMESTAMP" property="sendTime" />
+	    <result column="RESULT_TIME" jdbcType="TIMESTAMP" property="resultTime" />
+	    <result column="RESULT" jdbcType="DECIMAL" property="result" />
+	</resultMap>
+	<insert id="doSave" parameterType="org.whale.pojo.GerInfo">
+		<selectKey keyProperty="pkGerId" resultType="long" order="BEFORE">
+			select SEQ_SYS_GER_INFO.nextval as pkGerId from dual
+		</selectKey>
+		insert into SYS_GER_INFO (PK_GER_ID, FK_RESUME_ID, FK_RECRUITMENT_ID, FK_EMPLOYER_ID, FK_GRADUATE_ID, SEND_TIME)
+    	values (
+    		#{pkGerId,jdbcType=DECIMAL}, 
+    		#{fkResumeId,jdbcType=DECIMAL}, 
+    		#{fkRecruitmentId,jdbcType=DECIMAL}, 
+      		#{fkEmployerId,jdbcType=DECIMAL}, 
+      		#{fkGraduateId,jdbcType=DECIMAL}, 
+      		sysdate
+      	)
+	</insert>
+
+	<update id="doUpdate" parameterType="java.lang.Long">
+		update SYS_GER_INFO
+    	set 
+      		RESULT_TIME = sysdate,
+      		RESULT = 1
+      	where 
+      		pk_ger_id = ${pkGerId}
+	</update>
+	
+	<select id="ifExist" parameterType="org.whale.pojo.GerInfo" resultType="int">
+		select count(PK_GER_ID) from sys_ger_info 
+		where 
+			FK_RESUME_ID = #{fkResumeId,jdbcType=DECIMAL} and
+      		FK_RECRUITMENT_ID = #{fkRecruitmentId,jdbcType=DECIMAL}
+	</select>
+	
+	<select id="queryReceivedResume" resultMap="GerInfoMapperMap">
+		select * from (select row_.*, rownum rownum_ from (select * from sys_ger_info where 1 = 1 and FK_EMPLOYER_ID = ${employerId}
+		<if test="fkResumeId != null and fkResumeId != ''">
+			and fk_resume_id = ${fkResumeId}
+		</if>
+		<if test="fkRecruitmentId != null and fkRecruitmentId != ''">
+			and fk_recruitment_id = ${fkRecruitmentId}
+		</if>
+		) row_ where rownum <![CDATA[<=]]> ${limitA} ) where rownum_ <![CDATA[>=]]> ${limitB}
+	</select>
+	
+	<select id="getTotalNum" resultType="int">
+		select count(*) from (select * from sys_ger_info where 1 = 1 and FK_EMPLOYER_ID = ${employerId}
+		<if test="fkResumeId != null and fkResumeId != ''">
+			and fk_resume_id = ${fkResumeId}
+		</if>
+		<if test="fkRecruitmentId != null and fkRecruitmentId != ''">
+			and fk_recruitment_id = ${fkRecruitmentId}
+		</if>
+		)
+	</select>
+	
+	<select id="queryResultPage" resultMap="GerInfoMapperMap">
+		select * from (select row_.*, rownum rownum_ from (select * from sys_ger_info where 1 = 1 and fk_graduate_id = (select pk_grad_id from sys_graduate_info where fk_user_id = ${userId})
+		) row_ where rownum <![CDATA[<=]]> ${limitA} ) where rownum_ <![CDATA[>=]]> ${limitB}
+	</select>
+</mapper>

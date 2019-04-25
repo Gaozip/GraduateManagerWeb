@@ -1,11 +1,10 @@
-import axios from '../../axios/index.js';
 import { Message as message } from 'element-ui';
-
-export const URL_DO_SAVE = '/recruitment/doSave';
-export const URL_QUERY_PAGE = '/recruitment/queryPage';
-export const URL_DO_UPDATE = '/recruitment/doUpdate';
-export const URL_DO_DELETE = '/recruitment/doDelete';
-export const URL_QUERY_ALL_RESUME_ID_BY_USER_ID = '/recruitment/queryAllResumeIdByUserId';  //查询此人所有的简历id
+import axios from '../../axios/index.js';
+export const URL_DO_SAVE = '/gerInfo/doSave'; //投递简历
+export const URL_QUERY_RECRUITMENT_LIST = '/gerInfo/queryRecruitmentIdList';
+export const URL_QUERY_RESUME_RECEIVE = '/gerInfo/queryReceivedResume';
+export const URL_DO_UPDATE = '/gerInfo/doUpdate'   //确认简历是否通过
+export const URL_QUERY_RESULT_PAGE = '/gerInfo/queryResultPage' //查询简历投递结果 
 
 export function api(url, param) {
     return new Promise((resolve, reject) => {

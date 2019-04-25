@@ -1,14 +1,18 @@
 package org.whale.service.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.whale.dao.EmployerInfoMapper;
 import org.whale.dao.GraduateInfoMapper;
+import org.whale.dao.RecruitmentMapper;
+import org.whale.pojo.EmployerInfo;
 import org.whale.pojo.GraduateInfo;
 import org.whale.pojo.Page;
+import org.whale.pojo.Recruitment;
 import org.whale.service.GraduateInfoService;
-import org.whale.utils.StringUtils;
 
 /**
 * @ClassName： GraduateServiceImpl
@@ -21,6 +25,12 @@ public class GraduateInfoServiceImpl implements GraduateInfoService {
 
 	@Autowired
 	private GraduateInfoMapper graduateInfoMapper;
+	
+	@Autowired
+	private EmployerInfoMapper employerInfoMapper;
+	
+	@Autowired
+	private RecruitmentMapper recruitmentMapper;
 	
 	@Override
 	public GraduateInfo queryBasicInfoById(Long userId) {
@@ -41,63 +51,47 @@ public class GraduateInfoServiceImpl implements GraduateInfoService {
 	@Override
 	public Page doSearchCompanyInfo(Page page, Map<String, String> paramMap) {
 
-		StringBuilder sql = new StringBuilder("select * from SYS_EMPLOYER_INFO t where 1 = 1 ");
-		
-		if(paramMap != null && paramMap.size() > 0){
-			String COMPANY_NAME = paramMap.get("COMPANY_NAME");
-			if(StringUtils.isNotBlank(COMPANY_NAME)){
-				sql.append("and t.COMPANY_NAME like %"+COMPANY_NAME.trim()+"% ");
-			}
-			String ORGANIZATION_CODE = paramMap.get("ORGANIZATION_CODE");
-			if(StringUtils.isNotBlank(ORGANIZATION_CODE)){
-				sql.append("and t.ORGANIZATION_CODE like %"+ORGANIZATION_CODE.trim()+"% ");
-			}
-			String LEGAL_REPRESENTATIVE = paramMap.get("LEGAL_REPRESENTATIVE");
-			if(StringUtils.isNotBlank(LEGAL_REPRESENTATIVE)){
-				sql.append("and t.LEGAL_REPRESENTATIVE like %"+LEGAL_REPRESENTATIVE.trim()+"% ");
-			}
-			String COMPANY_TYPE = paramMap.get("COMPANY_TYPE");
-			if(StringUtils.isNotBlank(COMPANY_TYPE)){
-				sql.append("and t.COMPANY_TYPE like %"+COMPANY_TYPE.trim()+"% ");
-			}
-			String INDUSTRY = paramMap.get("INDUSTRY");
-			if(StringUtils.isNotBlank(INDUSTRY)){
-				sql.append("and t.INDUSTRY like %"+INDUSTRY.trim()+"% ");
-			}
-			String EMPLOYER_NUM = paramMap.get("EMPLOYER_NUM");
-			if(StringUtils.isNotBlank(EMPLOYER_NUM)){
-				sql.append("and t.EMPLOYER_NUM >= "+EMPLOYER_NUM.trim()+" ");
-			}
-			String REGISTER_CAPITAL = paramMap.get("REGISTER_CAPITAL");
-			if(StringUtils.isNotBlank(REGISTER_CAPITAL)){
-				sql.append("and t.REGISTER_CAPITAL >= "+REGISTER_CAPITAL.trim()+" ");
-			}
-			String BEGIN_REGISTER_DATE = paramMap.get("BEGIN_REGISTER_DATE");
-			if(StringUtils.isNotBlank(BEGIN_REGISTER_DATE)){
-				sql.append("and t.REGISTER_DATE >= to_date("+BEGIN_REGISTER_DATE.trim()+",'yyyy-mm-dd hh24:mi:ss') ");
-			}
-			String END_REGISTER_DATE = paramMap.get("END_REGISTER_DATE");
-			if(StringUtils.isNotBlank(END_REGISTER_DATE)){
-				sql.append("and t.REGISTER_DATE <= to_date("+END_REGISTER_DATE.trim()+",'yyyy-mm-dd hh24:mi:ss') ");
-			}
-			
-			String FUZZY_WORD = paramMap.get("FUZZY_WORD");
-			if(StringUtils.isNotBlank(FUZZY_WORD)){
-				sql.append("and "
-							+ "(t.COMPANY_NAME like %"+FUZZY_WORD.trim()+"% or "
-							+ "t.ORGANIZATION_CODE like %"+FUZZY_WORD.trim()+"% or"
-							+ "t.LEGAL_REPRESENTATIVE like %"+FUZZY_WORD.trim()+"% or"
-							+ "t.COMPANY_TYPE like %"+FUZZY_WORD.trim()+"% or"
-							+ "t.INDUSTRY like %"+FUZZY_WORD.trim()+"% )"
-				);
-			}
-		}
-		page.setSql(sql.toString());
-//		return pageUtils.queryPage(page);
-		return null;
+		String companyName = paramMap.get("companyName");
+		String organizationCode = paramMap.get("organizationCode");
+		String legalRepresentative = paramMap.get("legalRepresentative");
+		String companyType = paramMap.get("companyType");
+		String industry = paramMap.get("industry");
+		String employerNum = paramMap.get("employerNum");
+		String registerCapital = paramMap.get("registerCapital");
+		String beginRegisterDate = paramMap.get("beginRegisterDate");
+		String endRegisterDate = paramMap.get("endRegisterDate");
+		String FUZZY_WORD = paramMap.get("FUZZY_WORD");
+		List<EmployerInfo> list = this.employerInfoMapper.doSearchCompanyInfo(page.getLimitA(),page.getLimitB(),companyName,organizationCode,legalRepresentative,companyType,industry,employerNum,registerCapital,beginRegisterDate,endRegisterDate,FUZZY_WORD);
+		int num = this.employerInfoMapper.getTotalNum(companyName,organizationCode,legalRepresentative,companyType,industry,employerNum,registerCapital,beginRegisterDate,endRegisterDate,FUZZY_WORD);
+		page.setTotalNum((long)num);
+		page.setDatas(list);
+		return page;
 	}
 
-	
-
+	@Override
+	public Page doSearchRecruitment(Page page2, Map<String, String> paramMap) {
+//		String companyName = paramMap.get("companyName");
+		String position = paramMap.get("position");
+		String monthSalary = paramMap.get("monthSalary");
+		String province = paramMap.get("province");
+		String city = paramMap.get("city");
+		String jobNature = paramMap.get("jobNature");
+		String education = paramMap.get("education");
+		String workExperience = paramMap.get("workExperience");
+		String FUZZY_WORD = paramMap.get("FUZZY_WORD");
+		List<Recruitment> list = this.recruitmentMapper.doSearchRecruitment(page2.getLimitA(),page2.getLimitB(),position,monthSalary,province,city,jobNature,education,workExperience,FUZZY_WORD);
+		
+		
+		for(Recruitment recruitment : list){
+			Long fkUserId = recruitment.getFkUserId();
+			EmployerInfo employerInfo = this.employerInfoMapper.getEmployerInfoByUserId(fkUserId);
+			recruitment.setEmployerInfo(employerInfo);
+		}
+		
+		int totalNum = this.recruitmentMapper.getTotalNum(position, monthSalary, province, city, jobNature, education, workExperience, FUZZY_WORD);
+		page2.setTotalNum((long)totalNum);
+		page2.setDatas(list);
+		return page2;
+	}
 }
 

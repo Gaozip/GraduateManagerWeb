@@ -1,8 +1,10 @@
 package org.whale.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
+import org.whale.pojo.GerInfo;
 import org.whale.pojo.Recruitment;
 
 /**
@@ -23,5 +25,16 @@ public interface RecruitmentMapper {
 
 	Recruitment getRecruitmentByPkId(@Param("pkRecruitmentId")Long pkRecruitmentId);
 
+	List<Recruitment> doSearchRecruitment(@Param("limitA")int limitA, @Param("limitB")int limitB, @Param("position")String position,
+			@Param("monthSalary")String monthSalary, @Param("province")String province, @Param("city")String city, @Param("jobNature")String jobNature, @Param("education")String education, @Param("workExperience")String workExperience,
+			@Param("fUZZY_WORD")String fUZZY_WORD);
+	
+	int getTotalNum(@Param("position")String position,
+			@Param("monthSalary")String monthSalary, @Param("province")String province, @Param("city")String city, @Param("jobNature")String jobNature, @Param("education")String education, @Param("workExperience")String workExperience,
+			@Param("fUZZY_WORD")String fUZZY_WORD);
+
+	List<HashMap<String, Object>> queryRecruitmentIdList(@Param("pkUserId")Long pkUserId);
+
+	List<GerInfo> queryReceivedResume(@Param("fkResumeId")String fkResumeId, @Param("fkRecruitmentId")String fkRecruitmentId);
 }
 

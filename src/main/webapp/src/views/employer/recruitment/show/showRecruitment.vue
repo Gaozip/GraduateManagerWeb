@@ -7,7 +7,7 @@
 	    			<div class="box1">
 	    				<span class="lab">【招收职位】{{tableData.position}}({{tableData.jobNature}})</span>
 	    				<br />
-	    				<span class="lab">【工作地点】{{tableData.workPlace}}</span>
+	    				<span class="lab">【工作地点】{{tableData.province+tableData.city}}</span>
 	    				<br />
 	    				<span class="lab">【学历要求】{{tableData.education}}</span>
 		    		</div>
@@ -55,27 +55,99 @@
 				</div>
 	    	</dl>
 	    </div>
+		<!-- 最后是按钮，（不要放在 form 里面） -->
+		<div class="dialog-edit__btnGroup" slot="footer">
+			<el-button type="primary" @click="btnClick" v-show="this.userType == 'graduate'">投递简历</el-button>
+			<el-button @click="dialogVisible = false">关闭</el-button>
+		</div>
+		<el-dialog title="选择要投递的简历" :visible.sync="innerVisible" append-to-body width="30%">
+			<el-form :inline="true" :model="form" ref="formName">
+				<el-form-item label="请选择要投递的简历编号">
+					<el-select v-model="form.pkResumeId">
+						<el-option v-for="item in resumeIdList" :label="item.value" :value="item.value"></el-option>
+					</el-select>
+				</el-form-item>
+			</el-form>
+			<!-- 最后是按钮，（不要放在 form 里面） -->
+			<div class="dialog-edit__btnGroup" slot="footer">
+				<el-button type="primary" @click="sendRecruitment">确认投递</el-button>
+				<el-button @click="innerVisible = false">关闭</el-button>
+			</div>
+		</el-dialog>
 	</el-dialog>
 </template>
 
 <script>
+import * as RECRUITMENT_API from '@/api/employer/recruitment.js';
+import * as GERINFO_API from '@/api/employer/gerInfo.js'
 export default{
 	data(){
 		return{
 			dialogVisible:false,
+			innerVisible:false,
 			tableData:[],
 			employerInfo:'',
+			userType:'',//查看人类型
+			form:{
+				pkResumeId:'',	
+			},
+			resumeIdList:[],
 		}
 	},
-	methods:{
-		show(scope){
-			this.dialogVisible = true;
-			console.info(scope);
-			this.tableData = scope;
-			this.employerInfo = scope.employerInfo;
+	watch:{
+		dialogVisible(value) {
+			if (!value) {
+				this.beforeClose();
+			}
 		},
-		btnClick(){
-			
+		innerVisible(value) {
+			if (!value) {
+				this.beforeCloseInnerTab();
+			}
+		},
+	},
+	mounted(){
+		this.fetchResumeId();	
+	},
+	methods:{
+		show(scope,type){
+			this.tableData = JSON.parse(JSON.stringify(scope));
+			this.employerInfo = JSON.parse(JSON.stringify(scope.employerInfo));
+			if(type  == 'graduate'){
+				this.userType = type;
+			}
+			this.dialogVisible = true;
+		},
+		btnClick(){	//投递简历
+			this.innerVisible = true;
+		},
+		beforeClose(){
+			this.tableData = [];
+			this.employerInfo = [];
+			this.userType = '';
+			// 推送关闭消息
+			this.$emit('closed');
+		},
+		beforeCloseInnerTab(){
+			this.form = {};	
+		},
+		fetchResumeId(){
+			RECRUITMENT_API.api(RECRUITMENT_API.URL_QUERY_ALL_RESUME_ID_BY_USER_ID,{}).then(data =>{
+				data.datas.forEach(item =>{
+					this.resumeIdList.push({value:item});
+				});
+			});
+		},
+		sendRecruitment(){
+			let param = {
+				fkResumeId: this.form.pkResumeId,
+				fkRecruitmentId: this.tableData.pkRecruitmentId,
+				fkEmployerId: this.tableData.fkUserId,
+			};
+			GERINFO_API.api(GERINFO_API.URL_DO_SAVE,param).then(data =>{
+				this.$message.success('简历投递成功!');
+				this.innerVisible = false;
+			});
 		},
 	},
 }

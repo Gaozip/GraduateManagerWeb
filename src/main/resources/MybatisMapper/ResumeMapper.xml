@@ -112,4 +112,8 @@
   	    and pk_resume_id = ${resumeId}
   	</if>
   </select>
+  
+  <select id="queryAllResumeIdByUserId" parameterType="java.lang.Long" resultType="java.lang.Long">
+  	select pk_resume_id from sys_resume where fk_user_id = ${userId}
+  </select>
 </mapper>

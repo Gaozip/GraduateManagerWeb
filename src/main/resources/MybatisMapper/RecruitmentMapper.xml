@@ -76,4 +76,67 @@
   <select id="getRecruitmentByPkId" resultMap="recruitmentMapperMap">
   	select * from SYS_RECRUITMENT where PK_RECRUITMENT_ID = ${pkRecruitmentId}
   </select>
+  
+  <select id="doSearchRecruitment" resultMap="recruitmentMapperMap">
+  	select * from (select row_.*, rownum rownum_ from (select * from sys_recruitment where 1 = 1
+  	<if test="position != null and position != ''">
+  		and position like '%${position}%'
+  	</if>
+  	<if test="monthSalary != null and monthSalary != ''">
+  		and month_salary > ${monthSalary}
+  	</if>
+  	<if test="province != null and province != ''">
+  		and province = '${province}'
+  	</if>
+  	<if test="city != null and city != ''">
+  		and city = '${city}'
+  	</if>
+  	<if test="jobNature != null and jobNature != ''">
+  		and job_Nature = '${jobNature}'
+  	</if>
+  	<if test="education != null and education != ''">
+  		and education = '${education}'
+  	</if>
+  	<if test="workExperience != null and workExperience != ''">
+  		and work_Experience = '${workExperience}'
+  	</if>
+  	<if test="fUZZY_WORD != null and fUZZY_WORD != ''">
+  		and ( position like '%${fUZZY_WORD}%' or month_Salary > ${fUZZY_WORD} or province = '${fUZZY_WORD}' or city = '${fUZZY_WORD}' or job_Nature like '%${fUZZY_WORD}%' or education = '${fUZZY_WORD}')
+  	</if>
+  	) row_ where rownum <![CDATA[<=]]> ${limitA} ) where rownum_ <![CDATA[>=]]> ${limitB}
+  </select>
+  
+  <select id="getTotalNum" resultType="int">
+  	select count(*) from (select * from sys_recruitment where 1 = 1
+  	<if test="position != null and position != ''">
+  		and position like '%${position}%'
+  	</if>
+  	<if test="monthSalary != null and monthSalary != ''">
+  		and month_salary > ${monthSalary}
+  	</if>
+  	<if test="province != null and province != ''">
+  		and province = '${province}'
+  	</if>
+  	<if test="city != null and city != ''">
+  		and city = '${city}'
+  	</if>
+  	<if test="jobNature != null and jobNature != ''">
+  		and job_Nature = '${jobNature}'
+  	</if>
+  	<if test="education != null and education != ''">
+  		and education = '${education}'
+  	</if>
+  	<if test="workExperience != null and workExperience != ''">
+  		and work_Experience = '${workExperience}'
+  	</if>
+  	<if test="fUZZY_WORD != null and fUZZY_WORD != ''">
+  		and ( position like '%${fUZZY_WORD}%' or month_Salary > ${fUZZY_WORD} or province = '${fUZZY_WORD}' or city = '${fUZZY_WORD}' or job_Nature like '%${fUZZY_WORD}%' or education = '${fUZZY_WORD}')
+  	</if>
+  	)
+  </select>
+  
+  <select id="queryRecruitmentIdList" resultType="java.util.HashMap" parameterType="java.lang.Long">
+  	select PK_RECRUITMENT_ID,POSITION from sys_recruitment where FK_USER_ID = ${pkUserId}
+  </select>
+  
 </mapper>

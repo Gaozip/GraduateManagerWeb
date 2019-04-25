@@ -24,8 +24,4 @@ export default[
 		path:`${BASE_URL}/myResume`,
 		component: () => import('@/views/graduate/resume/myResume.vue')
 	},
-	{	//上传本地简历
-		path:`${BASE_URL}/uploadResume`,
-		component: () => import('@/views/graduate/resume/uploadResume.vue')
-	}
 ]

@@ -33,5 +33,7 @@ public interface ResumeMapper {
 
 	List<Resume> queryPageByFkId(@Param("fkUserId")Long userId, @Param("resumeId")String resumeId);
 
+	List<Long> queryAllResumeIdByUserId(@Param("userId")Long userId);
+
 }
 

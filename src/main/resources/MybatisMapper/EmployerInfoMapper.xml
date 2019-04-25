@@ -65,4 +65,74 @@
   	select * from sys_employer_info where FK_USER_ID = ${userId}
   </select>
   
+  <select id="doSearchCompanyInfo" resultMap="employerInfoMapperMap">
+  	select * from (select row_.*, rownum rownum_ from ( select * from SYS_EMPLOYER_INFO t where 1 = 1 
+  	<if test="companyName != null and companyName != ''">
+  		and company_Name = '${companyName}'
+  	</if>
+  	<if test="organizationCode != null and organizationCode != ''">
+  		and organization_Code = '${organizationCode}'
+  	</if>
+  	<if test="legalRepresentative != null and legalRepresentative != ''">
+  		and legal_Representative = '${legalRepresentative}'
+  	</if>
+  	<if test="companyType != null and companyType != ''">
+  		and company_Type = '${companyType}'
+  	</if>
+  	<if test="industry != null and industry != ''">
+  		and industry = '${industry}'
+  	</if>
+  	<if test="employerNum != null and employerNum != ''">
+  		and employer_Num = ${employerNum}
+  	</if>
+  	<if test="registerCapital != null and registerCapital != ''">
+  		and register_Capital = ${registerCapital} 
+  	</if>
+  	<if test="beginRegisterDate != null and beginRegisterDate != ''">
+  		and register_date <![CDATA[>=]]> to_date('${beginRegisterDate}','yyyy-mm-dd')
+  	</if>
+  	<if test="endRegisterDate != null and endRegisterDate != ''">
+  		and register_date <![CDATA[<=]]> to_date('${endRegisterDate}','yyyy-mm-dd')
+  	</if>
+  	<if test="fUZZY_WORD != null and fUZZY_WORD != ''">
+  		and ( company_NAME like '%${fUZZY_WORD}%' or organization_Code like '%${fUZZY_WORD}%' or legal_Representative like '%${fUZZY_WORD}%' or company_Type like '%${fUZZY_WORD}%' or industry like '%${fUZZY_WORD}%' or employer_Num = ${fUZZY_WORD} or register_Capital = ${fUZZY_WORD})
+  	</if>
+  	) row_ where rownum <![CDATA[<=]]> ${limitA} ) where rownum_ <![CDATA[>=]]> ${limitB}
+  </select>
+  
+  <select id="getTotalNum" resultType="int">
+  	select count(pk_employer_id) from (select * from SYS_EMPLOYER_INFO t where 1 = 1 
+  	<if test="companyName != null and companyName != ''">
+  		and company_Name = '${companyName}'
+  	</if>
+  	<if test="organizationCode != null and organizationCode != ''">
+  		and organization_Code = '${organizationCode}'
+  	</if>
+  	<if test="legalRepresentative != null and legalRepresentative != ''">
+  		and legal_Representative = '${legalRepresentative}'
+  	</if>
+  	<if test="companyType != null and companyType != ''">
+  		and company_Type = '${companyType}'
+  	</if>
+  	<if test="industry != null and industry != ''">
+  		and industry = '${industry}'
+  	</if>
+  	<if test="employerNum != null and employerNum != ''">
+  		and employer_Num = ${employerNum}
+  	</if>
+  	<if test="registerCapital != null and registerCapital != ''">
+  		and register_Capital = ${registerCapital} 
+  	</if>
+  	<if test="beginRegisterDate != null and beginRegisterDate != ''">
+  		and register_date <![CDATA[>=]]> to_date('${beginRegisterDate}','yyyy-mm-dd')
+  	</if>
+  	<if test="endRegisterDate != null and endRegisterDate != ''">
+  		and register_date <![CDATA[<=]]> to_date('${endRegisterDate}','yyyy-mm-dd')
+  	</if>
+  	<if test="fUZZY_WORD != null and fUZZY_WORD != ''">
+  		and ( company_NAME like '%${fUZZY_WORD}%' or organization_Code like '%${fUZZY_WORD}%' or legal_Representative like '%${fUZZY_WORD}%' or company_Type like '%${fUZZY_WORD}%' or industry like '%${fUZZY_WORD}%' or employer_Num = ${fUZZY_WORD} or register_Capital = ${fUZZY_WORD})
+  	</if>
+  	)
+  </select>
+  
 </mapper>
