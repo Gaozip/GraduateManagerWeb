@@ -41,7 +41,7 @@ public class RecruitmentServiceImpl implements RecruitmentService{
 	public Page queryPage(Page page,Map<String, String> paramMap,Long userId) {
 		
 		String pkRecruitmentId = paramMap.get("pkRecruitmentId");
-		List<Recruitment> recruitmentList = recruitmentMapper.queryPage(userId,pkRecruitmentId);
+		List<Recruitment> recruitmentList = recruitmentMapper.queryPage(page.getLimitA(),page.getLimitB(),userId,pkRecruitmentId);
 		
 		if(recruitmentList.size() != 0){
 			for(Recruitment recruitment : recruitmentList){
@@ -49,8 +49,8 @@ public class RecruitmentServiceImpl implements RecruitmentService{
 				recruitment.setEmployerInfo(employerInfo);
 			}
 		}
-		
-		page.setTotalNum((long)recruitmentList.size());
+		int totalNum = this.recruitmentMapper.queryTotalNum(userId, pkRecruitmentId);
+		page.setTotalNum((long)totalNum);
 		page.setDatas(recruitmentList);
 		return page;
 	}
@@ -78,8 +78,9 @@ public class RecruitmentServiceImpl implements RecruitmentService{
 	}
 
 	@Override
-	public List<Long> queryAllResumeIdByUserId(Long userId) {
-		return this.resumeMapper.queryAllResumeIdByUserId(userId);
+	public List<Integer> queryAllResumeIdByUserId(Long userId) {
+		 List<Integer> list = this.resumeMapper.queryAllResumeIdByUserId(userId);
+		 return list;
 	}
 
 	

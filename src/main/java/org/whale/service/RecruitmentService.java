@@ -22,7 +22,7 @@ public interface RecruitmentService {
 
 	void doDelete(Long pkRecruitmentId);
 
-	List<Long> queryAllResumeIdByUserId(Long userId);
+	List<Integer> queryAllResumeIdByUserId(Long userId);
 
 }
 

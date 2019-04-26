@@ -27,5 +27,7 @@ public interface GerInfoService {
 
 	Page queryResultPage(Page page2, Map<String, String> paramMap, Long userId);
 
+	Long getGraduateId(Long userId);
+
 }
 

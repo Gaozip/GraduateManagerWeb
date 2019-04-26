@@ -27,5 +27,7 @@ public interface GraduateInfoMapper {
 	List<GraduateInfo> queryStudentInfo(@Param("limitA")int limitA, @Param("limitB")int limitB, @Param("grade")String grade, @Param("dept")String dept, @Param("specialty")String specialty);
 
 	int queryTotalNum(@Param("grade")String grade, @Param("dept")String dept, @Param("specialty")String specialty);
+
+	Long getPkId(@Param("userId")Long userId);
 }
 

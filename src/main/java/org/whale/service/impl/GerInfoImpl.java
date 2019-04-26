@@ -87,7 +87,7 @@ public class GerInfoImpl implements GerInfoService {
 			Resume resume = this.resumeMapper.queryResumeById(resumeId);
 			resume.setWorkList(this.resumeWorkMapper.queryPageByFkId(resume.getPkResumeId()));
 		    resume.setProjectList(this.resumeProjectMapper.queryPageByFkId(resume.getPkResumeId()));
-		    resume.setGraduateInfo(this.graduateInfoMapper.queryBasicInfoById(userId));
+		    resume.setGraduateInfo(this.graduateInfoMapper.queryBasicInfoById(resume.getFkUserId()));
 		    gerInfo.setResume(resume);
 		    Recruitment recruitment = this.recruitmentMapper.getRecruitmentByPkId(recruitmentId);
 		    EmployerInfo employerInfo = this.employerInfoMapper.getEmployerInfoByUserId(recruitment.getFkUserId());
@@ -118,9 +118,16 @@ public class GerInfoImpl implements GerInfoService {
 		    recruitment.setEmployerInfo(employerInfo);
 		    gerInfo.setRecruitment(recruitment);
 		}
-		page2.setTotalNum((long)list.size());
+		int num = this.gerInfoMapper.queryTotalNum(userId);
+		page2.setTotalNum((long)num);
 		page2.setDatas(list);
 		return page2;
+	}
+
+	@Override
+	public Long getGraduateId(Long userId) {
+		Long pkId = this.graduateInfoMapper.getPkId(userId);
+		return pkId;
 	}
 
 }

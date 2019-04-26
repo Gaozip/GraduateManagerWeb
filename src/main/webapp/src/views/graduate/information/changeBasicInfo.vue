@@ -417,7 +417,6 @@
                 });
             },
             btnClick(){
-                console.info(this.form.city);
                 this.$refs['formName'].validate((valid) =>{
                     if(this.form.city == '市' || this.form.city == null){
                         this.$message({
@@ -427,6 +426,21 @@
                         return false;
                     }
                     if(valid){
+                        var companyName = '';
+                        var industry = '';
+                        var getJobTime = '';
+                        var monthSalary = '';
+                        var position = '';
+                        var workYear = '';
+                        if(this.form.haveJob == 1){
+                            companyName = this.form.companyName;
+                            industry = this.form.industry;
+                            getJobTime = tools.transformTime(this.form.getJobTime, 'YYYY-MM-DD');
+                            monthSalary = this.form.monthSalary;
+                            position = this.form.position;
+                            workYear = this.form.workYear;
+                        }
+                        
                         let param = {
                             'sno': this.form.sno,
                             'haveJob': this.form.haveJob,
@@ -446,12 +460,12 @@
                             'specialty': this.form.specialty,
                             'education':this.form.education,
                             'graduateCollege': this.form.graduateCollege,
-                            'companyName': this.form.companyName,
-                            'industry': this.form.industry,
-                            'getJobTime': tools.transformTime(this.form.getJobTime, 'YYYY-MM-DD'),
-                            'monthSalary': this.form.monthSalary,
-                            'position': this.form.position,
-                            'workYear': this.form.workYear,
+                            'companyName': companyName,
+                            'industry': industry,
+                            'getJobTime': getJobTime,
+                            'monthSalary': monthSalary,
+                            'position': position,
+                            'workYear': workYear,
                         };
                         GRADUATE_API.api(GRADUATE_API.URL_DO_UPDATE,param).then(data =>{
                             this.$message.success('保存成功');

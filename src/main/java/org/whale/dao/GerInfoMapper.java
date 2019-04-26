@@ -25,5 +25,7 @@ public interface GerInfoMapper {
 
 	List<GerInfo> queryResultPage(@Param("limitA")int limitA, @Param("limitB")int limitB, @Param("userId")Long userId);
 
+	int queryTotalNum(@Param("userId")Long userId);
+
 }
 

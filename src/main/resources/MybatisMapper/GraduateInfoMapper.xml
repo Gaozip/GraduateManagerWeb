@@ -156,4 +156,8 @@
   	</if>
   	)
   </select>
+  
+  <select id="getPkId" parameterType="java.lang.Long" resultType="java.lang.Long">
+  	select PK_GRAD_ID from sys_graduate_info where fk_user_id = ${userId}
+  </select>
 </mapper>

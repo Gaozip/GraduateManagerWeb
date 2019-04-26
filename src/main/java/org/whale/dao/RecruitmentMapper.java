@@ -17,7 +17,9 @@ public interface RecruitmentMapper {
 
 	void doSave(Recruitment recruitment);
 
-	List<Recruitment> queryPage(@Param("userId")Long userId, @Param("pkRecruitmentId")String pkRecruitmentId);
+	List<Recruitment> queryPage(@Param("limitA")int limitA, @Param("limitB")int limitB, @Param("userId")Long userId, @Param("pkRecruitmentId")String pkRecruitmentId);
+	
+	int queryTotalNum(@Param("userId")Long userId, @Param("pkRecruitmentId")String pkRecruitmentId);
 
 	void doUpdate(Recruitment recruitment);
 

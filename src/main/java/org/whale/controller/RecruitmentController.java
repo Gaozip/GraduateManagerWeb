@@ -77,8 +77,8 @@ public class RecruitmentController extends BaseController{
 		
 		try {
 			Long userId = this.getUserId(request);
-			List<Long> resumeIdList = recruitmentService.queryAllResumeIdByUserId(userId);
-			WebUtils.printSuccess(request, response, resumeIdList);
+			List<Integer> list = recruitmentService.queryAllResumeIdByUserId(userId);
+			WebUtils.printSuccess(request, response, list);
 		} catch (Exception e) {
 			WebUtils.printFail(request, response, "数据查询失败！");
 			e.printStackTrace();

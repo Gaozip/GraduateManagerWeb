@@ -58,7 +58,7 @@
                         :total="totalNum">
                 </el-pagination>
             </div>
-            <ShowResume ref="showResume"></ShowResume>
+            <ShowResume ref="showResume" @closed="fetchTableData"></ShowResume>
             <ShowRecruitment ref="showRecruitment"></ShowRecruitment>
         </div>
     </el-form>
@@ -102,6 +102,7 @@
                 };
                 Object.assign(param,this.searchFormClone);
                 GERINFO_API.api(GERINFO_API.URL_QUERY_RESUME_RECEIVE,param).then(data =>{
+                    console.info(data.datas.datas);
                     this.tableData = data.datas.datas;
                     this.totalNum = data.datas.totalNum;
                     this.currentPage = data.datas.pageNo;

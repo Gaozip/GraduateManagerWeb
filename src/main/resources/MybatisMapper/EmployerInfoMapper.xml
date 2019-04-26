@@ -95,7 +95,7 @@
   		and register_date <![CDATA[<=]]> to_date('${endRegisterDate}','yyyy-mm-dd')
   	</if>
   	<if test="fUZZY_WORD != null and fUZZY_WORD != ''">
-  		and ( company_NAME like '%${fUZZY_WORD}%' or organization_Code like '%${fUZZY_WORD}%' or legal_Representative like '%${fUZZY_WORD}%' or company_Type like '%${fUZZY_WORD}%' or industry like '%${fUZZY_WORD}%' or employer_Num = ${fUZZY_WORD} or register_Capital = ${fUZZY_WORD})
+  		and ( company_NAME like '%${fUZZY_WORD}%' or organization_Code like '%${fUZZY_WORD}%' or legal_Representative like '%${fUZZY_WORD}%' or company_Type like '%${fUZZY_WORD}%' or industry like '%${fUZZY_WORD}%')
   	</if>
   	) row_ where rownum <![CDATA[<=]]> ${limitA} ) where rownum_ <![CDATA[>=]]> ${limitB}
   </select>
@@ -130,7 +130,7 @@
   		and register_date <![CDATA[<=]]> to_date('${endRegisterDate}','yyyy-mm-dd')
   	</if>
   	<if test="fUZZY_WORD != null and fUZZY_WORD != ''">
-  		and ( company_NAME like '%${fUZZY_WORD}%' or organization_Code like '%${fUZZY_WORD}%' or legal_Representative like '%${fUZZY_WORD}%' or company_Type like '%${fUZZY_WORD}%' or industry like '%${fUZZY_WORD}%' or employer_Num = ${fUZZY_WORD} or register_Capital = ${fUZZY_WORD})
+  		and ( company_NAME like '%${fUZZY_WORD}%' or organization_Code like '%${fUZZY_WORD}%' or legal_Representative like '%${fUZZY_WORD}%' or company_Type like '%${fUZZY_WORD}%' or industry like '%${fUZZY_WORD}%')
   	</if>
   	)
   </select>

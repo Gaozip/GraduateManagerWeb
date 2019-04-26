@@ -43,10 +43,19 @@
   </insert>
   
   <select id="queryPage" resultMap="recruitmentMapperMap">
-  	select * from SYS_RECRUITMENT where FK_USER_ID = ${userId}
+  	select * from (select row_.*, rownum rownum_ from (select * from SYS_RECRUITMENT where FK_USER_ID = ${userId}
   	<if test="pkRecruitmentId != null and pkRecruitmentId != ''">
   		and PK_RECRUITMENT_ID = ${pkRecruitmentId}
   	</if>
+  	) row_ where rownum <![CDATA[<=]]> ${limitA} ) where rownum_ <![CDATA[>=]]> ${limitB}
+  </select>
+  
+  <select id="queryTotalNum" resultType="int">
+  	select count(*) from (select * from SYS_RECRUITMENT where FK_USER_ID = ${userId}
+  	<if test="pkRecruitmentId != null and pkRecruitmentId != ''">
+  		and PK_RECRUITMENT_ID = ${pkRecruitmentId}
+  	</if>
+  	)
   </select>
   
   <update id="doUpdate" parameterType="org.whale.pojo.Recruitment" >

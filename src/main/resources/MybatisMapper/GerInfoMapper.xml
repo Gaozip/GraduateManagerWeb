@@ -21,7 +21,7 @@
     		#{fkResumeId,jdbcType=DECIMAL}, 
     		#{fkRecruitmentId,jdbcType=DECIMAL}, 
       		#{fkEmployerId,jdbcType=DECIMAL}, 
-      		#{fkGraduateId,jdbcType=DECIMAL}, 
+      		 , 
       		sysdate
       	)
 	</insert>
@@ -67,5 +67,9 @@
 	<select id="queryResultPage" resultMap="GerInfoMapperMap">
 		select * from (select row_.*, rownum rownum_ from (select * from sys_ger_info where 1 = 1 and fk_graduate_id = (select pk_grad_id from sys_graduate_info where fk_user_id = ${userId})
 		) row_ where rownum <![CDATA[<=]]> ${limitA} ) where rownum_ <![CDATA[>=]]> ${limitB}
+	</select>
+	
+	<select id="queryTotalNum" parameterType="java.lang.Long" resultType="int">
+		select count(*) from (select * from sys_ger_info where 1 = 1 and fk_graduate_id = (select pk_grad_id from sys_graduate_info where fk_user_id = ${userId}))
 	</select>
 </mapper>

@@ -37,7 +37,8 @@ public class GerInfoController extends BaseController{
 			if(num != 0){
 				WebUtils.printFail(request, response, "重复投递简历!");
 			}else{
-				gerInfo.setFkGraduateId(this.getUserId(request));
+				Long grad_id = this.gerInfoService.getGraduateId(this.getUserId(request));
+				gerInfo.setFkGraduateId(grad_id);
 				this.gerInfoService.doSave(gerInfo);
 				WebUtils.printSuccess(request, response);
 			}

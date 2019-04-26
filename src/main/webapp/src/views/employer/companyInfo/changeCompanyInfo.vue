@@ -174,21 +174,21 @@ export default{
 	data(){
 		return{
 			form:{
-				companyName:'博恒软件', //公司名称
-				organizationCode:'13322424',//组织机构代码
-				registerDate:'2018-06-08',//注册时间
-				registerCapital:'3000',//注册资本
-				companyType:'有限责任公司',//公司性质
-				industry:'计算机软件',//所属行业
-				employerNum:'160',//员工人数
-				hotLine:'17746071584',//电话热线
-				province:'福建省',
-				city:'福州市',
-				companyAddress:'仓山万达',//公司地址
-				companyProfile:'ablala',//公司简介
-				legalRepresentative:'盘',//法人代表
-				managementForms:'在业',//经营状态
-				scopeOfBusiness:'计算机',//经营范围
+				companyName:'', //公司名称
+				organizationCode:'',//组织机构代码
+				registerDate:'',//注册时间
+				registerCapital:'',//注册资本
+				companyType:'',//公司性质
+				industry:'',//所属行业
+				employerNum:'',//员工人数
+				hotLine:'',//电话热线
+				province:'',
+				city:'',
+				companyAddress:'',//公司地址
+				companyProfile:'',//公司简介
+				legalRepresentative:'',//法人代表
+				managementForms:'',//经营状态
+				scopeOfBusiness:'',//经营范围
 			},
 			rules:{
 				companyName:[

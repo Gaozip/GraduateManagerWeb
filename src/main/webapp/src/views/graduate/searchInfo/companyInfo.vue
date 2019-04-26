@@ -120,7 +120,7 @@
             <el-table :data="tableData" border stripe style="width: 100%">
                 <el-table-column  label="操作" width="135px" :show-overflow-tooltip="true">
                     <template slot-scope="scope">
-                        <el-button type="text">查看</el-button>
+                        <el-button type="text" @click="$refs.showCompanyDetail.show(scope.row)">查看</el-button>
                     </template>
                 </el-table-column>
                 <el-table-column type="index" label="序号" width="60px"></el-table-column>
@@ -155,6 +155,7 @@
                         :total="totalNum">
                 </el-pagination>
             </div>
+            <ShowCompanyDetail ref="showCompanyDetail"></ShowCompanyDetail>
         </div>
     </el-form>
 </template>
@@ -163,9 +164,9 @@
     import FuzzySearch from '@/components/fuzzySearch/fuzzySearch.vue';
     import * as QUERY_INFO from '@/api/graduate/queryInfo.js';
     import * as tools from '@/assets/tools';
-   
+    import  ShowCompanyDetail from '@/views/graduate/searchInfo/showCompanyDetail.vue'
     export default {
-        components: { FuzzySearch,},
+        components: { FuzzySearch,ShowCompanyDetail,},
         data() {
             return {
                 searchForm:{
