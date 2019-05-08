@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.whale.common.AuthLogin;
 import org.whale.pojo.DictItem;
 import org.whale.pojo.Page;
 import org.whale.service.DictItemService;
@@ -28,6 +29,7 @@ public class DictItemController extends BaseController{
 	@Autowired
 	private DictItemService dictItemService;
 	
+	@AuthLogin
 	@RequestMapping("/ifExist")
 	public void ifExist(HttpServletRequest request,HttpServletResponse response,@RequestParam("itemCode")String itemCode){
 		
@@ -42,6 +44,7 @@ public class DictItemController extends BaseController{
 		}
 	}
 	
+	@AuthLogin
 	@RequestMapping("/doSave")
 	public void doSave(HttpServletRequest request,HttpServletResponse response,DictItem dictItem){
 		
@@ -54,6 +57,7 @@ public class DictItemController extends BaseController{
 		}
 	}
 	
+	@AuthLogin
 	@RequestMapping("/doUpdate")
 	public void doUpdate(HttpServletRequest request,HttpServletResponse response,DictItem dictItem){
 		
@@ -77,6 +81,7 @@ public class DictItemController extends BaseController{
 		}
 	}
 	
+	@AuthLogin
 	@RequestMapping("/queryPage")
 	public void queryPage(HttpServletRequest request,HttpServletResponse response){
 		

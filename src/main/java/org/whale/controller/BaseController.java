@@ -7,8 +7,12 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.whale.pojo.Page;
 import org.whale.pojo.User;
 import org.whale.utils.WebUtils;
@@ -70,4 +74,17 @@ public class BaseController {
 		}
 		return returnParamMap;
 	}
+	
+	/**
+	 * 返回session中的User
+	 * @return
+	 */
+	protected User getUser(){
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) requestAttributes;
+        HttpServletRequest request = servletRequestAttributes.getRequest();
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        return user;
+	 }
 }

@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.whale.common.AuthLogin;
 import org.whale.pojo.EmployerInfo;
 import org.whale.service.EmployerInfoService;
 import org.whale.utils.WebUtils;
@@ -22,6 +23,7 @@ public class EmployerController extends BaseController{
 	@Autowired
 	private EmployerInfoService employerInfoService;
 	
+	@AuthLogin
 	@RequestMapping("/doUpdate")
 	public void doUpdate(HttpServletRequest request,HttpServletResponse response,EmployerInfo employerInfo){
 		
@@ -53,6 +55,7 @@ public class EmployerController extends BaseController{
 		}
 	}
 	
+	@AuthLogin
 	@RequestMapping("/getEmployerInfoByUserId")
 	public void getEmployerInfoByUserId(HttpServletRequest request,HttpServletResponse response){
 		

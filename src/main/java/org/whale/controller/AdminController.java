@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.whale.common.AuthLogin;
 import org.whale.pojo.Page;
 import org.whale.service.AdminService;
 import org.whale.utils.DictUtils;
@@ -32,6 +33,7 @@ public class AdminController extends BaseController{
 	@Autowired
 	private AdminService adminService;
 	
+	@AuthLogin
 	@RequestMapping("/queryAdminHotLineInfo")
 	public void queryAdminHotLineInfo(HttpServletRequest request,HttpServletResponse response) throws IOException{
 		try {
@@ -48,6 +50,7 @@ public class AdminController extends BaseController{
 		}
 	}
 	
+	@AuthLogin
 	@RequestMapping("/queryUserPage")
 	public void queryUserPage(HttpServletRequest request,HttpServletResponse response){
 		try {
@@ -61,6 +64,7 @@ public class AdminController extends BaseController{
 		}
 	}
 	
+	@AuthLogin
 	@RequestMapping("/doUpdateUserState")
 	public void doUpdateUserState(HttpServletRequest request,HttpServletResponse response){
 		
@@ -74,6 +78,7 @@ public class AdminController extends BaseController{
 		}
 	}
 	
+	@AuthLogin
 	@RequestMapping("/queryJobRate")
 	public void queryJobRate(HttpServletRequest request,HttpServletResponse response){
 		
@@ -88,6 +93,7 @@ public class AdminController extends BaseController{
 		}
 	}
 	
+	@AuthLogin
 	@RequestMapping("/queryStudentInfo")
 	public void queryStudentInfo(HttpServletRequest request,HttpServletResponse response){
 		
@@ -100,7 +106,6 @@ public class AdminController extends BaseController{
 			WebUtils.printFail(request, response, "数据查询失败！");
 			e.printStackTrace();
 		}
-		
 	}
 }
 

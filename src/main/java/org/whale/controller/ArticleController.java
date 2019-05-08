@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.whale.common.AuthLogin;
 import org.whale.pojo.Article;
 import org.whale.pojo.Page;
 import org.whale.service.ArticleService;
@@ -27,6 +28,7 @@ public class ArticleController extends BaseController{
 	@Autowired
 	private ArticleService articleService;
 	
+	@AuthLogin
 	@RequestMapping("/doSave")
 	public void doSave(HttpServletRequest request,HttpServletResponse response,Article article){
 
@@ -39,6 +41,7 @@ public class ArticleController extends BaseController{
 		}
 	}
 	
+	@AuthLogin
 	@RequestMapping("/queryPage")
 	public void queryPage(HttpServletRequest request,HttpServletResponse response){
 		try {
@@ -53,6 +56,7 @@ public class ArticleController extends BaseController{
 		}
 	}
 	
+	@AuthLogin
 	@RequestMapping("/doUpdate")
 	public void doUpdate(HttpServletRequest request,HttpServletResponse response,Article article){
 		
@@ -65,6 +69,7 @@ public class ArticleController extends BaseController{
 		}
 	}
 	
+	@AuthLogin
 	@RequestMapping("/doDelete")
 	public void doDelete(HttpServletRequest request,HttpServletResponse response,@RequestParam("pkArticleId")Long pkArticleId){
 		
@@ -76,6 +81,5 @@ public class ArticleController extends BaseController{
 			e.printStackTrace();
 		}
 	}
-	
 }
 

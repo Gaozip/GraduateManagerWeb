@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.whale.common.AuthLogin;
 import org.whale.pojo.Dict;
 import org.whale.pojo.Page;
 import org.whale.service.DictService;
@@ -29,6 +30,7 @@ public class DictController extends BaseController {
 	@Autowired
 	private DictService dictService;
 	
+	@AuthLogin
 	@RequestMapping("/doSave")
 	public void doSave(HttpServletRequest request,HttpServletResponse response,Dict dict){
 		
@@ -41,6 +43,7 @@ public class DictController extends BaseController {
 		}
 	}
 	
+	@AuthLogin
 	@RequestMapping("/doUpdate")
 	public void doUpdate(HttpServletRequest request,HttpServletResponse response,Dict dict){
 		
@@ -53,6 +56,7 @@ public class DictController extends BaseController {
 		}
 	}
 	
+	@AuthLogin
 	@RequestMapping("/doDelete")
 	public void doDelete(HttpServletRequest request,HttpServletResponse response,@RequestParam("pkDictId")Long pkDictId){
 		
@@ -66,6 +70,7 @@ public class DictController extends BaseController {
 		
 	}
 	
+	@AuthLogin
 	@RequestMapping("/queryPage")
 	public void queryPage(HttpServletRequest request,HttpServletResponse response){
 		
@@ -80,6 +85,7 @@ public class DictController extends BaseController {
 		}
 	}
 	
+	@AuthLogin
 	@RequestMapping("/queryAllDict")
 	public void queryAllDict(HttpServletRequest request,HttpServletResponse response){
 		
@@ -92,6 +98,7 @@ public class DictController extends BaseController {
 		}
 	}
 	
+	@AuthLogin
 	@RequestMapping("/ifExist")
 	public void IfExist(HttpServletRequest request,HttpServletResponse response,@RequestParam("dictCode")String dictCode){
 		

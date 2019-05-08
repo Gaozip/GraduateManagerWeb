@@ -70,6 +70,7 @@
 	</repositories>
 	-->
 	<dependencies>
+		<!-- spring aop -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aop</artifactId>
@@ -272,6 +273,11 @@
 		   <groupId>org.apache.commons</groupId>
 		   <artifactId>commons-email</artifactId>
 		   <version>1.4</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.aopalliance</groupId>
+		    <artifactId>com.springsource.org.aopalliance</artifactId>
+		    <version>1.0.0</version>
 		</dependency>
 	</dependencies>
 </project>

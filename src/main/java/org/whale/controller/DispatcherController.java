@@ -24,7 +24,7 @@ import org.whale.pojo.User;
 */
 @Controller
 @RequestMapping("/")
-public class DispatcherController{
+public class DispatcherController extends BaseController{
 	
 	@RequestMapping("/")
 	public String goLogin(HttpServletRequest request,HttpServletResponse response){
@@ -33,7 +33,7 @@ public class DispatcherController{
 	
 	@RequestMapping("/home")
 	public String goIndex(HttpServletRequest request,HttpServletResponse response){
-		User user = (User) request.getSession().getAttribute("user");
+		User user = this.getUser();
 		if(user != null){
 			return "index";
 		}else{

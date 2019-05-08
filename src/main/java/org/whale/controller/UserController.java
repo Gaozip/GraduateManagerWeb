@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.whale.common.AuthLogin;
 import org.whale.constant.Constant;
 import org.whale.pojo.MailInfo;
 import org.whale.pojo.User;
@@ -187,6 +188,7 @@ public class UserController extends BaseController{
 	 * @param request
 	 * @param response
 	 */
+	@AuthLogin
 	@RequestMapping("/getUserName")
 	public void getUserName(HttpServletRequest request,HttpServletResponse response){
 		
@@ -211,6 +213,7 @@ public class UserController extends BaseController{
 	 * @param request
 	 * @param response
 	 */
+	@AuthLogin
 	@RequestMapping("/loginOut")
 	public String loginOut(HttpServletRequest request,HttpServletResponse response){
 		request.getSession().removeAttribute("user");
@@ -223,6 +226,7 @@ public class UserController extends BaseController{
 	 * @param response
 	 * @param userName
 	 */
+	@AuthLogin
 	@RequestMapping("/changeUserName")
 	public void changeUserName(HttpServletRequest request,HttpServletResponse response,@RequestParam("userName") String userName){
 
@@ -245,6 +249,7 @@ public class UserController extends BaseController{
 	 * @param newPassword:新密码
 	 * @param rePassword:确认密码
 	 */
+	@AuthLogin
 	@RequestMapping("/changePassword")
 	public void changePassword(HttpServletRequest request,HttpServletResponse response,String password,String newPassword,String rePassword ){
 		if(StringUtils.isBlank(password) || StringUtils.isBlank(newPassword) || StringUtils.isBlank(rePassword)){
@@ -264,6 +269,7 @@ public class UserController extends BaseController{
 		WebUtils.printSuccess(request, response);
 	}
 	
+	@AuthLogin
 	@RequestMapping("/getUserRole")
 	public void getUserRole(HttpServletRequest request,HttpServletResponse response){
 		User user = (User)request.getSession().getAttribute("user");
@@ -278,6 +284,7 @@ public class UserController extends BaseController{
 	 * @throws IOException 
 	 * @throws IllegalStateException 
 	 */
+	@AuthLogin
 	@RequestMapping(value="/uploadUserHeadImage",method=RequestMethod.POST)
 	public void uploadUserHeadImage(HttpServletRequest request,HttpServletResponse response,@RequestParam("file") MultipartFile file) throws IllegalStateException, IOException {
 
@@ -307,6 +314,7 @@ public class UserController extends BaseController{
         }
 	}
 	
+	@AuthLogin
 	@RequestMapping("/doRegisterAdminUser")
 	public void doRegisterAdminUser(HttpServletRequest request,HttpServletResponse response,User user){
 		

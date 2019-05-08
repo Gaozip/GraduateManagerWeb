@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.whale.common.AuthLogin;
 import org.whale.pojo.Carousel;
 import org.whale.service.CarouselService;
 import org.whale.utils.WebUtils;
@@ -30,6 +31,7 @@ public class CarouselController {
 	@Autowired
 	private CarouselService carouselService;
 	
+	@AuthLogin
 	@RequestMapping("/queryPictureList")
 	public void queryPictureList(HttpServletRequest request,HttpServletResponse response){
 		
@@ -43,6 +45,7 @@ public class CarouselController {
 	}
 	
 
+	@AuthLogin
 	@RequestMapping(value="/doSave",method=RequestMethod.POST)
 	public void doSave(HttpServletRequest request,HttpServletResponse response,@RequestParam("file") MultipartFile file) throws IllegalStateException, IOException{
 		
@@ -63,6 +66,7 @@ public class CarouselController {
         }
 	} 
 	
+	@AuthLogin
 	@RequestMapping("/doDelete")
 	public void doDelete(HttpServletRequest request,HttpServletResponse response,@RequestParam("fileName")String fileName){
 		

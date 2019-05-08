@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.whale.common.AuthLogin;
 import org.whale.pojo.GraduateInfo;
 import org.whale.pojo.Page;
 import org.whale.service.GraduateInfoService;
@@ -32,6 +33,7 @@ public class GraduateController extends BaseController{
 	 * @param request
 	 * @param response
 	 */
+	@AuthLogin
 	@RequestMapping("/queryBasicInfoById")
 	public void queryBasicInfoById(HttpServletRequest request,HttpServletResponse response){
 		try {
@@ -44,6 +46,7 @@ public class GraduateController extends BaseController{
 		}
 	}
 	
+	@AuthLogin
 	@RequestMapping("/doUpdate")
 	public void doSave(HttpServletRequest request,HttpServletResponse response,GraduateInfo graduate) throws ParseException{
 		Long userId = this.getUserId(request);
@@ -81,6 +84,7 @@ public class GraduateController extends BaseController{
 	 * @param request
 	 * @param response
 	 */
+	@AuthLogin
 	@RequestMapping("/doSearchCompanyInfo")
 	public void doSearchCompanyInfo(HttpServletRequest request,HttpServletResponse response){
 		try {
@@ -99,6 +103,7 @@ public class GraduateController extends BaseController{
 	 * @param request
 	 * @param response
 	 */
+	@AuthLogin
 	@RequestMapping("/doSearchRecruitment")
 	public void doSearchRecruitment(HttpServletRequest request,HttpServletResponse response){
 		

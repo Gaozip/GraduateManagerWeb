@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.whale.common.AuthLogin;
 import org.whale.pojo.Page;
 import org.whale.pojo.Resume;
 import org.whale.pojo.ResumeProject;
@@ -41,6 +42,7 @@ public class ResumeController extends BaseController {
 	 * @param workTableData:工作经验
 	 * @param projectTableData:项目经验
 	 */
+	@AuthLogin
 	@RequestMapping("/doSave")
 	public void doSave(HttpServletRequest request,HttpServletResponse response,Resume resume,String workTableData,String projectTableData){
 		
@@ -69,6 +71,7 @@ public class ResumeController extends BaseController {
 	 * @param request
 	 * @param response
 	 */
+	@AuthLogin
 	@RequestMapping("/queryPage")
 	public void queryPage(HttpServletRequest request,HttpServletResponse response){
 		Page page = this.newPage(request);
@@ -92,6 +95,7 @@ public class ResumeController extends BaseController {
 	 * @param workTableData
 	 * @param projectTableData
 	 */
+	@AuthLogin
 	@RequestMapping("/doUpdate")
 	public void doUpdateByResumeId(HttpServletRequest request,HttpServletResponse response,Resume resume,String workTableData,String projectTableData){
 		
@@ -106,6 +110,7 @@ public class ResumeController extends BaseController {
 		WebUtils.printSuccess(request, response);
 	}
 	
+	@AuthLogin
 	@RequestMapping("/doDelete")
 	public void doDelete(HttpServletRequest request,HttpServletResponse response,@RequestParam("resumeId") Long resumeId){
 
@@ -118,6 +123,7 @@ public class ResumeController extends BaseController {
 	 * @param request
 	 * @param response
 	 */
+	@AuthLogin
 	@RequestMapping("/getResumeByEmployer")
 	public void getResumeByEmployer(HttpServletRequest request,HttpServletResponse response){
 		Page page = this.newPage(request);
@@ -131,7 +137,7 @@ public class ResumeController extends BaseController {
         }
 	}
 	
-	
+	@AuthLogin
 	@RequestMapping("/doSearchByRequire")
 	public void doSearchByRequire(HttpServletRequest request,HttpServletResponse response,@RequestParam("resumeId")Long resumeId,String expertIndustry,String education,String sex,@RequestParam("age")Long age,String workYear,String gradCollege,String companyName,String expertJobIntension){
 		Page page  = this.newPage(request);
